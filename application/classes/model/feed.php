@@ -10,7 +10,8 @@ class Model_feed extends Model
 	}
 
 	public processFeed($file) {
-		// Takes the downloaded data feed from the MTA
+		// Takes the downloaded data feed from the MTA and translates it to a
+		// understandable format to insert it into the database
 	}
 
 	public insertData($data) {
