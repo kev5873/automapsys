@@ -4,9 +4,26 @@ class Model_feed extends Model
 {
 
 	public function downloadFeed() {
-		// Downloads the feed from the MTA and stores it in our system, saving the file
-		// This will then be processed by the processFeed to produce an output
-		// to be inserted into the database
+		$url = 'http://www.mta.info/status/serviceStatus.txt';
+		$path = getcwd()."/a/s/status-".time().".txt";
+  $newfname = $path;
+  $file = fopen ($url, "rb");
+  if ($file) {
+    $newf = fopen ($newfname, "wb");
+
+    if ($newf)
+    while(!feof($file)) {
+      fwrite($newf, fread($file, 1024 * 8 ), 1024 * 8 );
+    }
+  }
+
+  if ($file) {
+    fclose($file);
+  }
+
+  if ($newf) {
+    fclose($newf);
+  }
 	}
 
 	public function processFeed($file) {
