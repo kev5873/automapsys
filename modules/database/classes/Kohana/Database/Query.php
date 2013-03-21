@@ -248,6 +248,14 @@ class Kohana_Database_Query {
 		}
 
 		// Execute the query
+		// echo "<br />"; 
+		// echo $sql; 
+		// echo "<br />"; 
+		// echo $this->_type; 
+		// echo "<br />"; 
+		// var_dump($as_object); 
+		// echo "<br />"; 
+	// var_dump($object_params); 
 		$result = $db->query($this->_type, $sql, $as_object, $object_params);
 
 		if (isset($cache_key) AND $this->_lifetime > 0)

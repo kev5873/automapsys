@@ -164,6 +164,7 @@ class Kohana_Database_PostgreSQL extends Database
 
 		try
 		{
+			$this->_config['primary_key'] = null; 
 			if ($type === Database::INSERT AND $this->_config['primary_key'])
 			{
 				$sql .= ' RETURNING '.$this->quote_identifier($this->_config['primary_key']);
