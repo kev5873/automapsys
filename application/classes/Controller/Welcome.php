@@ -27,9 +27,9 @@ private function downloadFile ($url, $path) {
 
 	public function action_index()
 	{
-		$pgconn = pg_connect('host=localhost dbname=ams user=postgres password=root'); 
+		//$pgconn = pg_connect('host=localhost dbname=ams user=postgres password=root'); 
 		// pg_insert($pgconn, 'multidata' , array('data'=>100)); 
-		$multidata = ORM::factory('station'); 
+		//$multidata = ORM::factory('station'); 
 		
 		// $query = DB::select()->from('stations')->where('station_id' , '=', 13); 
 		// $results = $query->execute(); 
