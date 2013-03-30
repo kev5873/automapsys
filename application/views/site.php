@@ -1,3 +1,4 @@
+<?php header("Content-Type: text/plain"); ?>
 <html>
     <head>
         <title><?php echo $title; ?></title>
