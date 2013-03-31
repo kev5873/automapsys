@@ -8,6 +8,9 @@ class Controller_read extends Controller_Template {
 	{
 		$this->template->title   = 'MTA New York City Subway Service Advisories';
 		$this->template->message = 'hello, world!';
+
+		$feeder = new Model_feed();
+		$feeder->downloadFeed();
 	}
 
 } // End Welcome
