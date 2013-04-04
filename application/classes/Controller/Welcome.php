@@ -5,27 +5,29 @@ include 'xmlparser.php';
 class Controller_Welcome extends Controller {
 
 
-private function downloadFile ($url, $path) {
+	private function downloadFile ($url, $path) {
+		$newfname = $path;
+		$file = fopen ($url, "rb");
+		if ($file){
+			$newf = fopen ($newfname, "wb");
 
-  $newfname = $path;
-  $file = fopen ($url, "rb");
-  if ($file) {
-    $newf = fopen ($newfname, "wb");
+			if ($newf)
+			while(!feof($file))
+			{
+		    	fwrite($newf, fread($file, 1024 * 8 ), 1024 * 8 );
+		    }
+		}
 
-    if ($newf)
-    while(!feof($file)) {
-      fwrite($newf, fread($file, 1024 * 8 ), 1024 * 8 );
-    }
-  }
+		if($file)
+		{
+			fclose($file);
+		}
 
-  if ($file) {
-    fclose($file);
-  }
-
-  if ($newf) {
-    fclose($newf);
-  }
- }
+		if($newf)
+		{
+			fclose($newf);
+		}
+	}
  
 	public function getUpToDateStatus()	// returns the filename of the latest status file; 
 	{
@@ -59,7 +61,12 @@ private function downloadFile ($url, $path) {
 		return $textArr; 
 	}
 
+<<<<<<< HEAD
 	public function betweens($text)
+=======
+	// Whats this doing here it should be a model!!!
+	class ServiceChance()
+>>>>>>> f558db77a51e33ba0cb014a8567ab6f9fad133df
 	{
 		$pattern = '(between|use|)'; 
 	}
