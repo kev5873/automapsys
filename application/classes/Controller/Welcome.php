@@ -59,25 +59,74 @@ private function downloadFile ($url, $path) {
 		return $textArr; 
 	}
 
-	class ServiceChance()
+	public function betweens($text)
 	{
-		$train; // The train that is in question; 
-		$direction; // The direction of hte train; 
-		$affectedAreas = array(); // affected stops; Could be a string of arrays; 
-		$startArea;
-		$endArea; 
-		// The affected stops between startArea and endArea; 
-		$type; // type of change (skip, reroute); 
-		$timeStart; // time start; This will use unix time;  
-		$timeEnd; // time end; This will use unix time; 
+		$pattern = '(between|use|)'; 
 	}
 
-	public function ChangeParser($changeText)	
+	public function isStationByName($name)	// attempts to determine the name is a station; 
 	{
-		$wdn = array(); // aka the list of strings that are vital to the change; 
-
-
+		return true;// left this way until someone fixes database; 
 	}
+
+	public function getTrains($sentence) // function prefers sentences over strings, but strings works fine as well. 
+	{
+			$pattern = '(\[.\])';	// train phrase is not necessary, [.] implies train;  
+			$trains = array(); 
+			preg_match($pattern, $text, $trains, $pos+1);	
+			$traindata = array(); 
+			foreach($trains as $train)
+			{
+				$higheststartpos = 0; 
+				for($j = count($traindata)-1; $j >= 0; $j--)
+				{
+					$trainx = $traindata[$j][0]; 
+					if($train == $trainx)
+					{
+						$higheststartpos = $traindata[$j][1]; 
+						break; 
+					}
+				}
+				$traindata[] = array($train, stripos($sentence, $train, $higheststartpos)); 
+			}
+			return $traindata;  
+	}
+
+	public function getStations($sentence)	// function prefers sentences over strings, but strings works fine as well. 
+	{
+		$parser = new XMLParser($filestuff); 
+		$parser->Parse(); 
+
+		$strongs = $parser->document->strong;
+		$stationArr = array(); 
+
+		foreach($strongs as $station)
+		{
+			if($this->isStationByName($station))
+			{
+				$stationArr[] = $station; 
+			}
+		} 
+		return $stationArr; 
+	}
+
+	public function no_train_case()
+	{
+		$textArr = $this->foobar(); 
+		foreach($textArr as $text){
+			$text = htmlentities($text); 
+			//$parser = new XMLParser($text);
+			$pos = stripos($text, 'No');
+			if(!pos){return false;}	// check if its a no-type, check #1; 
+
+			$pattern = '(\[.\])';	// train phrase is not necessary, [.] implies train;  
+			$train = array(); 
+			preg_match($pattern, $text, $train, $pos+1);
+
+			print_r($matches);  
+		}
+	}
+
 	public function action_index()
 	{
 		// $pgconn = pg_connect('host=localhost dbname=ams user=postgres password=root'); 
@@ -85,7 +134,10 @@ private function downloadFile ($url, $path) {
 		// $multidata = ORM::factory('station'); 
 			echo "Welcome! <br />";
 			// echo $this->getUpToDateStatus(); 
-			print_r($this->foobar()); 
+		print_r($this->foobar()); 
+		echo "<br />";
+			$this->no_train_case(); 
+
 		// $query = DB::select()->from('stations')->where('station_id' , '=', 13); 
 		// $results = $query->execute(); 
 		// foreach($results as $res)
