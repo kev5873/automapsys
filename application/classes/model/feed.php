@@ -38,9 +38,14 @@ class Model_feed extends Model
       echo $subway->subway[0]->line[$i]->status[0];
       echo $subway->subway[0]->line[$i]->text[0];
     }
-		// Takes the downloaded data feed from the MTA and translates it to a
-		// understandable format to insert it into the database
+		
+    // Split this parsed data into its individual lines
 	}
+
+  public function processIndividual($string)
+  {
+    // Check documentation
+  }
 
 	public function insertData($data) {
 		// Insert the processed feed into the database.

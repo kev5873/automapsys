@@ -17,9 +17,35 @@ class Model_line extends Model
 				->execute()
 				->as_array();
 
-		// From 14-38 use express = true
-		/* CONVERT THE FOR EACH LOOP BELOW TO A REGULAR FOR LOOP SO WE CAN FILTER BETWEEN 14-38 for 5 Train
-		// can add a check to see if $line = 5
+		/*
+
+		$j = 0;
+ 
+		foreach ($stations as $station)
+		{
+		 $singleStation = DB::select()
+		  ->from('station')
+		  ->where('station_id', '=', $station['station_id'])
+		  //->where('express', '=', true)
+		  ->execute()->as_array();
+		 //var_dump($singleStation);
+		  if(isset($singleStation[0]))
+		   //echo $station['order_number'] . ' - ' .$singleStation[0]['station_name']  . '<br />';
+		   {
+		    $stationArr[$j]=$singleStation[0];
+		   }
+		  $j++;
+		}
+		
+		for($i =0; $i<sizeof($stationArr);$i++)
+		{
+		 	echo $stationArr[$i]['station_name'];
+		}
+
+		*/
+
+		$returnString = '';
+
 		foreach ($stations as $station)
 		{
 			$singleStation = DB::select()
@@ -27,10 +53,11 @@ class Model_line extends Model
 				->where('station_id', '=', $station['station_id'])
 				//->where('express', '=', true)
 				->execute()->as_array();
-			//var_dump($singleStation);
-				if(isset($singleStation[0]))
-					echo $station['order_number'] . ' - ' .$singleStation[0]['station_name']  . '<br />';
+
+			if(isset($singleStation[0]))
+				$returnString = $returnString . '<tr> <td style="background-color: #ff3333; padding: 15px 0px 15px 0px;"><img src="'.URL::base().'a/i/stationstop16px.png" /></td> <td style="padding-left: 15px;">'.$singleStation[0]['station_name'].'</td> </tr>';
 		}
-		*/
+		return $returnString;
+		
 	}
 }

@@ -2,7 +2,7 @@
 
 class Controller_ams extends Controller_Template {
 
-	public $template = 'blank';
+	public $template = 'site';
 	
 	public function action_index()
 	{
@@ -14,7 +14,7 @@ class Controller_ams extends Controller_Template {
 		//$feeder->processFeed(getcwd()."/a/s/status-1364696060.xml");
 
 		$line = new Model_line();
-		$line->grabStations('5');
+		$this->template->lineData = $line->grabStations('25');
 		
 	}
 

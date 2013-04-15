@@ -2,6 +2,10 @@
 
 class Controller_read extends Controller_Template {
 
+	/*
+	  This file downloads the latest feed from the MTA.
+	 */
+
 	public $template = 'site';
 
 	public function action_index()
