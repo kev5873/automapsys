@@ -43,20 +43,89 @@ class Model_line extends Model
 		}
 
 		*/
+		$returnString ='';
 
-		$returnString = '';
+		switch($line)
+		{
+			case 1:
+				for($i=0;$i<sizeof($stations);$i++)
+				{
+					$singleStation = DB::select()
+					->from('station')
+					->where('station_id', '=', $stations[$i]['station_id'])
+					->execute()->as_array();
 
-		foreach ($stations as $station)
+					if($i==sizeof($stations)-4)
+						$i++;
+
+					if(isset($singleStation[0]))
+						$returnString = $returnString . '<tr> <td style="background-color: #ff3333; padding: 15px 0px 15px 0px;"><img src="'.URL::base().'a/i/stationstop16px.png" /></td> <td style="padding-left: 15px;">'.$singleStation[0]['station_name']." : ".$singleStation[0]['station_id']. " - " . $i .'</td> </tr>';
+					
+				}
+				break;
+
+			case 4:
+
+
+			case 5:
+				//express based on time
+				//if()
+				
+				//local based on time
+				for($i=0;$i<sizeof($stations);$i++)
+				{
+					$singleStation = DB::select()
+					->from('station')
+					->where('station_id', '=', $stations[$i]['station_id'])
+					->execute()->as_array();
+					
+					if($i > 15 && $i < 34)
+					{
+						$singleStation = DB::select()
+						->from('station')
+						->where('station_id', '=', $stations[$i]['station_id'])
+						->where('express', '=', 'true')
+						->execute()->as_array();
+					}
+					
+
+					//	$result = DB::query("foo")->from("table")->join("table2","CROSS")->join("table3"."CROSS");
+
+					if(isset($singleStation[0]))
+						$returnString = $returnString . '<tr> <td style="background-color: #ff3333; padding: 15px 0px 15px 0px;"><img src="'.URL::base().'a/i/stationstop16px.png" /></td> <td style="padding-left: 15px;">'.$singleStation[0]['station_name']." : ".$singleStation[0]['station_id']. " - " . $i .'</td> </tr>';
+					
+				}
+				break;
+
+			default:
+				for($i=0;$i<sizeof($stations);$i++)
+				{
+					$singleStation = DB::select()
+					->from('station')
+					->where('station_id', '=', $stations[$i]['station_id'])
+					->execute()->as_array();
+
+					if(isset($singleStation[0]))
+						$returnString = $returnString . '<tr> <td style="background-color: #ff3333; padding: 15px 0px 15px 0px;"><img src="'.URL::base().'a/i/stationstop16px.png" /></td> <td style="padding-left: 15px;">'.$singleStation[0]['station_name']." : ".$singleStation[0]['station_id']. " - " . $i .'</td> </tr>';
+						
+				}
+				break;
+
+		}
+/*
+		for($i=0;$i<sizeof($stations);$i++)
 		{
 			$singleStation = DB::select()
 				->from('station')
-				->where('station_id', '=', $station['station_id'])
-				//->where('express', '=', true)
+				->where('station_id', '=', $stations[$i]['station_id']);
+				
+				
+					->where('express', '=', true)
 				->execute()->as_array();
 
-			if(isset($singleStation[0]))
-				$returnString = $returnString . '<tr> <td style="background-color: #ff3333; padding: 15px 0px 15px 0px;"><img src="'.URL::base().'a/i/stationstop16px.png" /></td> <td style="padding-left: 15px;">'.$singleStation[0]['station_name'].'</td> </tr>';
-		}
+				if(isset($singleStation[0]))
+				$returnString = $returnString . '<tr> <td style="background-color: #ff3333; padding: 15px 0px 15px 0px;"><img src="'.URL::base().'a/i/stationstop16px.png" /></td> <td style="padding-left: 15px;">'.$singleStation[0]['station_name']." : ".$singleStation[0]['station_id']. " - " . $i .'</td> </tr>';
+		}*/
 		return $returnString;
 		
 	}
