@@ -66,7 +66,7 @@ class Model_line extends Model
 
 				case 2:
 					$color = 'red';
-					if(($i > 24 && $i <27) || ($i > 27 && $i < 31) || ($i > 32 && $i < 36) || ($i > 36 && $i < 41))
+					if($i > 24 && $i <41)
 					{
 						$singleStation = $singleStation->where('express', '=', 'true');
 					}
@@ -74,15 +74,123 @@ class Model_line extends Model
 
 				case 3:
 					$color = 'red';
-					break;
-
-				case 5:
-					if($i > 15 && $i < 34) // Order Numbers
+					if($i == 13)
+						$i+=sizeof($stations);
+					else if($i > 6 && $i <59)
 					{
 						$singleStation = $singleStation->where('express', '=', 'true');
 					}
+
+					break;
+				
+				case 4:
+					$color = 'green';
+					if(($i == 13) || ($i > 14 && $i < 33) || ($i > 39 && $i < 54) )
+					{
+						$singleStation = $singleStation->where('express', '=', 'true');
+					}
+
+					break;
+
+				case 5:
+					$color = 'green';
+					if($i > 15 && $i < 34 )
+					{
+						$singleStation = $singleStation->where('express', '=', 'true');
+					}
+					
+					break;
+
+				case 6:
 					$color = 'green';
 					break;
+
+				case 7:
+					$color = 'purple';
+					break;
+
+				case 8:
+					$color = 'green';
+					break;
+
+				case 9: 
+					$color = 'purple';
+					break;
+
+				case 10:
+					$color = 'blue';
+					if(($i > 5 && $i <26) || ($i > 31 && $i <44))
+					{
+						$singleStation = $singleStation->where('express', '=', 'true');
+					}
+					break;
+
+				case 11:
+					$color = 'blue';
+					break;
+
+				case 12:
+					$color = 'blue';
+					break;					
+				
+				case 13:
+					$color = 'blue';
+					break;
+
+				case 14:
+					$color = 'blue';
+					break;
+
+				case 15:
+					$color = 'blue';
+					break;
+
+				case 16:
+					$color = 'blue';
+					break;
+
+				case 17:
+					$color = 'blue';
+					break;
+
+				case 18:
+					$color = 'blue';
+					break;
+
+				case 19:
+					$color = 'blue';
+					break;
+
+				case 20:
+					$color = 'blue';
+					break;
+
+				case 21:
+					$color = 'blue';
+					break;
+
+				case 22:
+					$color = 'blue';
+					break;
+
+				case 23:
+					$color = 'blue';
+					break;
+
+				case 24:
+					$color = 'blue';
+					break;
+
+				case 25:
+					$color = 'blue';
+					break;
+
+
+
+
+
+
+
 			}
 			$singleStation = $singleStation->execute()->as_array();
 					
@@ -208,7 +316,7 @@ class Model_line extends Model
 		}
 		return '<tr>
 		<td style="background-color: #'.$hexColor.'; padding: 15px 0px 15px 0px;">
-		<img src="'.URL::base().'a/i/stationstopSolidpx.png" />
+		<img src="'.URL::base().'a/i/stationstop16px.png" />
 		</td> <td style="padding-left: 15px;">'.$station_name." : ".$station_id. " - " . $order_number .'</td>
 		</tr>';
 	}
