@@ -67,19 +67,57 @@ class Model_feed extends Model
 			}
 		}
 
-		return $output;
+		//var_dump($output);
+
+		$aChange = $output[0]['change'][0] . '<br />';
+		$bChange = $output[0]['changeDetail'][0];
+		$this->processIndividual($aChange, $bChange);
+
+		//return $output;
 
 		// Example Usage $output[trunkID][change/changeDetail][route(depends on # of advisories)]
-		echo $output[3]['change'][0] . '<br />';
-		echo $output[3]['changeDetail'][0];
+		//echo $output[3]['change'][0] . '<br />';
+		//echo $output[3]['changeDetail'][0];
 	}
 
-	public function processIndividual($string)
+	public function processIndividual($change, $changeDetail)
+	{	
+		echo $change . '<br />';
+		echo $this->findTrain($change) . '<br />';
+		
+		$trainLine    = $this->findTrain($change);
+		$stationString = substr($change, strpos($change, 'from ') + 5);
+		$stations = explode(" to ", $stationString);
+		$startStation = $stations[0];
+		$endStation = $stations[1];
+
+		if(strpos($change, 'run express') > 0) // Service change runs express
+		{
+			$stationString = substr($change, strpos($change, 'from ') + 5);
+			$stations = explode(" to ", $stationString);
+			$startStation = $stations[0];
+			$endStation = $stations[1];
+			
+			echo $startStation . '<br />';
+			echo $endStation . '<br />';
+			$this->getStationStuff($trainLine, $startStation); // Returns array line_id, station_id, station_order
+		}
+		else
+		{
+			
+		}
+	}
+
+	public function findTrain($change)
 	{
-		// Check documentation
+		$firstBracket = strpos($change, '[');
+		$lastBracket  = strpos($change, ']');
+		$train = substr($change, $firstBracket + 1, $lastBracket - 2);
+		return $train;
 	}
 
-	public function insertData($data) {
+	public function insertData($data)
+	{
 		// Insert the processed feed into the database.
 	}
 
