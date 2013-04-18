@@ -23,7 +23,8 @@ class Controller_read extends Controller_Template {
 		echo "<br />";
 		echo "<br />";
 		echo "<br />";
-		print_r($feeder->getStationStuff('asdf [2] asdf', 'E 180 St')); 
+		$feeder->insertData(array( 7, 0, 10, 123, 125, 0, 'hello' )); 
+		// print_r($feeder->getStationStuff('asdf [2] asdf', 'E 180 St')); 
 	}
 
 } // End Welcome

@@ -81,8 +81,24 @@ class Model_feed extends Model
 	}
 
 	public function insertData($data) {
-		// Insert the processed feed into the database.
-	}
+  // Insert the processed feed into the database.
+  $query2 = DB::select()->from('line_info')
+  	->where('line_id', '=', $data[0]) 
+    ->where ('start_station_id', '=', $data[1])
+    ->where ('end_station_id', '=', $data[2])
+    ->where ('start_time', '=', $data[3])
+    ->where ('end_time', '=', $data[4])
+    ->where ('service_replace_id', '=', $data[5])
+    ->where ('filename', '=', $data[6])
+    ->execute()->as_array();
+
+  if( count($query2) == 0 )
+  { 
+   $query = DB::insert ('line_info', array('line_id', 'start_station_id','end_station_id','start_time','end_time','service_replace_id','filename'))
+   ->values(array($data[0],$data[1],$data[2],$data[3],$data[4],$data[5],$data[6]))->execute();
+  }
+
+}
 	
 	public function parse_line_name($line_name)
 	{
@@ -132,4 +148,7 @@ class Model_feed extends Model
 		return array( "line_id" => $line_id, "station_id" => $station_id , "station_order" => $station_order ); 
 	
 	}
-}
+
+
+
+ 	}
