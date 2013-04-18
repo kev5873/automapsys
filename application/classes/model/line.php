@@ -55,8 +55,27 @@ class Model_line extends Model
 
 			//}
 			//else //use defeault below
+			$color='black';
 			switch($line)
 			{
+				case 1:
+					$color = 'red';
+					if($i == sizeof($stations)-4)
+						$i++;
+					break;
+
+				case 2:
+					$color = 'red';
+					if(($i > 24 && $i <27) || ($i > 27 && $i < 31) || ($i > 32 && $i < 36) || ($i > 36 && $i < 41))
+					{
+						$singleStation = $singleStation->where('express', '=', 'true');
+					}
+					break;
+
+				case 3:
+					$color = 'red';
+					break;
+					
 				case 5:
 					if($i > 15 && $i < 34) // Order Numbers
 					{
@@ -68,7 +87,7 @@ class Model_line extends Model
 			$singleStation = $singleStation->execute()->as_array();
 					
 			if(isset($singleStation[0]))
-				$returnString = $returnString . $this->generateTableRow('green',$singleStation[0]['station_name'],$singleStation[0]['station_id'],$i);
+				$returnString = $returnString . $this->generateTableRow($color,$singleStation[0]['station_name'],$singleStation[0]['station_id'],$i);
 
 		}
 /*
