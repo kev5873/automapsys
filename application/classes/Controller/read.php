@@ -2,7 +2,11 @@
 
 class Controller_read extends Controller_Template {
 
-	public $template = 'site';
+	/*
+	  This file downloads the latest feed from the MTA.
+	 */
+
+	public $template = 'blank';
 
 	public function action_index()
 	{
@@ -10,7 +14,9 @@ class Controller_read extends Controller_Template {
 		$this->template->message = 'hello, world!';
 
 		$feeder = new Model_feed();
-		$feeder->downloadFeed();
+		//$feeder->downloadFeed();
+
+		$feeder->processFeed('a/s/status-1366255687.xml');
 	}
 
 } // End Welcome
