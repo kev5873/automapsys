@@ -75,7 +75,7 @@ class Model_line extends Model
 				case 3:
 					$color = 'red';
 					break;
-					
+
 				case 5:
 					if($i > 15 && $i < 34) // Order Numbers
 					{
@@ -208,7 +208,7 @@ class Model_line extends Model
 		}
 		return '<tr>
 		<td style="background-color: #'.$hexColor.'; padding: 15px 0px 15px 0px;">
-		<img src="'.URL::base().'a/i/stationstop16px.png" />
+		<img src="'.URL::base().'a/i/stationstopSolidpx.png" />
 		</td> <td style="padding-left: 15px;">'.$station_name." : ".$station_id. " - " . $order_number .'</td>
 		</tr>';
 	}
