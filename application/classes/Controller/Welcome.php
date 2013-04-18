@@ -1,33 +1,31 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-include 'xmlparser.php'; 
+// include 'xmlparser.php'; 
 
 class Controller_Welcome extends Controller {
 
 
-	private function downloadFile ($url, $path) {
-		$newfname = $path;
-		$file = fopen ($url, "rb");
-		if ($file){
-			$newf = fopen ($newfname, "wb");
+private function downloadFile ($url, $path) {
 
-			if ($newf)
-			while(!feof($file))
-			{
-		    	fwrite($newf, fread($file, 1024 * 8 ), 1024 * 8 );
-		    }
-		}
+  $newfname = $path;
+  $file = fopen ($url, "rb");
+  if ($file) {
+    $newf = fopen ($newfname, "wb");
 
-		if($file)
-		{
-			fclose($file);
-		}
+    if ($newf)
+    while(!feof($file)) {
+      fwrite($newf, fread($file, 1024 * 8 ), 1024 * 8 );
+    }
+  }
 
-		if($newf)
-		{
-			fclose($newf);
-		}
-	}
+  if ($file) {
+    fclose($file);
+  }
+
+  if ($newf) {
+    fclose($newf);
+  }
+ }
  
 	public function getUpToDateStatus()	// returns the filename of the latest status file; 
 	{
@@ -39,7 +37,7 @@ class Controller_Welcome extends Controller {
 			$recentfile = $status;} 
 	}
 	// return $recentfile; 
-	return addslashes(getcwd().'/a/s/'.$recentfile); 
+	return addslashes(getcwd().'a/s/'.$recentfile); 
 	// return file_get_contents(addslashes(getcwd().'/a/s/'.$recentfile)); 
 	}	
 	
@@ -61,34 +59,206 @@ class Controller_Welcome extends Controller {
 		return $textArr; 
 	}
 
-	// Whats this doing here it should be a model!!!
-	class ServiceChance()
+	public function betweens($text)
 	{
-		$train; // The train that is in question; 
-		$direction; // The direction of hte train; 
-		$affectedAreas = array(); // affected stops; Could be a string of arrays; 
-		$startArea;
-		$endArea; 
-		// The affected stops between startArea and endArea; 
-		$type; // type of change (skip, reroute); 
-		$timeStart; // time start; This will use unix time;  
-		$timeEnd; // time end; This will use unix time; 
+		$pattern = '(between|use|)'; 
 	}
 
-	public function ChangeParser($changeText)	
+	public function isStationByName($name)	// attempts to determine the name is a station; 
 	{
-		$wdn = array(); // aka the list of strings that are vital to the change; 
+		return true;// left this way until someone fixes database; 
+	}
 
+	public function getTrains($sentence) // function prefers sentences over strings, but strings works fine as well. 
+	{
+			$pattern = '(\[.\])';	// train phrase is not necessary, [.] implies train;  
+			$trains = array(); 
+			preg_match($pattern, $text, $trains, $pos+1);	
+			$traindata = array(); 
+			foreach($trains as $train)
+			{
+				$higheststartpos = 0; 
+				for($j = count($traindata)-1; $j >= 0; $j--)
+				{
+					$trainx = $traindata[$j][0]; 
+					if($train == $trainx)
+					{
+						$higheststartpos = $traindata[$j][1]; 
+						break; 
+					}
+				}
+				$traindata[] = array($train, stripos($sentence, $train, $higheststartpos)); 
+			}
+			return $traindata;  
+	}
+
+	public function getStations($sentence)	// function prefers sentences over strings, but strings works fine as well. 
+	{
+		$parser = new XMLParser($filestuff); 
+		$parser->Parse(); 
+
+		$strongs = $parser->document->strong;
+		$stationArr = array(); 
+
+		foreach($strongs as $station)
+		{
+			if($this->isStationByName($station))
+			{
+				$stationArr[] = $station; 
+			}
+		} 
+		return $stationArr; 
+	}
+
+	public function no_train_case()
+	{
+		$textArr = $this->foobar(); 
+		foreach($textArr as $text){
+			$text = htmlentities($text); 
+			//$parser = new XMLParser($text);
+			$pos = stripos($text, 'No');
+			if(!pos){return false;}	// check if its a no-type, check #1; 
+
+			$pattern = '(\[.\])';	// train phrase is not necessary, [.] implies train;  
+			$train = array(); 
+			preg_match($pattern, $text, $train, $pos+1);
+
+			print_r($matches);  
+		}
+	}
+
+	public function getStyle($line) 
+	# style: 4 = Multi
+	# style: 0 = f, f
+	# style: 1 = f, t
+	# style: 2 = t, f
+	# style: 3 = t, t
+	{
+		// $mid = explode($line, ':');
+
+		// print_r($mid); 
+
+		// if(count($mid) != 2)
+		// {
+		// 	return false; 
+		// }
+
+		// $sub = trim($mid[1]); 
+
+		if( strcasecmp( $sub , 'Multi' ) == 0 )
+		{
+			return 4; 
+		} 
+
+		$mid2 = explode($sub, ','); 
+		if( count($mid2) != 2 )
+		{
+			return false; 
+		}
+		$style = 0; 
+
+
+		if( strcasecmp(trim($mid2[0]), 't') == 0 )
+		{
+			$style += 2;
+		}
+
+		if( strcasecmp( trim($mid[1]) ,'t') == 0 )
+		{
+			$style += 1;
+		}
+		return $style; 
 
 	}
+
+	public function supersubstitute($url)
+	{
+		$linenum = 0; 
+		$order = 1; 
+		$file = fopen ($url, "rb");
+		$style = 0; // means not 'f, f';  
+		  if ($file) {
+			while(!feof($file))
+			{
+				$line = fgets($file); 
+				$linenum += 1; 
+
+				if( $linenum == 1) {echo $line."<br />"; continue; }
+				if( $linenum == 2) {echo $line."<br />"; $style = $this->getStyle($line); continue; }
+
+				// if(stripos($line, "type"))
+				// {
+				// 	if(stripos($line, "f")){
+				// 		$style = true; 
+				// 	}
+				// 	continue; 
+				// }
+
+				if($style == 0)
+				{
+					echo "INSERT INTO station_order VALUES ('.', 'line_id', $line, $order, FALSE, FALSE);"."<br />"; 
+				}
+				if($style == 1)
+				{
+					echo "INSERT INTO station_order VALUES ('.', 'line_id', $line, $order, FALSE, TRUE);"."<br />"; 
+				}
+				if($style == 2)
+				{
+					echo "INSERT INTO station_order VALUES ('.', 'line_id', $line, $order, TRUE, FALSE);"."<br />"; 
+				}
+				if($style == 3)
+				{
+					echo "INSERT INTO station_order VALUES ('.', 'line_id', $line, $order, TRUE, TRUE);"."<br />"; 
+				}
+				if($style == 4)
+				{
+					$linestuff = explode(',' , $line); 
+
+					$parttime = 'f'; 
+					$nighttime = 'f';
+					if(count($linestuff) > 3 && $linestuff[1] == 't')
+						$parttime = 't';
+					if(count($linestuff) > 3 && $linestuff[2] == 't')
+						$timetime = 't';
+					echo "INSERT INTO station_order VALUES ('.', 'line_id', $linestuff[0], $order, $parttime, $nighttime);"."<br />"; 
+				}
+				$order += 1;
+			}
+		}		  
+	}
+
+	  // $newf = fopen ($newfname, "wb");
+
+		 //    if ($newf)
+		 //    while(!feof($file)) {
+		 //      fwrite($newf, fread($file, 1024 * 8 ), 1024 * 8 );
+		 //    }
+		 //  }
+
+		 //  if ($file) {
+		 //    fclose($file);
+		 //  }
+
+		 //  if ($newf) {
+		 //    fclose($newf);
+		 //  }
+
 	public function action_index()
 	{
+		echo 'Welcome!';
 		// $pgconn = pg_connect('host=localhost dbname=ams user=postgres password=root'); 
 		// pg_insert($pgconn, 'multidata' , array('data'=>100)); 
 		// $multidata = ORM::factory('station'); 
-			echo "Welcome! <br />";
+			// echo "Welcome! <br />";
 			// echo $this->getUpToDateStatus(); 
-			print_r($this->foobar()); 
+		// print_r($this->foobar()); 
+		// echo "<br />";
+			// $this->no_train_case(); 
+			// $start=$_GET["start"];
+			// $end=$_GET["end"];
+			// for($i=$start; $i < $end+1; $i++)
+			// 	echo $i."<br />";
+			// $this->supersubstitute("C:/users/Kenneth Li/dropbox/7_line.txt");  
 		// $query = DB::select()->from('stations')->where('station_id' , '=', 13); 
 		// $results = $query->execute(); 
 		// foreach($results as $res)
