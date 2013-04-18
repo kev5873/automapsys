@@ -67,7 +67,8 @@ class Model_feed extends Model
 			}
 		}
 
-		return $output;
+		var_dump($output);
+		return $output; 
 
 		// Example Usage $output[trunkID][change/changeDetail][route(depends on # of advisories)]
 		echo $output[3]['change'][0] . '<br />';
@@ -82,5 +83,53 @@ class Model_feed extends Model
 	public function insertData($data) {
 		// Insert the processed feed into the database.
 	}
+	
+	public function parse_line_name($line_name)
+	{
+		preg_match_all('/\[([^\]]+)\]/', $line_name, $matches); 
+		// return $matches[1][0]; 
+		return $matches[1][0];
+	}
 
+	public function getStationStuff($line_name = NULL, $station_name = NULL)
+	{
+
+		$station_id = NULL; $line_id = NULL; $station_order = NULL; 
+		$line_name_parsed = $this->parse_line_name($line_name); 	
+		$result = 
+		DB::select('line_id')->from('line_train')->where('line_bullet', '=', $line_name_parsed)->execute()->as_array()[0]['line_id']; 
+
+		if( count($result) != 0 )
+		{
+			$line_id = $result[0];
+		}
+
+		if($station_name == NULL)
+		{
+			return array( "line_id" => $line_id ); 
+		}
+
+		if(isset($station_name))
+		{
+		$result = DB::select('station_id')->from('station')->where('station_name', 'like', '%'.$station_name.'%')->execute()->as_array(); 
+
+		if( count($result) )
+		{
+			$station_id = $result[0]['station_id']; 
+
+		$result = DB::select('order_number')
+				->from('station_order')
+				->where('line_id', '=', $line_id)
+				->where('station_id', '=' , $station_id)
+				->execute()->as_array();
+
+		$station_order = $result[0]['order_number']; 		
+		}
+
+		
+		}
+
+		return array( "line_id" => $line_id, "station_id" => $station_id , "station_order" => $station_order ); 
+	
+	}
 }

@@ -37,7 +37,7 @@ private function downloadFile ($url, $path) {
 			$recentfile = $status;} 
 	}
 	// return $recentfile; 
-	return addslashes(getcwd().'/a/s/'.$recentfile); 
+	return addslashes(getcwd().'a/s/'.$recentfile); 
 	// return file_get_contents(addslashes(getcwd().'/a/s/'.$recentfile)); 
 	}	
 	
