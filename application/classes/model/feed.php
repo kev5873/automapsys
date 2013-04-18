@@ -81,6 +81,21 @@ class Model_feed extends Model
 
 	public function insertData($data) {
 		// Insert the processed feed into the database.
+		$query2 = DB::select()->from('line_info') ->where('line_id', '=', $data[0]) 
+				->where ('start_station', '=', $data[1])
+				->where ('end_station', '=', $data[2])
+				->where ('start_time', '=', $data[3])
+				->where ('end_time', '=', $data[4])
+				->where ('service_replace_id', '=', $data[5]);
+
+		if(!isset($query2))
+		{
+
+			$query = DB::insert ('line_info', array('line_id', 'start_station','end_station','start_time','end_time','service_replace_id','filename'))
+			->values(array($data[0],$data[1],$data[2],$data[3],$data[4],$data[5],$data[6]));
+
+		}
+
 	}
 
 }
