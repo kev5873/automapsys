@@ -127,19 +127,19 @@ class Model_feed extends Model
 
 		if(isset($station_name))
 		{
-		$result = DB::select('station_id')->from('station')->where('station_name', 'like', '%'.$station_name.'%')->execute()->as_array(); 
+			$result = DB::select('station_id')->from('station')->where('station_name', 'like', '%'.$station_name.'%')->execute()->as_array(); 
 
-		if( count($result) )
-		{
-			$station_id = $result[0]['station_id']; 
+			if( count($result) != 0)
+			{
+				$station_id = $result[0]['station_id']; 
 
-		$result = DB::select('order_number')
-				->from('station_order')
-				->where('line_id', '=', $line_id)
-				->where('station_id', '=' , $station_id)
-				->execute()->as_array();
+				$result = DB::select('order_number')
+					->from('station_order')
+					->where('line_id', '=', $line_id)
+					->where('station_id', '=' , $station_id)
+					->execute()->as_array();
 
-		$station_order = $result[0]['order_number']; 		
+			$station_order = $result[0]['order_number']; 		
 		}
 
 		

@@ -1,7 +1,5 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-include 'functions.php'; 
-
 class Controller_read extends Controller_Template {
 
 	/*
@@ -23,7 +21,7 @@ class Controller_read extends Controller_Template {
 		echo "<br />";
 		echo "<br />";
 		echo "<br />";
-		$feeder->insertData(array( 7, 0, 10, 123, 125, 0, 'hello' )); 
+		// $feeder->insertData(array( 7, 0, 10, 123, 125, 0, 'hello' )); 
 		// print_r($feeder->getStationStuff('asdf [2] asdf', 'E 180 St')); 
 	}
 
