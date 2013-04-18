@@ -45,6 +45,33 @@ class Model_line extends Model
 		*/
 		$returnString ='';
 
+		for($i=0;$i<sizeof($stations);$i++)
+		{
+			$singleStation = DB::select()
+			->from('station')
+			->where('station_id', '=', $stations[$i]['station_id']);
+			//if($calculatingParsedData)
+			//{
+
+			//}
+			//else //use defeault below
+			switch($line)
+			{
+				case 5:
+					if($i > 15 && $i < 34) // Order Numbers
+					{
+						$singleStation = $singleStation->where('express', '=', 'true');
+					}
+					$color = 'green';
+					break;
+			}
+			$singleStation = $singleStation->execute()->as_array();
+					
+			if(isset($singleStation[0]))
+				$returnString = $returnString . $this->generateTableRow('green',$singleStation[0]['station_name'],$singleStation[0]['station_id'],$i);
+
+		}
+/*
 		switch($line)
 		{
 			case 1:
@@ -59,8 +86,7 @@ class Model_line extends Model
 						$i++;
 
 					if(isset($singleStation[0]))
-						$returnString = $returnString . '<tr> <td style="background-color: #ff3333; padding: 15px 0px 15px 0px;"><img src="'.URL::base().'a/i/stationstop16px.png" /></td> <td style="padding-left: 15px;">'.$singleStation[0]['station_name']." : ".$singleStation[0]['station_id']. " - " . $i .'</td> </tr>';
-					
+						$returnString = $returnString . $this->generateTableRow('red',$singleStation[0]['station_name'],$singleStation[0]['station_id'],$i);
 				}
 				break;
 
@@ -76,24 +102,17 @@ class Model_line extends Model
 				{
 					$singleStation = DB::select()
 					->from('station')
-					->where('station_id', '=', $stations[$i]['station_id'])
-					->execute()->as_array();
+					->where('station_id', '=', $stations[$i]['station_id']);
 					
 					if($i > 15 && $i < 34)
 					{
-						$singleStation = DB::select()
-						->from('station')
-						->where('station_id', '=', $stations[$i]['station_id'])
-						->where('express', '=', 'true')
-						->execute()->as_array();
+						$singleStation = $singleStation->where('express', '=', 'true');
 					}
+
+					$singleStation = $singleStation->execute()->as_array();
 					
-
-					//	$result = DB::query("foo")->from("table")->join("table2","CROSS")->join("table3"."CROSS");
-
 					if(isset($singleStation[0]))
-						$returnString = $returnString . '<tr> <td style="background-color: #ff3333; padding: 15px 0px 15px 0px;"><img src="'.URL::base().'a/i/stationstop16px.png" /></td> <td style="padding-left: 15px;">'.$singleStation[0]['station_name']." : ".$singleStation[0]['station_id']. " - " . $i .'</td> </tr>';
-					
+						$returnString = $returnString . $this->generateTableRow('green',$singleStation[0]['station_name'],$singleStation[0]['station_id'],$i);
 				}
 				break;
 
@@ -106,8 +125,8 @@ class Model_line extends Model
 					->execute()->as_array();
 
 					if(isset($singleStation[0]))
-						$returnString = $returnString . '<tr> <td style="background-color: #ff3333; padding: 15px 0px 15px 0px;"><img src="'.URL::base().'a/i/stationstop16px.png" /></td> <td style="padding-left: 15px;">'.$singleStation[0]['station_name']." : ".$singleStation[0]['station_id']. " - " . $i .'</td> </tr>';
-						
+						$returnString = $returnString . $this->generateTableRow('black',$singleStation[0]['station_name'],$singleStation[0]['station_id'],$i);
+	
 				}
 				break;
 
@@ -128,5 +147,50 @@ class Model_line extends Model
 		}*/
 		return $returnString;
 		
+	}
+
+	public function generateTableRow($color, $station_name, $station_id, $order_number)
+	{
+		switch($color)
+		{
+			case 'red':
+				$hexColor = 'ff3333';
+				break;
+			case 'green':
+				$hexColor = '009933';
+				break;
+			case 'purple':
+				$hexColor = 'cc3399';
+				break;
+			case 'blue':
+				$hexColor = '2850ad';
+				break;
+			case 'orange':
+				$hexColor = 'ff6319';
+				break;
+			case 'lime':
+				$hexColor = '6cbe45';
+				break;
+			case 'brown':
+				$hexColor = '996633';
+				break;
+			case 'light gray':
+				$hexColor = 'a7a9ac';
+				break;
+			case 'dark gray':
+				$hexColor = '808183';
+				break;
+			case 'yellow':
+				$hexColor = 'fccc0a';
+				break;
+			default:
+				$hexColor = '000000';
+				break;
+		}
+		return '<tr>
+		<td style="background-color: #'.$hexColor.'; padding: 15px 0px 15px 0px;">
+		<img src="'.URL::base().'a/i/stationstop16px.png" />
+		</td> <td style="padding-left: 15px;">'.$station_name." : ".$station_id. " - " . $order_number .'</td>
+		</tr>';
 	}
 }
