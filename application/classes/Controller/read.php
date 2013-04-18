@@ -17,12 +17,6 @@ class Controller_read extends Controller_Template {
 		//$feeder->downloadFeed();
 	// 'a/s/status-1366255687.xml'
 		$feeder->processFeed('a/s/status-1366311051.xml');
-
-		echo "<br />";
-		echo "<br />";
-		echo "<br />";
-		// $feeder->insertData(array( 7, 0, 10, 123, 125, 0, 'hello' )); 
-		// print_r($feeder->getStationStuff('asdf [2] asdf', 'E 180 St')); 
 	}
 
 } // End Welcome

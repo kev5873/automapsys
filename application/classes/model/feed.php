@@ -67,38 +67,75 @@ class Model_feed extends Model
 			}
 		}
 
-		var_dump($output);
-		return $output; 
+		//var_dump($output);
+
+		$aChange = $output[0]['change'][0] . '<br />';
+		$bChange = $output[0]['changeDetail'][0];
+		$this->processIndividual($aChange, $bChange);
+
+		//return $output;
 
 		// Example Usage $output[trunkID][change/changeDetail][route(depends on # of advisories)]
-		echo $output[3]['change'][0] . '<br />';
-		echo $output[3]['changeDetail'][0];
+		//echo $output[3]['change'][0] . '<br />';
+		//echo $output[3]['changeDetail'][0];
 	}
 
-	public function processIndividual($string)
-	{
-		// Check documentation
+	public function processIndividual($change, $changeDetail)
+	{	
+		echo $change . '<br />';
+		echo $this->findTrain($change) . '<br />';
+		
+		$trainLine    = $this->findTrain($change);
+		$stationString = substr($change, strpos($change, 'from ') + 5);
+		$stations = explode(" to ", $stationString);
+		$startStation = $stations[0];
+		$endStation = $stations[1];
+
+		if(strpos($change, 'run express') > 0) // Service change runs express
+		{
+			$stationString = substr($change, strpos($change, 'from ') + 5);
+			$stations = explode(" to ", $stationString);
+			$startStation = $stations[0];
+			$endStation = $stations[1];
+			
+			echo $startStation . '<br />';
+			echo $endStation . '<br />';
+			$this->getStationWithOrder($trainLine, $startStation); // Returns array line_id, station_id, station_order
+		}
+		else
+		{
+			
+		}
 	}
+
+	public function findTrain($change)
+	{
+		$firstBracket = strpos($change, '[');
+		$lastBracket  = strpos($change, ']');
+		$train = substr($change, $firstBracket + 1, $lastBracket - 2);
+		return $train;
+	}
+
 
 	public function insertData($data) {
-  // Insert the processed feed into the database.
-  $query2 = DB::select()->from('line_info')
-  	->where('line_id', '=', $data[0]) 
-    ->where ('start_station_id', '=', $data[1])
-    ->where ('end_station_id', '=', $data[2])
-    ->where ('start_time', '=', $data[3])
-    ->where ('end_time', '=', $data[4])
-    ->where ('service_replace_id', '=', $data[5])
-    ->where ('filename', '=', $data[6])
-    ->execute()->as_array();
+		// Insert the processed feed into the database.
+		$query2 = DB::select()->from('line_info')
+		 	->where('line_id', '=', $data[0]) 
+		    ->where ('start_station_id', '=', $data[1])
+		    ->where ('end_station_id', '=', $data[2])
+		    ->where ('start_time', '=', $data[3])
+		    ->where ('end_time', '=', $data[4])
+		    ->where ('service_replace_id', '=', $data[5])
+		    ->where ('filename', '=', $data[6])
+		    ->execute()->as_array();
 
-  if( count($query2) == 0 )
-  { 
-   $query = DB::insert ('line_info', array('line_id', 'start_station_id','end_station_id','start_time','end_time','service_replace_id','filename'))
-   ->values(array($data[0],$data[1],$data[2],$data[3],$data[4],$data[5],$data[6]))->execute();
-  }
+		if( count($query2) == 0 )
+		{ 
+			$query = DB::insert ('line_info', array('line_id', 'start_station_id','end_station_id','start_time','end_time','service_replace_id','filename'))
+			->values(array($data[0],$data[1],$data[2],$data[3],$data[4],$data[5],$data[6]))->execute();
+		}
 
-}
+	}
 	
 	public function parse_line_name($line_name)
 	{
@@ -107,7 +144,7 @@ class Model_feed extends Model
 		return $matches[1][0];
 	}
 
-	public function getStationStuff($line_name = NULL, $station_name = NULL)
+	public function getStationWithOrder($line_name = NULL, $station_name = NULL)
 	{
 
 		$station_id = NULL; $line_id = NULL; $station_order = NULL; 
@@ -115,7 +152,7 @@ class Model_feed extends Model
 		$result = 
 		DB::select('line_id')->from('line_train')->where('line_bullet', '=', $line_name_parsed)->execute()->as_array()[0]['line_id']; 
 
-		if( count($result) != 0 )
+		if(count($result) != 0)
 		{
 			$line_id = $result[0];
 		}
@@ -142,13 +179,21 @@ class Model_feed extends Model
 			$station_order = $result[0]['order_number']; 		
 		}
 
-		
-		}
+			if(count($result))
+			{
+				$station_id = $result[0]['station_id']; 
+				$result = DB::select('order_number')
+						->from('station_order')
+						->where('line_id', '=', $line_id)
+						->where('station_id', '=' , $station_id)
+						->execute()->as_array();
 
+				$station_order = $result[0]['order_number']; 		
+			}
+		}
 		return array( "line_id" => $line_id, "station_id" => $station_id , "station_order" => $station_order ); 
-	
 	}
 
 
 
- 	}
+ }
