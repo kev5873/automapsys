@@ -15,7 +15,6 @@ class Controller_ams extends Controller_Template {
 
 		$line = new Model_line();
 		$this->template->lineData = $line->grabStations('5');
-		//$this->template->lineData = $line->grabStations('26');
 		
 	}
 
