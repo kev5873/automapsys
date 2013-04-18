@@ -146,7 +146,6 @@ class Model_feed extends Model
 
 	public function getStationWithOrder($line_name = NULL, $station_name = NULL)
 	{
-
 		$station_id = NULL; $line_id = NULL; $station_order = NULL; 
 		$line_name_parsed = $this->parse_line_name($line_name); 	
 		$result = 
