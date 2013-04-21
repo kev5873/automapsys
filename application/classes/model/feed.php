@@ -82,6 +82,11 @@ class Model_feed extends Model
 
 	public function processIndividual($change, $changeDetail)
 	{	
+
+		// EXPRESS: X.02
+		// LOCAL: X.01
+		// BUS: -3
+		// 
 		echo $change . '<br />';
 		echo $this->findTrain($change) . '<br />';
 		
@@ -96,10 +101,11 @@ class Model_feed extends Model
 			$stationString = substr($change, strpos($change, 'from ') + 5);
 			$stations = explode(" to ", $stationString);
 			$startStation = $stations[0];
-			$endStation = $stations[1];
+			$endStation = $stations[1];	
 			
 			echo $startStation . '<br />';
 			echo $endStation . '<br />';
+			// echo "TrainLine: ".$trainLine; 
 			$this->getStationWithOrder($trainLine, $startStation); // Returns array line_id, station_id, station_order
 		}
 		else
@@ -141,6 +147,10 @@ class Model_feed extends Model
 	{
 		preg_match_all('/\[([^\]]+)\]/', $line_name, $matches); 
 		// return $matches[1][0]; 
+		if(count($matches))
+		{
+			return false; 
+		}
 		return $matches[1][0];
 	}
 
@@ -148,6 +158,11 @@ class Model_feed extends Model
 	{
 		$station_id = NULL; $line_id = NULL; $station_order = NULL; 
 		$line_name_parsed = $this->parse_line_name($line_name); 	
+		if($line_name_parsed == false)
+		{
+			$line_name_parsed = $line_name; 
+		}
+
 		$result = 
 		DB::select('line_id')->from('line_train')->where('line_bullet', '=', $line_name_parsed)->execute()->as_array()[0]['line_id']; 
 
@@ -176,19 +191,8 @@ class Model_feed extends Model
 					->execute()->as_array();
 
 			$station_order = $result[0]['order_number']; 		
-		}
-
-			if(count($result))
-			{
-				$station_id = $result[0]['station_id']; 
-				$result = DB::select('order_number')
-						->from('station_order')
-						->where('line_id', '=', $line_id)
-						->where('station_id', '=' , $station_id)
-						->execute()->as_array();
-
-				$station_order = $result[0]['order_number']; 		
 			}
+
 		}
 		return array( "line_id" => $line_id, "station_id" => $station_id , "station_order" => $station_order ); 
 	}
