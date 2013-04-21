@@ -91,20 +91,32 @@ class Model_feed extends Model
 		$trainLine    = $this->findTrain($change);
 		$stationString = substr($change, strpos($change, 'from ') + 5);
 		$stations = explode(" to ", $stationString);
-		if(strstr($stations[0], "-"))
+
+		// uptown downtown determination
+		$startIndex = strpos($change, ' ');
+		$endIndex = strpos($change, '-');
+		$boundStation = substr($change, $startIndex, $endIndex - $startIndex);
+		$boundStationOrder = $this->getStationWithOrder('['.$trainLine.']', trim($boundStation));
+		if($boundStationOrder['station_order'] > 1)
 		{
-			$startStation = trim(str_replace("-", " - ", $stations[0]));
+			// Going downtown
 		}
 		else
 		{
+			// Going uptown
+		}
+
+
+		echo $boundStation . '<br />';
+
+		if(strstr($stations[0], "-")) {
+			$startStation = trim(str_replace("-", " - ", $stations[0]));
+		} else {
 			$startStation = trim($stations[0]);
 		}
-		if(strstr($stations[1], "-"))
-		{
+		if(strstr($stations[1], "-")) {
 			$endStation = trim(str_replace("-", " - ", $stations[1]));
-		}
-		else
-		{
+		} else {
 			$endStation = trim($stations[1]);
 		}
 
@@ -133,7 +145,6 @@ class Model_feed extends Model
 		$train = substr($change, $firstBracket + 1, $lastBracket - 2);
 		return $train;
 	}
-
 
 	public function insertData($data) {
 		// Insert the processed feed into the database.
@@ -181,7 +192,7 @@ class Model_feed extends Model
 
 		if(isset($station_name))
 		{
-			$result = DB::select('station_id')->from('station')->where('station_name', 'like', $station_name)->execute()->as_array();
+			$result = DB::select('station_id')->from('station')->where('station_name', 'like', '%'.$station_name.'%')->execute()->as_array();
 
 			if( count($result) != 0)
 			{
