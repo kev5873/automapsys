@@ -106,7 +106,6 @@ class Model_feed extends Model
 			// Going uptown
 		}
 
-
 		echo $boundStation . '<br />';
 
 		if(strstr($stations[0], "-")) {
@@ -130,7 +129,12 @@ class Model_feed extends Model
 			$stationOrder1 = $this->getStationWithOrder('['.$trainLine.']', $startStation); // Returns array line_id, station_id, station_order
 			$stationOrder2 = $this->getStationWithOrder('['.$trainLine.']', $endStation);
 			echo $stationOrder1['station_order'] . '<br />';
-			echo $stationOrder2['station_order'];
+			echo $stationOrder2['station_order'] . '<br /><br />';
+
+			echo $trainLine . ' Trains ' . '<br />';
+			echo $boundStation . ' : ' . $boundStationOrder['station_order'] . '<br />';
+			echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
+			echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
 		}
 		else
 		{
@@ -150,12 +154,12 @@ class Model_feed extends Model
 		// Insert the processed feed into the database.
 		$query2 = DB::select()->from('line_info')
 		 	->where('line_id', '=', $data[0]) 
-		    ->where ('start_station_id', '=', $data[1])
-		    ->where ('end_station_id', '=', $data[2])
-		    ->where ('start_time', '=', $data[3])
-		    ->where ('end_time', '=', $data[4])
-		    ->where ('service_replace_id', '=', $data[5])
-		    ->where ('filename', '=', $data[6])
+		    ->where('start_station_id', '=', $data[1])
+		    ->where('end_station_id', '=', $data[2])
+		    ->where('start_time', '=', $data[3])
+		    ->where('end_time', '=', $data[4])
+		    ->where('service_replace_id', '=', $data[5])
+		    ->where('filename', '=', $data[6])
 		    ->execute()->as_array();
 
 		if( count($query2) == 0 )
