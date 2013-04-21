@@ -3,30 +3,31 @@
 class Model_feed extends Model
 {
 
-	public function downloadFeed() {
-		$url = 'http://www.mta.info/status/serviceStatus.txt';
+	public function downloadFeed()
+	{
+		$url         = 'http://www.mta.info/status/serviceStatus.txt';
 		$currentTime = time();
-		$path = getcwd()."/a/s/status-".$currentTime.".xml";
-		$newfname = $path;
-		$file = fopen ($url, "rb");
-		if ($file){
-		$newf = fopen ($newfname, "wb");
-
-		if ($newf)
-		while(!feof($file))
-		{
-		fwrite($newf, fread($file, 1024 * 8 ), 1024 * 8 );
-		}
-		}
-
+		$path        = gtecwd()."/a/s/status-".$currentTime.".xml";
+		$newfname    = $path;
+		$file        = fopen ($url, "rb");
 		if($file)
 		{
-		fclose($file);
+			$newf = fopen ($newfname, "wb");
+			if($newf)
+			{
+				while(!feof($file))
+				{
+					fwrite($newf, fread($file, 1024 * 8 ), 1024 * 8 );
+				}
+			}
 		}
-
+		if($file)
+		{
+			fclose($file);
+		}
 		if($newf)
 		{
-		fclose($newf);
+			fclose($newf);
 		}
 		return "a/s/status-".$currentTime.".xml";
 	}
@@ -82,25 +83,42 @@ class Model_feed extends Model
 
 	public function processIndividual($change, $changeDetail)
 	{	
+		$change = strip_tags($change);
+		$changeDetail = strip_tags($changeDetail);
 		echo $change . '<br />';
 		echo $this->findTrain($change) . '<br />';
 		
 		$trainLine    = $this->findTrain($change);
 		$stationString = substr($change, strpos($change, 'from ') + 5);
 		$stations = explode(" to ", $stationString);
-		$startStation = $stations[0];
-		$endStation = $stations[1];
+		if(strstr($stations[0], "-"))
+		{
+			$startStation = trim(str_replace("-", " - ", $stations[0]));
+		}
+		else
+		{
+			$startStation = trim($stations[0]);
+		}
+		if(strstr($stations[1], "-"))
+		{
+			$endStation = trim(str_replace("-", " - ", $stations[1]));
+		}
+		else
+		{
+			$endStation = trim($stations[1]);
+		}
 
 		if(strpos($change, 'run express') > 0) // Service change runs express
 		{
 			$stationString = substr($change, strpos($change, 'from ') + 5);
 			$stations = explode(" to ", $stationString);
-			$startStation = $stations[0];
-			$endStation = $stations[1];
-			
+
 			echo $startStation . '<br />';
 			echo $endStation . '<br />';
-			$this->getStationWithOrder($trainLine, $startStation); // Returns array line_id, station_id, station_order
+			$stationOrder1 = $this->getStationWithOrder('['.$trainLine.']', $startStation); // Returns array line_id, station_id, station_order
+			$stationOrder2 = $this->getStationWithOrder('['.$trainLine.']', $endStation);
+			echo $stationOrder1['station_order'] . '<br />';
+			echo $stationOrder2['station_order'];
 		}
 		else
 		{
@@ -163,7 +181,7 @@ class Model_feed extends Model
 
 		if(isset($station_name))
 		{
-			$result = DB::select('station_id')->from('station')->where('station_name', 'like', '%'.$station_name.'%')->execute()->as_array(); 
+			$result = DB::select('station_id')->from('station')->where('station_name', 'like', $station_name)->execute()->as_array();
 
 			if( count($result) != 0)
 			{
@@ -175,20 +193,9 @@ class Model_feed extends Model
 					->where('station_id', '=' , $station_id)
 					->execute()->as_array();
 
-			$station_order = $result[0]['order_number']; 		
-		}
-
-			if(count($result))
-			{
-				$station_id = $result[0]['station_id']; 
-				$result = DB::select('order_number')
-						->from('station_order')
-						->where('line_id', '=', $line_id)
-						->where('station_id', '=' , $station_id)
-						->execute()->as_array();
-
 				$station_order = $result[0]['order_number']; 		
 			}
+
 		}
 		return array( "line_id" => $line_id, "station_id" => $station_id , "station_order" => $station_order ); 
 	}
