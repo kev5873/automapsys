@@ -3,30 +3,31 @@
 class Model_feed extends Model
 {
 
-	public function downloadFeed() {
-		$url = 'http://www.mta.info/status/serviceStatus.txt';
+	public function downloadFeed()
+	{
+		$url         = 'http://www.mta.info/status/serviceStatus.txt';
 		$currentTime = time();
-		$path = getcwd()."/a/s/status-".$currentTime.".xml";
-		$newfname = $path;
-		$file = fopen ($url, "rb");
-		if ($file){
-		$newf = fopen ($newfname, "wb");
-
-		if ($newf)
-		while(!feof($file))
-		{
-		fwrite($newf, fread($file, 1024 * 8 ), 1024 * 8 );
-		}
-		}
-
+		$path        = gtecwd()."/a/s/status-".$currentTime.".xml";
+		$newfname    = $path;
+		$file        = fopen ($url, "rb");
 		if($file)
 		{
-		fclose($file);
+			$newf = fopen ($newfname, "wb");
+			if($newf)
+			{
+				while(!feof($file))
+				{
+					fwrite($newf, fread($file, 1024 * 8 ), 1024 * 8 );
+				}
+			}
 		}
-
+		if($file)
+		{
+			fclose($file);
+		}
 		if($newf)
 		{
-		fclose($newf);
+			fclose($newf);
 		}
 		return "a/s/status-".$currentTime.".xml";
 	}
@@ -37,15 +38,15 @@ class Model_feed extends Model
 		$output = array();
 		for($i = 0; $i < 11; $i++)
 		{
-			$singleTrunkLine = new DOMDocument();
+			$singleTrunkLine   = new DOMDocument();
 			@$singleTrunkLine->loadHTML($subway->subway[0]->line[$i]->text[0]);
 			$trunkLineAdvisory = $singleTrunkLine->getElementsByTagName('a');
-			$trunkLineDetail = $singleTrunkLine->getElementsByTagName('div');
+			$trunkLineDetail   = $singleTrunkLine->getElementsByTagName('div');
 
-			$changes = array();
+			$changes      = array();
 			$changeDetail = array();
-			$c1 = 0;
-			$c2 = 0;
+			$c1           = 0;
+			$c2           = 0;
 
 			foreach($trunkLineAdvisory as $line)
 			{
@@ -82,25 +83,52 @@ class Model_feed extends Model
 
 	public function processIndividual($change, $changeDetail)
 	{	
-		echo $change . '<br />';
-		echo $this->findTrain($change) . '<br />';
+		$change            = strip_tags($change);
+		$changeDetail      = strip_tags($changeDetail);
 		
-		$trainLine    = $this->findTrain($change);
-		$stationString = substr($change, strpos($change, 'from ') + 5);
-		$stations = explode(" to ", $stationString);
-		$startStation = $stations[0];
-		$endStation = $stations[1];
+		$trainLine         = $this->findTrain($change);
+		$stationString     = substr($change, strpos($change, 'from ') + 5);
+		$stations          = explode(" to ", $stationString);
+		
+		// uptown downtown determination
+		$startIndex        = strpos($change, ' ');
+		$endIndex          = strpos($change, '-');
+		$boundStation      = substr($change, $startIndex, $endIndex - $startIndex);
+		$boundStationOrder = $this->getStationWithOrder('['.$trainLine.']', trim($boundStation));
+		if($boundStationOrder['station_order'] > 1)
+		{
+			// Going downtown
+		}
+		else
+		{
+			// Going uptown
+		}
+
+		echo $boundStation . '<br />';
+
+		if(strstr($stations[0], "-")) {
+			$startStation = trim(str_replace("-", " - ", $stations[0]));
+		} else {
+			$startStation = trim($stations[0]);
+		}
+		if(strstr($stations[1], "-")) {
+			$endStation = trim(str_replace("-", " - ", $stations[1]));
+		} else {
+			$endStation = trim($stations[1]);
+		}
 
 		if(strpos($change, 'run express') > 0) // Service change runs express
 		{
 			$stationString = substr($change, strpos($change, 'from ') + 5);
-			$stations = explode(" to ", $stationString);
-			$startStation = $stations[0];
-			$endStation = $stations[1];
+			$stations      = explode(" to ", $stationString);
 			
-			echo $startStation . '<br />';
-			echo $endStation . '<br />';
-			$this->getStationWithOrder($trainLine, $startStation); // Returns array line_id, station_id, station_order
+			$stationOrder1 = $this->getStationWithOrder('['.$trainLine.']', $startStation); // Returns array line_id, station_id, station_order
+			$stationOrder2 = $this->getStationWithOrder('['.$trainLine.']', $endStation);
+
+			echo $trainLine . ' Trains run express' . '<br />';
+			echo $boundStation . ' : ' . $boundStationOrder['station_order'] . '<br />';
+			echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
+			echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
 		}
 		else
 		{
@@ -116,17 +144,16 @@ class Model_feed extends Model
 		return $train;
 	}
 
-
 	public function insertData($data) {
 		// Insert the processed feed into the database.
 		$query2 = DB::select()->from('line_info')
 		 	->where('line_id', '=', $data[0]) 
-		    ->where ('start_station_id', '=', $data[1])
-		    ->where ('end_station_id', '=', $data[2])
-		    ->where ('start_time', '=', $data[3])
-		    ->where ('end_time', '=', $data[4])
-		    ->where ('service_replace_id', '=', $data[5])
-		    ->where ('filename', '=', $data[6])
+		    ->where('start_station_id', '=', $data[1])
+		    ->where('end_station_id', '=', $data[2])
+		    ->where('start_time', '=', $data[3])
+		    ->where('end_time', '=', $data[4])
+		    ->where('service_replace_id', '=', $data[5])
+		    ->where('filename', '=', $data[6])
 		    ->execute()->as_array();
 
 		if( count($query2) == 0 )
@@ -147,7 +174,7 @@ class Model_feed extends Model
 	public function getStationWithOrder($line_name = NULL, $station_name = NULL)
 	{
 		$station_id = NULL; $line_id = NULL; $station_order = NULL; 
-		$line_name_parsed = $this->parse_line_name($line_name); 	
+		$line_name_parsed = $this->parse_line_name($line_name);
 		$result = 
 		DB::select('line_id')->from('line_train')->where('line_bullet', '=', $line_name_parsed)->execute()->as_array()[0]['line_id']; 
 
@@ -163,7 +190,7 @@ class Model_feed extends Model
 
 		if(isset($station_name))
 		{
-			$result = DB::select('station_id')->from('station')->where('station_name', 'like', '%'.$station_name.'%')->execute()->as_array(); 
+			$result = DB::select('station_id')->from('station')->where('station_name', 'like', '%'.$station_name.'%')->execute()->as_array();
 
 			if( count($result) != 0)
 			{
@@ -175,20 +202,9 @@ class Model_feed extends Model
 					->where('station_id', '=' , $station_id)
 					->execute()->as_array();
 
-			$station_order = $result[0]['order_number']; 		
-		}
-
-			if(count($result))
-			{
-				$station_id = $result[0]['station_id']; 
-				$result = DB::select('order_number')
-						->from('station_order')
-						->where('line_id', '=', $line_id)
-						->where('station_id', '=' , $station_id)
-						->execute()->as_array();
-
 				$station_order = $result[0]['order_number']; 		
 			}
+
 		}
 		return array( "line_id" => $line_id, "station_id" => $station_id , "station_order" => $station_order ); 
 	}

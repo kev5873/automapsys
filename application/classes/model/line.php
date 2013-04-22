@@ -74,13 +74,10 @@ class Model_line extends Model
 
 				case 3:
 					$color = 'red';
-					if($i == 13)
-						$i+=sizeof($stations);
-					else if($i > 6 && $i <59)
+					if($i > 6 && $i < 23)
 					{
 						$singleStation = $singleStation->where('express', '=', 'true');
 					}
-
 					break;
 				
 				case 4:
