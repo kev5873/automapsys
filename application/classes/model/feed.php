@@ -109,8 +109,9 @@ class Model_feed extends Model
 
 		echo $boundStation . '<br />';
 
+		// get the station name
 		if(strstr($stations[0], "-")) {
-			$startStation = trim(str_replace("-", " - ", $stations[0]));
+			$startStation = trim(str_replace("-", " - ", $stations[0])); //make it to be same style of name for station
 		} else {
 			$startStation = trim($stations[0]);
 		}
@@ -120,6 +121,7 @@ class Model_feed extends Model
 			$endStation = trim($stations[1]);
 		}
 
+		
 		if(strpos($change, 'run express') > 0) // Service change runs express
 		{
 			$stationString = substr($change, strpos($change, 'from ') + 5);

@@ -2,7 +2,7 @@
 
 class Model_line extends Model
 {
-	public function grabStations($line)
+	public function grabStations($line,$direction)
 	{
 
 		$theLine = DB::select()
@@ -16,6 +16,20 @@ class Model_line extends Model
 				->where('line_id', '=', $line)
 				->execute()
 				->as_array();
+
+		if($direction =="downtown"||$direction =="DOWNTOWN")
+		{
+			//echo "in the range, for testing!";
+			
+			for($i=0;$i<sizeof($stations);$i++)
+			{
+				$newStat[$i]=$stations[sizeof($stations)-1-$i];
+			}
+
+			$stations = $newStat;
+
+	
+		}
 
 		/*
 
