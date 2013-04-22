@@ -14,7 +14,7 @@ class Controller_ams extends Controller_Template {
 		//$feeder->processFeed(getcwd()."/a/s/status-1364696060.xml");
 
 		$line = new Model_line();
-		$this->template->lineData = $line->grabStations('2');
+		$this->template->lineData = $line->grabStations('13');
 		
 	}
 

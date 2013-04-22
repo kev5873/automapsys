@@ -38,15 +38,15 @@ class Model_feed extends Model
 		$output = array();
 		for($i = 0; $i < 11; $i++)
 		{
-			$singleTrunkLine = new DOMDocument();
+			$singleTrunkLine   = new DOMDocument();
 			@$singleTrunkLine->loadHTML($subway->subway[0]->line[$i]->text[0]);
 			$trunkLineAdvisory = $singleTrunkLine->getElementsByTagName('a');
-			$trunkLineDetail = $singleTrunkLine->getElementsByTagName('div');
+			$trunkLineDetail   = $singleTrunkLine->getElementsByTagName('div');
 
-			$changes = array();
+			$changes      = array();
 			$changeDetail = array();
-			$c1 = 0;
-			$c2 = 0;
+			$c1           = 0;
+			$c2           = 0;
 
 			foreach($trunkLineAdvisory as $line)
 			{
@@ -83,19 +83,17 @@ class Model_feed extends Model
 
 	public function processIndividual($change, $changeDetail)
 	{	
-		$change = strip_tags($change);
-		$changeDetail = strip_tags($changeDetail);
-		echo $change . '<br />';
-		echo $this->findTrain($change) . '<br />';
+		$change            = strip_tags($change);
+		$changeDetail      = strip_tags($changeDetail);
 		
-		$trainLine    = $this->findTrain($change);
-		$stationString = substr($change, strpos($change, 'from ') + 5);
-		$stations = explode(" to ", $stationString);
-
+		$trainLine         = $this->findTrain($change);
+		$stationString     = substr($change, strpos($change, 'from ') + 5);
+		$stations          = explode(" to ", $stationString);
+		
 		// uptown downtown determination
-		$startIndex = strpos($change, ' ');
-		$endIndex = strpos($change, '-');
-		$boundStation = substr($change, $startIndex, $endIndex - $startIndex);
+		$startIndex        = strpos($change, ' ');
+		$endIndex          = strpos($change, '-');
+		$boundStation      = substr($change, $startIndex, $endIndex - $startIndex);
 		$boundStationOrder = $this->getStationWithOrder('['.$trainLine.']', trim($boundStation));
 		if($boundStationOrder['station_order'] > 1)
 		{
@@ -122,16 +120,12 @@ class Model_feed extends Model
 		if(strpos($change, 'run express') > 0) // Service change runs express
 		{
 			$stationString = substr($change, strpos($change, 'from ') + 5);
-			$stations = explode(" to ", $stationString);
-
-			echo $startStation . '<br />';
-			echo $endStation . '<br />';
+			$stations      = explode(" to ", $stationString);
+			
 			$stationOrder1 = $this->getStationWithOrder('['.$trainLine.']', $startStation); // Returns array line_id, station_id, station_order
 			$stationOrder2 = $this->getStationWithOrder('['.$trainLine.']', $endStation);
-			echo $stationOrder1['station_order'] . '<br />';
-			echo $stationOrder2['station_order'] . '<br /><br />';
 
-			echo $trainLine . ' Trains ' . '<br />';
+			echo $trainLine . ' Trains run express' . '<br />';
 			echo $boundStation . ' : ' . $boundStationOrder['station_order'] . '<br />';
 			echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
 			echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
@@ -180,7 +174,7 @@ class Model_feed extends Model
 	public function getStationWithOrder($line_name = NULL, $station_name = NULL)
 	{
 		$station_id = NULL; $line_id = NULL; $station_order = NULL; 
-		$line_name_parsed = $this->parse_line_name($line_name); 	
+		$line_name_parsed = $this->parse_line_name($line_name);
 		$result = 
 		DB::select('line_id')->from('line_train')->where('line_bullet', '=', $line_name_parsed)->execute()->as_array()[0]['line_id']; 
 
