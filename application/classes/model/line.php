@@ -17,7 +17,7 @@ class Model_line extends Model
 				->execute()
 				->as_array();
 
-		if($direction =="downtown"||$direction =="DOWNTOWN")
+		if($direction =="uptown"||$direction =="UPTOWN")
 		{
 			//echo "in the range, for testing!";
 			
