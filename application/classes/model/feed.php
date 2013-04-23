@@ -81,11 +81,13 @@ class Model_feed extends Model
 					{
 						$aChange = $output[$i]['change'][$j] . '<br />';
 						$bChange = $output[$i]['changeDetail'][$j];
-						$this->processIndividual($aChange, $bChange);
+						array_push($retArr, $this->processIndividual($aChange, $bChange));
 					}
 				}
 			}
 		}
+
+		return $retArr;
 		/*
 		$aChange = $output[3]['change'][0] . '<br />';
 		$bChange = $output[3]['changeDetail'][0];
@@ -156,6 +158,7 @@ class Model_feed extends Model
 				echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
 				echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
 
+				return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation);
 				// INSERT STUFF INTO THE DATABASE
 			}
 			else if(strpos($change, 'run local') > 0)
@@ -170,6 +173,8 @@ class Model_feed extends Model
 				echo $boundStation . ' : ' . $boundStationOrder['station_order'] . '<br />';
 				echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
 				echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
+
+				return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation);
 			}
 			else
 			{
