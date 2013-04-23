@@ -14,6 +14,9 @@ class Controller_ams extends Controller_Template {
 		//$feeder->processFeed(getcwd()."/a/s/status-1364696060.xml");
 
 		$line = new Model_line();
+		$feeder = new Model_feed();
+        $returnArray = $feeder->processFeed('a/s/status-1366515360.xml');
+
 		if(isset($_GET['id']))
 		{
 			$id = $_GET['id'];
@@ -32,14 +35,44 @@ class Controller_ams extends Controller_Template {
 			$direction = "Downtown";
 		}
 
-		
-
 		$this->template->lineData = $line->grabStations($id,$direction);
 		$this->template->line = $id;
 		$this->template->routeDesignation = $line->getLineBullet($id);
 		$this->template->routeDetail = $line->getLineDescription($id);
 		$this->template->direction = ucfirst($direction);
+
+		
+
+		//echo "something <br/>";
+		//echo $otherTrain;
+		var_dump($returnArray);
+		$size = sizeof($returnArray);
+		for ($i =0; $i < sizeof($returnArray);$i++){
+			//the train line doesnt display correctly. 
+				$trainLetter = $line->getLineBullet($id);						
+			if(isset($returnArray[$i]['trainLine'])){
+				$otherTrain = $returnArray[$i]['trainLine'];
+
+				echo $trainLetter;
+				echo $otherTrain;
+				echo $size;
+				echo $i;
+			}
+
+			if(isset($otherTrain) && ($otherTrain==$trainLetter))
+
+			{	
+				$the = $returnArray[$i]['trainLine'].'<br/> '.$returnArray[$i]['boundStation'].' Bounds. <br/> Start: '.$returnArray[$i]['startStation'].'<br/> End: '.$returnArray[$i]['endStation'].'<br/> Service Changed: '.$returnArray[$i]['changeSummary'].'<br/> ';
+		 		$this->template->advisory ='<br/>'. $the;
+			}
+
+			else if($i==($size-1)){
+				$this->template->advisory = "<br/>Good Service";	
+				}
+					
+			}	
+
+		}
 		
 	}
 
-}
