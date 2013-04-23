@@ -23,46 +23,86 @@
         <script type="text/javascript">
         var map;
         var markersArray = [];
+        var lineArray    = [];
 
         function initialize() {
-                var mapOptions = {
-                    center: new google.maps.LatLng(40.712472, -73.940105),
-                    zoom: 11,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                };
-                map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
+            var mapOptions = {
+                center: new google.maps.LatLng(40.712472, -73.940105),
+                zoom: 11,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
 
-                $.ajax({
-                  url: '/map/grab',
-                  data:{id: <?=$line?>, direction:'<?=$direction?>'},
-                  dataType: 'json',
-                  success:function(data){
-                    for(i=0;i<data.length;i++) {
-                        var myLatLng = new google.maps.LatLng(data[i].coordinatex, data[i].coorrdinatey);
-                        addMarker(myLatLng);
-                    }
-                  }
-                });
+            $.ajax({
+              url: '/map/grab',
+              data:{id: '<?=$line?>', direction:'<?=$direction?>'},
+              dataType: 'json',
+              success:function(data){
+                for(i=0;i<data.length;i++) {
+                    var myLatLng = new google.maps.LatLng(data[i].coordinatex, data[i].coorrdinatey);
+                    addMarker(myLatLng);
+                    //alert(myLatLng);
+                }
+
+                  var lineSymbol = {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 3,
+                    strokeColor: '#FFFFFF'
+                  };
+
+                  var flightPath2 = new google.maps.Polyline({
+                    path: lineArray,
+                    strokeColor: '#000000',
+                    strokeOpacity: 1.0,
+                    strokeWeight: 7
+                  });
+
+                  var flightPath = new google.maps.Polyline({
+                    path: lineArray,
+                    strokeColor: '#2850ad',
+                    strokeOpacity: 1.0,
+                    strokeWeight: 5,
+                    icons: [{
+                      icon: lineSymbol,
+                      offset: '100%'
+                    }],
+                  });
+
+                  flightPath2.setMap(map);
+                  flightPath.setMap(map);
+
+                var count = 0;
+                window.setInterval(function() {
+                  count = (count + 1) % 200;
+
+                  var icons = flightPath.get('icons');
+                  icons[0].offset = (count / 2) + '%';
+                  flightPath.set('icons', icons);
+                }, 50);
+
+             }
+             });
+
           }
 
-          function addMarker(location) {
-                var image = '/a/i/stationstop16px.png';
-                var marker = new google.maps.Marker({
-                    position: location,
-                    map: map,
-                    icon: image
-                });
-                markersArray.push(marker);
-            }
+        function addMarker(location) {
+            var infowindow = new google.maps.InfoWindow({
+                content: "TEST"
+            });
+            var image = '/a/i/stationstop12px.png';
 
-            function showOverlays() {
-              if (markersArray) {
-                for (i in markersArray) {
-                    console.log(markersArray[i]);
-                  markersArray[i].setMap(map);
-                }
-              }
-            }
+            var marker = new google.maps.Marker({
+                position: location,
+                map: map,
+                icon: image,
+            });
+            google.maps.event.addListener(marker, 'click', function() {
+                infowindow.open(map,marker);
+            });
+            markersArray.push(marker);
+            lineArray.push(location);
+        }
+
           google.maps.event.addDomListener(window, 'load', initialize);
         </script>
     </head>

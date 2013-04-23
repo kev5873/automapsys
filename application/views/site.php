@@ -23,26 +23,26 @@
     		<div style="padding: 10px; font-size: 16pt; text-decoration: underline;">New York City Subway Service Status</div>
     		<table border="0" cellspacing="0">
     			<tr>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
+    				<td style="text-align:center;"></td>
+    				<td style="text-align:center;"></td>
+    				<td style="text-align:center;"></td>
+    				<td style="text-align:center;"></td>
+    				<td style="text-align:center;"></td>
+    				<td style="text-align:center;"></td>
+    				<td style="text-align:center;"></td>
+    				<td style="text-align:center;"></td>
+    				<td style="text-align:center;"></td>
+    				<td style="text-align:center;"></td>
+    				<td style="text-align:center;"></td>
+    				<td style="text-align:center;"></td>
+    				<td style="text-align:center;"></td>
+    				<td style="text-align:center;"></td>
+    				<td style="text-align:center;"></td>
+    				<td style="text-align:center;"></td>
+    				<td style="text-align:center;"></td>
+    				<td style="text-align:center;"></td>
+    				<td style="text-align:center;"></td>
+    				<td style="text-align:center;"></td>
     				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
     				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
     				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
