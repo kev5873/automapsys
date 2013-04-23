@@ -223,7 +223,7 @@ class Model_feed extends Model
 
 		if(count($result) != 0)
 		{
-			$line_id = $result[0];
+			$line_id = $result[0]["line_id"];
 		}
 
 		if($station_name == NULL)
@@ -233,20 +233,52 @@ class Model_feed extends Model
 
 		if(isset($station_name))
 		{
-			$result = DB::select('station_id')->from('station')->where('station_name', 'like', '%'.$station_name.'%')->execute()->as_array();
 
-			if( count($result) != 0)
+			$transform = array( "/" , "-" ); 
+			$result = DB::select('*')->from('station')->join('station_order')->on('station.station_id', '=', 'station_order.station_id')
+			->where('station_name', 'like', "%". str_replace( $transform , "%", $station_name )."%")
+			->where('line_id', '=', $line_id)->execute()->as_array(); 
+
+			$station_order = NULL; 
+			$station_id = NULL; 
+			if( count($result) == 1 )
 			{
 				$station_id = $result[0]['station_id']; 
-
-				$result = DB::select('order_number')
-					->from('station_order')
-					->where('line_id', '=', $line_id)
-					->where('station_id', '=' , $station_id)
-					->execute()->as_array();
-				if( isset($result[0]) )
-				$station_order = $result[0]['order_number']; 		
+				$station_order = $result[0]['order_number'];  
 			}
+			else if( count($result) != 0 )
+			{
+				echo 'Multiple Result Error';
+			}
+			else
+			{
+				echo "Missing Stuff for Station: $station_name on Line: $line_id ";  
+			}
+
+			// $result = DB::select('station_id')->from('station')->where('station_name', 'like', '%'.$station_name.'%')->execute()->as_array();
+			// print_r($result); 
+			// if( count($result) != 0)
+			// {
+			// 	$station_id = $result[0]['station_id']; 
+
+			// 	echo "StationID:".$station_id." for $station_name on $line_id to $line_name_parsed ;"; 
+			// 	// print_r($line_id);  
+
+			// 	$result = DB::select('order_number')
+			// 		->from('station_order')
+			// 		->where('line_id', '=', $line_id)
+			// 		->where('station_id', '=' , $station_id)
+			// 		->execute()->as_array();
+
+			// 	if( isset($result[0]) )
+			// 	{
+			// 	$station_order = $result[0]['order_number']; 		
+			// 	}
+			// 	else
+			// 	{
+			// 		print_r($result); 
+			// 	}
+			// }
 
 		}
 		return array( "line_id" => $line_id, "station_id" => $station_id , "station_order" => $station_order ); 
