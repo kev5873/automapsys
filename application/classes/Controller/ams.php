@@ -14,9 +14,26 @@ class Controller_ams extends Controller_Template {
 		//$feeder->processFeed(getcwd()."/a/s/status-1364696060.xml");
 
 		$line = new Model_line();
-		$id = $_GET['id'];
-		$direction = $_GET['direction'];
+		if(isset($_GET['id']))
+		{
+			$id = $_GET['id'];
+		}
+		else
+		{
+			$id = 12;
+		}
+		if(isset($_GET['direction']))
+		{
+			$direction = $_GET['direction'];
+		}
+		else
+		{
+			$direction = "downtown";
+		}
 		$this->template->lineData = $line->grabStations($id,$direction);
+		$this->template->line = $id;
+		$this->template->routeDesignation = $line->getLineBullet($id);
+		$this->template->routeDetail = $line->getLineDescription($id);
 		
 	}
 

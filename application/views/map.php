@@ -16,7 +16,55 @@
         	width: 24px;
         	height: 24px;
         }
+        #map-canvas { height: 75% }
         </style>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqCjOtUb9nrWCFPKpQ6AFkwOSH766zvc8&sensor=true"></script>
+        <script type="text/javascript" src="/a/i/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript">
+        var map;
+        var markersArray = [];
+
+        function initialize() {
+                var mapOptions = {
+                    center: new google.maps.LatLng(40.712472, -73.940105),
+                    zoom: 11,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
+
+                $.ajax({
+                  url: '/map/grab',
+                  data:{id: <?=$line?>, direction:'<?=$direction?>'},
+                  dataType: 'json',
+                  success:function(data){
+                    for(i=0;i<data.length;i++) {
+                        var myLatLng = new google.maps.LatLng(data[i].coordinatex, data[i].coorrdinatey);
+                        addMarker(myLatLng);
+                    }
+                  }
+                });
+          }
+
+          function addMarker(location) {
+                var image = '/a/i/stationstop16px.png';
+                var marker = new google.maps.Marker({
+                    position: location,
+                    map: map,
+                    icon: image
+                });
+                markersArray.push(marker);
+            }
+
+            function showOverlays() {
+              if (markersArray) {
+                for (i in markersArray) {
+                    console.log(markersArray[i]);
+                  markersArray[i].setMap(map);
+                }
+              }
+            }
+          google.maps.event.addDomListener(window, 'load', initialize);
+        </script>
     </head>
     <body>
     	<div style="text-align:center; width: 920px; margin-left: auto; margin-right: auto; border: solid 1px black;">
@@ -84,36 +132,8 @@
     		</table>
     	</div>
     	<div style="text-align:center; width: 920px; margin-left: auto; margin-right: auto; border: solid 1px black;">
-    		<div style="width: 600px; float:left; margin-left: 0; margin-top: -5px;">
-		        <table border="0" cellspacing="0">
-		        	<?= $lineData; ?>
-		        </table>
-			</div>
-			<div style="float:left; position: relative; width: 320px">
-				<table>
-					<tr>
-						<td style="font-size: 14pt; overflow: hidden;" colspan="2">
-							Currently Displaying : Downtown
-					</tr>
-					<tr>
-						<td><a href="<?=URL::base()?>?id=<?= $line; ?>&direction=uptown"><img src="<?=URL::base()?>a/i/up-arrow.png" class="mini"/></a></td>
-						<td style="font-size: 14pt;">
-							<img src="<?=URL::base()?>a/bullet/<?= $routeDesignation; ?>.png" style="padding-bottom: 5px; vertical-align: middle;" class="mini"/>
-							Uptown</td>
-					</tr>
-					<tr>
-						<td><a href="<?=URL::base()?>?id=<?= $line; ?>&direction=downtown"><img src="<?=URL::base()?>a/i/down-arrow.png" class="mini"/></a></td>
-						<td style="font-size: 14pt;">
-							<img src="<?=URL::base()?>a/bullet/<?= $routeDesignation; ?>.png" style="padding-bottom: 5px; vertical-align: middle;" class="mini"/>
-							Downtown</td>
-					</tr>
-					<tr>
-						<td style="font-size: 14pt; overflow: hidden;" colspan="2">
-							Advisory goes here
-						</td>
-					</tr>
-				</table>
-			</div>
+            <input onclick="showOverlays();" type=button value="Show All Overlays">
+            <div id="map-canvas"/>
     	</div>
     </body>
 </html>
