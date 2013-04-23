@@ -50,17 +50,17 @@ class Controller_map extends Controller_Template {
 	public function action_grab()
 	{
 		$line = new Model_line();
-		if(isset($_POST['id']))
+		if(isset($_GET['id']))
 		{
-			$id = $_POST['id'];
+			$id = $_GET['id'];
 		}
 		else
 		{
 			$id = 12;
 		}
-		if(isset($_POST['direction']))
+		if(isset($_GET['direction']))
 		{
-			$direction = $_POST['direction'];
+			$direction = $_GET['direction'];
 		}
 		else
 		{
