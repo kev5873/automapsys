@@ -17,6 +17,14 @@
         	height: 24px;
         }
         </style>
+        <script type="text/javascript" src="/a/i/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript">
+        function sendEmail()
+        {
+            alert("Thank you for sending your email!");
+            $('id').hide();
+        }
+        </script>
     </head>
     <body>
     	<div style="text-align:center; width: 920px; margin-left: auto; margin-right: auto; border: solid 1px black;">
@@ -88,6 +96,7 @@
 		        <table border="0" cellspacing="0">
 		        	<?= $lineData; ?>
 		        </table>
+                Sign up for email alerts : <input type="text" id="email"/><span onclick="sendEmail()">TEST</span>
 			</div>
 			<div style="float:left; position: relative; width: 320px">
 				<table>
@@ -110,14 +119,16 @@
 					</tr>
 					<tr>
 						<td style="font-size: 14pt; overflow: hidden;" colspan="2">
-							Advisory goes here: <?=$advisory;  ?>
+							Advisory goes here: 
 						</td>
 					</tr>
+
                     <tr>
                         <td style="font-size: 14pt; overflow: hidden;" colspan="2">
 
                         </td>
                     </tr>
+
 				</table>
 			</div>
     	</div>
