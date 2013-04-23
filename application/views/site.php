@@ -117,6 +117,8 @@
                         <td style="font-size: 14pt; overflow: hidden;" colspan="2">
                             <?php defined('SYSPATH') or die('No direct script access.');
 
+                                $feeder = new Model_feed();
+                                $feeder->processFeed('a/s/status-1366515360.xml');
 
                             ?>
                         </td>
