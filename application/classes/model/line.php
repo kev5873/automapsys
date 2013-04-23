@@ -9,7 +9,7 @@ class Model_line extends Model
 				->from('line_train')
 				->where('line_id', '=', $line)
 				->execute()->as_array();
-		echo $theLine[0]['line_bullet'] . ' - ' . $theLine[0]['line_name'] . '<br />';
+		//echo $theLine[0]['line_bullet'] . ' - ' . $theLine[0]['line_name'] . '<br />';
 
 		$stations = DB::select()
 				->from('station_order')
@@ -330,5 +330,23 @@ class Model_line extends Model
 		<img src="'.URL::base().'a/i/stationstop16px.png" />
 		</td> <td style="padding-left: 15px;">'.$station_name." : ".$station_id. " - " . $order_number .'</td>
 		</tr>';
+	}
+
+	public function getLineBullet($line)
+	{
+		$theLine = DB::select()
+			->from('line_train')
+			->where('line_id', '=', $line)
+			->execute()->as_array();
+		return $theLine[0]['line_bullet'];
+	}
+
+	public function getLineDescription($line)
+	{
+		$theLine = DB::select()
+			->from('line_train')
+			->where('line_id', '=', $line)
+			->execute()->as_array();
+		return $theLine[0]['line_name'];
 	}
 }
