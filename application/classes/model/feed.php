@@ -38,15 +38,15 @@ class Model_feed extends Model
 		$output = array();
 		for($i = 0; $i < 11; $i++)
 		{
-			$singleTrunkLine = new DOMDocument();
+			$singleTrunkLine   = new DOMDocument();
 			@$singleTrunkLine->loadHTML($subway->subway[0]->line[$i]->text[0]);
 			$trunkLineAdvisory = $singleTrunkLine->getElementsByTagName('a');
-			$trunkLineDetail = $singleTrunkLine->getElementsByTagName('div');
+			$trunkLineDetail   = $singleTrunkLine->getElementsByTagName('div');
 
-			$changes = array();
+			$changes      = array();
 			$changeDetail = array();
-			$c1 = 0;
-			$c2 = 0;
+			$c1           = 0;
+			$c2           = 0;
 
 			foreach($trunkLineAdvisory as $line)
 			{
@@ -69,10 +69,30 @@ class Model_feed extends Model
 		}
 
 		//var_dump($output);
+		//die();
 
-		$aChange = $output[0]['change'][0] . '<br />';
-		$bChange = $output[0]['changeDetail'][0];
+		for($i=0;$i<11;$i++)
+		{
+			if(isset($output[$i]))
+			{
+				for($j=0;$j<sizeof($output[$i]['change']);$j++)
+				{
+					if(isset($output[$i]['change'][$j]))
+					{
+						$aChange = $output[$i]['change'][$j] . '<br />';
+						$bChange = $output[$i]['changeDetail'][$j];
+						$this->processIndividual($aChange, $bChange);
+					}
+				}
+			}
+		}
+		/*
+		$aChange = $output[3]['change'][0] . '<br />';
+		$bChange = $output[3]['changeDetail'][0];
+		//$aChange = $output[0]['change'][0] . '<br />';
+		//$bChange = $output[0]['changeDetail'][0];
 		$this->processIndividual($aChange, $bChange);
+		*/
 
 		//return $output;
 
@@ -83,62 +103,79 @@ class Model_feed extends Model
 
 	public function processIndividual($change, $changeDetail)
 	{	
-		$change = strip_tags($change);
-		$changeDetail = strip_tags($changeDetail);
-		echo $change . '<br />';
-		echo $this->findTrain($change) . '<br />';
-		
-		$trainLine    = $this->findTrain($change);
-		$stationString = substr($change, strpos($change, 'from ') + 5);
-		$stations = explode(" to ", $stationString);
+		$change            = strip_tags($change);
+		$changeDetail      = strip_tags($changeDetail);
+		$trainLine         = $this->findTrain($change);
 
-		// uptown downtown determination
-		$startIndex = strpos($change, ' ');
-		$endIndex = strpos($change, '-');
-		$boundStation = substr($change, $startIndex, $endIndex - $startIndex);
-		$boundStationOrder = $this->getStationWithOrder('['.$trainLine.']', trim($boundStation));
-		if($boundStationOrder['station_order'] > 1)
+		if(strpos($change, 'run express') > 0 || strpos($change, 'run local') > 0)
 		{
-			// Going downtown
-		}
-		else
-		{
-			// Going uptown
-		}
-
-		echo $boundStation . '<br />';
-
-		if(strstr($stations[0], "-")) {
-			$startStation = trim(str_replace("-", " - ", $stations[0]));
-		} else {
-			$startStation = trim($stations[0]);
-		}
-		if(strstr($stations[1], "-")) {
-			$endStation = trim(str_replace("-", " - ", $stations[1]));
-		} else {
-			$endStation = trim($stations[1]);
-		}
-
-		if(strpos($change, 'run express') > 0) // Service change runs express
-		{
-			$stationString = substr($change, strpos($change, 'from ') + 5);
-			$stations = explode(" to ", $stationString);
-
-			echo $startStation . '<br />';
-			echo $endStation . '<br />';
-			$stationOrder1 = $this->getStationWithOrder('['.$trainLine.']', $startStation); // Returns array line_id, station_id, station_order
-			$stationOrder2 = $this->getStationWithOrder('['.$trainLine.']', $endStation);
-			echo $stationOrder1['station_order'] . '<br />';
-			echo $stationOrder2['station_order'] . '<br /><br />';
-
-			echo $trainLine . ' Trains ' . '<br />';
-			echo $boundStation . ' : ' . $boundStationOrder['station_order'] . '<br />';
-			echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
-			echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
-		}
-		else
-		{
+			$stationString     = substr($change, strpos($change, 'from ') + 5);
+			$stations          = explode(" to ", $stationString);
 			
+			// uptown downtown determination
+			$startIndex        = strpos($change, ' ');
+			$endIndex          = strpos($change, '-');
+			$boundStation      = substr($change, $startIndex, $endIndex - $startIndex);
+			$boundStationOrder = $this->getStationWithOrder('['.$trainLine.']', trim($boundStation));
+
+			// get the station name
+			if(strstr($stations[0], "-")) {
+				$startStation = trim(str_replace("-", " - ", $stations[0])); //make it to be same style of name for station
+			} else {
+				$startStation = trim($stations[0]);
+			}
+			if(strpos($stations[1], "[") > 0) {
+				$endStation = trim(substr($stations[1], 0, strpos($stations[1], "["))); // This should overpower the loop
+			} else if(strstr($stations[1], "-")) {
+				$endStation = trim(str_replace("-", " - ", $stations[1]));
+			} else {
+				$endStation = trim($stations[1]);
+			}
+
+			if($boundStationOrder['station_order'] > 1)
+			{
+				echo "DOWNTOWN";// Going downtown
+			}
+			else
+			{
+				echo "UPTOWN";// Going uptown
+			}
+
+			echo $boundStation . '-bound<br />';
+
+			if(strpos($change, 'run express') > 0) // Service change runs express
+			{
+				$stationString = substr($change, strpos($change, 'from ') + 5);
+				$stations      = explode(" to ", $stationString);
+				
+				$stationOrder1 = $this->getStationWithOrder('['.$trainLine.']', $startStation); // Returns array line_id, station_id, station_order
+				$stationOrder2 = $this->getStationWithOrder('['.$trainLine.']', $endStation);
+
+				echo $trainLine . ' Trains run express' . '<br />';
+				echo $boundStation . ' : ' . $boundStationOrder['station_order'] . '<br />';
+				echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
+				echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
+
+				// INSERT STUFF INTO THE DATABASE
+			}
+			else if(strpos($change, 'run local') > 0)
+			{
+				$stationString = substr($change, strpos($change, 'from ') + 5);
+				$stations      = explode(" to ", $stationString);
+				
+				$stationOrder1 = $this->getStationWithOrder('['.$trainLine.']', $startStation); // Returns array line_id, station_id, station_order
+				$stationOrder2 = $this->getStationWithOrder('['.$trainLine.']', $endStation);
+
+				echo $trainLine . ' Trains run local' . '<br />';
+				echo $boundStation . ' : ' . $boundStationOrder['station_order'] . '<br />';
+				echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
+				echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
+			}
+			else
+			{
+
+			}
+			echo '<br />';
 		}
 	}
 
@@ -180,9 +217,9 @@ class Model_feed extends Model
 	public function getStationWithOrder($line_name = NULL, $station_name = NULL)
 	{
 		$station_id = NULL; $line_id = NULL; $station_order = NULL; 
-		$line_name_parsed = $this->parse_line_name($line_name); 	
+		$line_name_parsed = $this->parse_line_name($line_name);
 		$result = 
-		DB::select('line_id')->from('line_train')->where('line_bullet', '=', $line_name_parsed)->execute()->as_array()[0]['line_id']; 
+		DB::select('line_id')->from('line_train')->where('line_bullet', '=', $line_name_parsed)->execute()->as_array();//[0]['line_id']; 
 
 		if(count($result) != 0)
 		{
