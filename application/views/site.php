@@ -93,7 +93,9 @@
 				<table>
 					<tr>
 						<td style="font-size: 14pt; overflow: hidden;" colspan="2">
-							Currently Displaying : Downtown
+							Currently Displaying : <?= $direction; ?>
+
+
 					</tr>
 					<tr>
 						<td><a href="<?=URL::base()?>?id=<?= $line; ?>&direction=uptown"><img src="<?=URL::base()?>a/i/up-arrow.png" class="mini"/></a></td>

@@ -25,15 +25,20 @@ class Controller_ams extends Controller_Template {
 		if(isset($_GET['direction']))
 		{
 			$direction = $_GET['direction'];
+
 		}
 		else
 		{
-			$direction = "downtown";
+			$direction = "Downtown";
 		}
+
+		
+
 		$this->template->lineData = $line->grabStations($id,$direction);
 		$this->template->line = $id;
 		$this->template->routeDesignation = $line->getLineBullet($id);
 		$this->template->routeDetail = $line->getLineDescription($id);
+		$this->template->direction = ucfirst($direction);
 		
 	}
 
