@@ -230,19 +230,20 @@ class Model_line extends Model
 			$stations = DB::select()
 				->from('station_order')
 				->where('line_id', '=', $line)
+				->order_by('order_number','asc')
 				->execute()
 				->as_array();
 		}
-		$returnString ='';
+		$returnArray = array();
 		$numOfStation = sizeof($stations)-1;
 
+		//echo $numOfStation."<br/>";
 
 		for($i=$numOfStation;$i>=0;$i--)
 		{
 			$singleStation = DB::select()
 			->from('station')
 			->where('station_id', '=', $stations[$i]['station_id']);
-
 			$currentStationOrderID = $stations[$i]['order_number'];
 
 			$color='black';
@@ -398,19 +399,13 @@ class Model_line extends Model
 				case 25:
 					$color = 'light gray';
 					break;
-
-
-
-
-
-
-
 			}
+
 			$singleStation = $singleStation->execute()->as_array();
 					
 			if(isset($singleStation[0]))
-				array_push($returnArray,$singleStation[0]);
-
+				array_push($returnArray, $singleStation[0]);
+				
 		}
 		return $returnArray;
 		
