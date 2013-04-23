@@ -158,7 +158,7 @@ class Model_feed extends Model
 				echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
 				echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
 
-				return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation);
+				return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail);
 				// INSERT STUFF INTO THE DATABASE
 			}
 			else if(strpos($change, 'run local') > 0)
@@ -174,7 +174,7 @@ class Model_feed extends Model
 				echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
 				echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
 
-				return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation);
+				return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail);
 			}
 			else
 			{
