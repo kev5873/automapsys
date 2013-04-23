@@ -26,6 +26,7 @@ class Model_line extends Model
 			$stations = DB::select()
 				->from('station_order')
 				->where('line_id', '=', $line)
+				->order_by('order_number','asc')
 				->execute()
 				->as_array();
 		}
@@ -207,7 +208,7 @@ class Model_line extends Model
 					break;
 
 				case 20:
-					$color = 'dark gray';
+					$color = 'lime';
 					break;
 
 				case 21:
