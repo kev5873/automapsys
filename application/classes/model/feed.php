@@ -81,7 +81,7 @@ class Model_feed extends Model
 					{
 						$aChange = $output[$i]['change'][$j] . '<br />';
 						$bChange = $output[$i]['changeDetail'][$j];
-						array_push($retArr, $this->processIndividual($aChange, $bChange));
+						 $retArr[$i]=$this->processIndividual($aChange, $bChange);
 					}
 				}
 			}
