@@ -86,7 +86,25 @@
           }
 
         function addMarker(location) {
-            var infowindow = new google.maps.InfoWindow({
+        var image = new google.maps.MarkerImage('/a/i/stationstop12px.png',
+        // This marker is 20 pixels wide by 32 pixels tall.
+        null,
+        // The origin for this image is 0,0.
+        new google.maps.Point(0,0),
+        // The anchor for this image is the base of the flagpole at 0,32.
+        new google.maps.Point(4,-4), 
+        // Resize the image 8x8 pixel
+        new google.maps.Size(8, 8)
+    );
+
+var marker = new google.maps.Marker({
+        position: location,
+        map: map,
+        icon: image,
+    });
+
+        //==============================================
+            /*var infowindow = new google.maps.InfoWindow({
                 content: "TEST"
             });
             var image = '/a/i/stationstop12px.png';
@@ -95,7 +113,7 @@
                 position: location,
                 map: map,
                 icon: image,
-            });
+            });*/
             google.maps.event.addListener(marker, 'click', function() {
                 infowindow.open(map,marker);
             });
