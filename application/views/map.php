@@ -172,7 +172,6 @@
     		</table>
     	</div>
     	<div style="text-align:center; width: 920px; margin-left: auto; margin-right: auto; border: solid 1px black;">
-            <input onclick="showOverlays();" type=button value="Show All Overlays">
             <div id="map-canvas"/>
     	</div>
     </body>
