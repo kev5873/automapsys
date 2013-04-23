@@ -244,7 +244,7 @@ class Model_feed extends Model
 					->where('line_id', '=', $line_id)
 					->where('station_id', '=' , $station_id)
 					->execute()->as_array();
-
+				if( isset($result[0]) )
 				$station_order = $result[0]['order_number']; 		
 			}
 
