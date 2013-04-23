@@ -223,11 +223,11 @@ class Model_line extends Model
 					break;
 
 				case 24:
-					$color = 'blue';
+					$color = 'light gray';
 					break;
 
 				case 25:
-					$color = 'blue';
+					$color = 'light gray';
 					break;
 
 
