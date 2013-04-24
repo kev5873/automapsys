@@ -223,59 +223,70 @@ class Model_line extends Model
 				->execute()->as_array();
 		//echo $theLine[0]['line_bullet'] . ' - ' . $theLine[0]['line_name'] . '<br />';
 
-		$stations = DB::select()
-				->from('station_order')
-				->where('line_id', '=', $line)
-				->execute()
-				->as_array();
-
-		if($direction =="uptown"||$direction =="UPTOWN")
+		
+		if($direction =="downtown"||$direction =="DOWNTOWN")
 		{
 			//echo "in the range, for testing!";
-			
-			for($i=0;$i<sizeof($stations);$i++)
-			{
-				$newStat[$i]=$stations[sizeof($stations)-1-$i];
-			}
-
-			$stations = $newStat;
+			$stations = DB::select('station_id','order_number')
+				->from('station_order')
+				->where('line_id', '=', $line)
+				->order_by('order_number','desc')
+				->execute()
+				->as_array();
+		}else
+		{
+			$stations = DB::select()
+				->from('station_order')
+				->where('line_id', '=', $line)
+				->order_by('order_number','asc')
+				->execute()
+				->as_array();
 		}
-		$returnArray = array();
 
-		for($i=0;$i<sizeof($stations);$i++)
+
+
+		
+		$returnArray = array();
+		$numOfStation = sizeof($stations)-1;
+
+		//echo $numOfStation."<br/>";
+
+		for($i=$numOfStation;$i>=0;$i--)
 		{
 			$singleStation = DB::select()
 			->from('station')
 			->where('station_id', '=', $stations[$i]['station_id']);
 			
+			$currentStationOrderID = $stations[$i]['order_number'];
+
 			$color='black';
 			switch($line)
 			{
 				case 1:
-					$color = 'red';
-					if($i == sizeof($stations)-4)
-						$i++;
+					$color = 'ff3333';
+					if($currentStationOrderID == 36)
+						$singleStation = $singleStation->where('express', '=', 'true');
 					break;
 
 				case 2:
-					$color = 'red';
-					if($i > 24 && $i <41)
+					$color = 'ff3333';
+					if($currentStationOrderID > 24 && $currentStationOrderID <41)
 					{
 						$singleStation = $singleStation->where('express', '=', 'true');
 					}
 					break;
 
 				case 3:
-					$color = 'red';
-					if($i > 6 && $i < 23)
+					$color = 'ff3333';
+					if($currentStationOrderID > 6 && $currentStationOrderID < 23)
 					{
 						$singleStation = $singleStation->where('express', '=', 'true');
 					}
 					break;
 				
 				case 4:
-					$color = 'green';
-					if(($i == 13) || ($i > 14 && $i < 33) || ($i > 39 && $i < 54) )
+					$color = '009933';
+					if(($currentStationOrderID == 13) || ($currentStationOrderID > 14 && $currentStationOrderID < 34) || ($currentStationOrderID > 39 && $currentStationOrderID<= 54) )
 					{
 						$singleStation = $singleStation->where('express', '=', 'true');
 					}
@@ -283,8 +294,10 @@ class Model_line extends Model
 					break;
 
 				case 5:
-					$color = 'green';
-					if($i > 15 && $i < 34 )
+					$color = '009933';
+					
+
+					if($currentStationOrderID > 15 &&  $currentStationOrderID< 34 )
 					{
 						$singleStation = $singleStation->where('express', '=', 'true');
 					}
@@ -292,93 +305,121 @@ class Model_line extends Model
 					break;
 
 				case 6:
-					$color = 'green';
+					$color = '009933';
 					break;
 
 				case 7:
-					$color = 'purple';
+					$color = 'cc3399';
 					break;
 
 				case 8:
-					$color = 'green';
+					$color = '009933';
 					break;
 
 				case 9: 
-					$color = 'purple';
+					$color = 'cc3399';
 					break;
 
 				case 10:
-					$color = 'blue';
-					if(($i > 5 && $i <26) || ($i > 31 && $i <44))
+					$color = '2850ad';
+					if(($currentStationOrderID > 5 && $currentStationOrderID <27) || ($currentStationOrderID > 31 && $currentStationOrderID <44))
 					{
 						$singleStation = $singleStation->where('express', '=', 'true');
 					}
 					break;
 
 				case 11:
-					$color = 'blue';
+					$color = '2850ad';
 					break;
 
 				case 12:
-					$color = 'blue';
+					$color = '2850ad';
+					if(($currentStationOrderID > 3 && $currentStationOrderID <20) )
+					{
+						$singleStation = $singleStation->where('express', '=', 'true');
+					}
 					break;					
 				
 				case 13:
-					$color = 'blue';
+					$color = 'ff6319';
 					break;
 
 				case 14:
-					$color = 'blue';
+					$color = 'ff6319';
+					if(($currentStationOrderID == 24) )
+					{
+						$singleStation = $singleStation->where('express', '=', 'false');
+					}
+					if(($currentStationOrderID > 25 && $currentStationOrderID <30) )
+					{
+						$singleStation = $singleStation->where('express', '=', 'true');
+					}
 					break;
 
-				case 15:
-					$color = 'blue';
+				case 15: 
+					$color = 'ff6319';
 					break;
 
 				case 16:
-					$color = 'blue';
+					$color = 'ff6319';
 					break;
 
 				case 17:
-					$color = 'blue';
+					$color = 'FCF141';
 					break;
 
 				case 18:
-					$color = 'blue';
+					$color = 'FCF141';
+					if(($currentStationOrderID >19 &&$currentStationOrderID< 25) )
+					{
+						$singleStation = $singleStation->where('express', '=', 'false');
+					}
+					if(($currentStationOrderID == 25 ||$currentStationOrderID == 26) )
+					{
+						$singleStation = $singleStation->where('express', '=', 'false');
+					}
+					if(($currentStationOrderID >27 && $currentStationOrderID <35) )
+					{
+						$singleStation = $singleStation->where('express', '=', 'true');
+					}
+
 					break;
 
 				case 19:
-					$color = 'blue';
+					$color = 'FCF141';
 					break;
 
 				case 20:
-					$color = 'blue';
+					$color = '6cbe45';
 					break;
 
 				case 21:
-					$color = 'blue';
+					$color = 'a7a9ac';
 					break;
 
 				case 22:
-					$color = 'blue';
+					$color = '996633';
 					break;
 
 				case 23:
-					$color = 'blue';
+					$color = '996633';
 					break;
 
 				case 24:
-					$color = 'blue';
+					$color = 'a7a9ac';
 					break;
 
 				case 25:
-					$color = 'blue';
+					$color = 'a7a9ac';
 					break;
 			}
 			$singleStation = $singleStation->execute()->as_array();
-					
+			$singleStation[0]['color'] = $color;
+
+		
 			if(isset($singleStation[0]))
 				array_push($returnArray,$singleStation[0]);
+
 
 		}
 		return $returnArray;

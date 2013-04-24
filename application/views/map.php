@@ -38,6 +38,7 @@
               data:{id: '<?=$line?>', direction:'<?=$direction?>'},
               dataType: 'json',
               success:function(data){
+                var color = data[0].color;
                 for(i=0;i<data.length;i++) {
                     var myLatLng = new google.maps.LatLng(data[i].coordinatex, data[i].coorrdinatey);
                     addMarker(myLatLng);
@@ -59,7 +60,7 @@
 
                   var flightPath = new google.maps.Polyline({
                     path: lineArray,
-                    strokeColor: '#2850ad',
+                    strokeColor: color,
                     strokeOpacity: 1.0,
                     strokeWeight: 5,
                     icons: [{
@@ -86,11 +87,11 @@
           }
 
         function addMarker(location) {
-        var image = new google.maps.MarkerImage('/a/i/stationstop12px.png',
+    /*    var image = new google.maps.MarkerImage('/a/i/stationstop12px.png',
         // This marker is 20 pixels wide by 32 pixels tall.
         null,
         // The origin for this image is 0,0.
-        new google.maps.Point(0,0),
+        null,//new google.maps.Point(0,0),
         // The anchor for this image is the base of the flagpole at 0,32.
         new google.maps.Point(4,-4), 
         // Resize the image 8x8 pixel
@@ -101,19 +102,22 @@ var marker = new google.maps.Marker({
         position: location,
         map: map,
         icon: image,
-    });
+    });*/
 
         //==============================================
-            /*var infowindow = new google.maps.InfoWindow({
+            var infowindow = new google.maps.InfoWindow({
                 content: "TEST"
             });
             var image = '/a/i/stationstop12px.png';
+
+            //var image = new google.maps.MarkerImage('/a/i/stationstop12px.png', null, new google.maps.Point(0,0);
+
 
             var marker = new google.maps.Marker({
                 position: location,
                 map: map,
                 icon: image,
-            });*/
+            });
             google.maps.event.addListener(marker, 'click', function() {
                 infowindow.open(map,marker);
             });
