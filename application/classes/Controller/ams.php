@@ -40,39 +40,46 @@ class Controller_ams extends Controller_Template {
 		$this->template->routeDesignation = $line->getLineBullet($id);
 		$this->template->routeDetail = $line->getLineDescription($id);
 		$this->template->direction = ucfirst($direction);
-
+		//$this->template->advisory = $returnArray;
 		
 
 		//echo "something <br/>";
-		//echo $otherTrain;
+				//need to determine the correct train output
+
 		var_dump($returnArray);
 		$size = sizeof($returnArray);
-		for ($i =0; $i < sizeof($returnArray);$i++){
-			//the train line doesnt display correctly. 
-				$trainLetter = $line->getLineBullet($id);						
-			if(isset($returnArray[$i]['trainLine'])){
-				$otherTrain = $returnArray[$i]['trainLine'];
+		echo "<br/>";
+		echo $size;
+		$lineID = $line->getLineBullet($id);
+		echo $lineID;
+		$i=1;
+		$otherlineId = 'E';
 
-				echo $trainLetter;
-				echo $otherTrain;
-				echo $size;
-				echo $i;
+		 while($i<=$size ){
+
+			if(isset($returnArray[$i]['trainLine']))
+			{
+				$otherlineId = $returnArray[$i]['trainLine'];
+				echo  $otherlineId;
 			}
 
-			if(isset($otherTrain) && ($otherTrain==$trainLetter))
+			if($lineID == $otherlineId)
+			{
+				$this->template ->advisory ='<br/>'.$returnArray[$i]['trainLine'].'<br/> Direction:'.$returnArray[$i]['boundStation'].' Bound <br/> Start: '
+				.$returnArray[$i]['startStation'].'<br/> End: '.$returnArray[$i]['endStation'].'<br/> Service Chg: '
+				.$returnArray[$i]['changeSummary'].'<br/>';
+				break;
 
-			{	
-				$the = $returnArray[$i]['trainLine'].'<br/> '.$returnArray[$i]['boundStation'].' Bounds. <br/> Start: '.$returnArray[$i]['startStation'].'<br/> End: '.$returnArray[$i]['endStation'].'<br/> Service Changed: '.$returnArray[$i]['changeSummary'].'<br/> ';
-		 		$this->template->advisory ='<br/>'. $the;
+			}
+			else{
+				$this->template ->advisory = '<br/>Good Service';
+				break;	
 			}
 
-			else if($i==($size-1)){
-				$this->template->advisory = "<br/>Good Service";	
-				}
-					
-			}	
-
+			$i++;
 		}
+	}	
+
+}
 		
-	}
 

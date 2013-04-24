@@ -119,7 +119,7 @@
 					</tr>
 					<tr>
 						<td style="font-size: 14pt; overflow: hidden;" colspan="2">
-							Advisory goes here: 
+							Advisory goes here: <?=$advisory?>
 						</td>
 					</tr>
 
