@@ -386,7 +386,7 @@ class Model_feed extends Model
 	// }
 
 
-	public function insertToLineTrainArray( $line_id, $affected_stations, $start_time, $end_time, $service_replace_id, $filename )
+	public function insertToLineInfoArray( $line_id, $affected_stations, $start_time, $end_time, $service_replace_id, $filename )
 // line_id => integer, start_station => integer, end_station -> integer, start_time => integer (unixtimestamp) , end_time => integer (unixtimestamp),
 // service_replace_id => real (double) , filename => text		
 
@@ -407,7 +407,7 @@ class Model_feed extends Model
 		return true; 
 	}
 
-	public function insertToLineTrain( $line_id, $start_station, $end_station, $start_time, $end_time, $service_replace_id, $filename)
+	public function insertToLineInfo( $line_id, $start_station, $end_station, $start_time, $end_time, $service_replace_id, $filename)
 // line_id => integer, start_station => integer, end_station -> integer, start_time => integer (unixtimestamp) , end_time => integer (unixtimestamp),
 // service_replace_id => real (double) , filename => text	
 
@@ -431,9 +431,5 @@ class Model_feed extends Model
 			die( Kohana::debug($e) ); 
 			return false; 
 		}
-
 	}
-
-
-
  }
