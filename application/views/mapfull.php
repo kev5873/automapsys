@@ -34,9 +34,11 @@
             };
             map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
 
+            for(lineId=0;lineId<26;lineId++)
+            {
             $.ajax({
               url: '/map/grab',
-              data:{id: '<?=$line?>', direction:'<?=$direction?>'},
+              data:{id: lineId, direction:'<?=$direction?>'},
               dataType: 'json',
               success:function(data){
                 var color = data[0].color;
@@ -82,10 +84,13 @@
                   flightPath.set('icons', icons);
                 }, 50);
 
-
+            markersArray = [];
+            lineArray    = [];
+            windowsArray = [];
 
              }
              });
+            }
 
           }
 
