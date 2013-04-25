@@ -50,7 +50,6 @@ class Controller_ams extends Controller_Template {
 		//echo "something <br/>";
 				//need to determine the correct train output
 
-		//var_dump($returnArray);
 		$size = sizeof($returnArray);
 		echo "<br/>";
 		//echo $size;
@@ -59,8 +58,8 @@ class Controller_ams extends Controller_Template {
 		$i=1;
 		$otherlineId = 'E';
 
-		 while($i<=$size ){
-
+		 while($i<=$size)
+		 {
 			if(isset($returnArray[$i]['trainLine']))
 			{
 				$otherlineId = $returnArray[$i]['trainLine'];
@@ -72,7 +71,6 @@ class Controller_ams extends Controller_Template {
 				$this->template->advisory ='<br/>'.$returnArray[$i]['trainLine'].'<br/> Direction:'.$returnArray[$i]['boundStation'].' Bound <br/> Start: '
 				.$returnArray[$i]['startStation'].'<br/> End: '.$returnArray[$i]['endStation'].'<br/> Service Chg: '
 				.$returnArray[$i]['changeSummary'].'<br/>';
-				break;
 			}
 			else{
 				$this->template->advisory = '<br/>Good Service';
@@ -107,7 +105,7 @@ class Controller_ams extends Controller_Template {
 		$this->template->status24= "<img src='a/i/checkmark.png' class='miniC'/>";
 		$this->template->status25= "<img src='a/i/checkmark.png' class='miniC'/>";
 
-		$j = 1;$z=0;
+		$j = 0;$z=0;
 		$otherlineId1[0]='';
 		while($j<=$size ){
 
