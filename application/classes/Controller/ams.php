@@ -55,29 +55,46 @@ class Controller_ams extends Controller_Template {
 		echo "<br/>";
 		//echo $size;
 		$lineID = $line->getLineBullet($id);
-		//echo $lineID;
-		$i=1;
+		//echo $lineID."  first train ID ";
+		$i=0;
 		$otherlineId = 'E';
 
-		 while($i<=$size ){
+		$j = 1;$z=0;
+		$otherlineId1[0]='';
+		while($j<=$size ){
 
-			if(isset($returnArray[$i]['trainLine']))
+			if(isset($returnArray[$j]['trainLine']))
+			{
+				$otherlineId1[$z] = $returnArray[$j]['trainLine'];
+				$otherArr[$z]=$returnArray[$j];
+				$z++;
+			}	
+			$j++;
+
+		}
+		$sizeofLine = sizeof($otherlineId1);
+
+
+		 while($i<$size ){
+				//echo $i;
+			if($returnArray[$i]['trainLine']!="")
 			{
 				$otherlineId = $returnArray[$i]['trainLine'];
-		//		echo  $otherlineId;
+				//echo $i;
+				//echo  $otherlineId;
+				if($lineID == $otherlineId)
+				{
+					$this->template->advisory ='<br/>'.$returnArray[$i]['trainLine'].'<br/> Direction:'.$returnArray[$i]['boundStation'].' Bound <br/> Start: '
+					.$returnArray[$i]['startStation'].'<br/> End: '.$returnArray[$i]['endStation'].'<br/> Service Chg: '
+					.$returnArray[$i]['changeSummary'].'<br/>';
+					break;
+				}
+				else{
+					$this->template->advisory = '<br/>Good Service';
+					}
 			}
-
-			if($lineID == $otherlineId)
-			{
-				$this->template->advisory ='<br/>'.$returnArray[$i]['trainLine'].'<br/> Direction:'.$returnArray[$i]['boundStation'].' Bound <br/> Start: '
-				.$returnArray[$i]['startStation'].'<br/> End: '.$returnArray[$i]['endStation'].'<br/> Service Chg: '
-				.$returnArray[$i]['changeSummary'].'<br/>';
-				break;
-			}
-			else{
-				$this->template->advisory = '<br/>Good Service';
-			}
-
+			else{}
+			
 			$i++;
 		}
 
@@ -106,20 +123,6 @@ class Controller_ams extends Controller_Template {
 		$this->template->status23= "<img src='a/i/checkmark.png' class='miniC'/>";
 		$this->template->status24= "<img src='a/i/checkmark.png' class='miniC'/>";
 		$this->template->status25= "<img src='a/i/checkmark.png' class='miniC'/>";
-
-		$j = 1;$z=0;
-		$otherlineId1[0]='';
-		while($j<=$size ){
-
-			if(isset($returnArray[$j]['trainLine']))
-			{
-				$otherlineId1[$z] = $returnArray[$j]['trainLine'];
-				$z++;
-			}	
-			$j++;
-
-		}
-		$sizeofLine = sizeof($otherlineId1);
 
 		for($k=0;$k< $sizeofLine;$k++)
 		{
