@@ -82,6 +82,7 @@ class Model_feed extends Model
 						$aChange = $output[$i]['change'][$j] . '<br />';
 						$bChange = $output[$i]['changeDetail'][$j];
 						array_push($retArr, $this->processIndividual($aChange, $bChange));
+						echo '<br />';
 						//$retArr[$i]=$this->processIndividual($aChange, $bChange);
 					}
 				}
@@ -108,54 +109,8 @@ class Model_feed extends Model
 		$change            = strip_tags($change);
 		$changeDetail      = strip_tags($changeDetail);
 		$trainLine         = $this->findTrain($change);
-		
-		/*/no train runing case
-		if(strpos($change, 'No trains running') > 0)
-		{
-			echo $change.'<br />';
-			echo "================================================".'<br />';
-		}
-//
-		//no train between case
-		if(strpos($change, 'No trains between') > 0)
-		{
-			$stationString     = substr($change, strpos($change, 'between ') + 8);	
-			$stations          = explode(" and ", $stationString);	
-			
-			echo $change.'<br />';
-//
-			if(strstr($stations[0], "-")) 
-			{
-				$startStation = trim(str_replace("-", " - ", $stations[0])); //make it to be same style of name for station
-			} 
-			else 
-			{
-				$startStation = trim($stations[0]);
-			}
-			if(strpos($stations[1], "[") > 0)
-			{
-				$endStation = trim(substr($stations[1], 0, strpos($stations[1], "["))); // This should overpower the loop
-			} 
-			else if(strstr($stations[1], "-")) 
-			{
-				$endStation = trim(str_replace("-", " - ", $stations[1]));
-			} 
-			else 
-			{
-				$endStation = trim($stations[1]);
-			}
-			//get the station name
-//
-			$stationOrder1 = $this->getStationWithOrder('['.$trainLine.']', $startStation); // Returns array line_id, station_id, station_order
-			$stationOrder2 = $this->getStationWithOrder('['.$trainLine.']', $endStation);
-//
-			echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
-			echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
-			echo "================================================".'<br />';
-//
-		}
 
-		//-bound trains skip ..... and .... case
+		/*/-bound trains skip ..... and .... case
 		//[6] Brooklyn Bridge-bound trains skip 116, 110, 103, 96, 77, 68 and 51 Sts
 		if(strpos($change, 'skip') > 0)
 		{
@@ -199,9 +154,51 @@ class Model_feed extends Model
 			echo "================================================".'<br />';
 			
 			
-		} */
+		}
+		*/
+		//no train runing case
+		if(strpos($change, 'No trains running') > 0)
+		{
+			echo $change.'<br />';
+		}
+		//no train between case
+		else if(strpos($change, 'No trains between') > 0)
+		{
+			$stationString     = substr($change, strpos($change, 'between ') + 8);	
+			$stations          = explode(" and ", $stationString);	
+			
+			echo $change.'<br />';
 
-		if(strpos($change, 'run express') > 0 || strpos($change, 'run local') > 0)
+			if(strstr($stations[0], "-")) 
+			{
+				$startStation = trim(str_replace("-", " - ", $stations[0])); //make it to be same style of name for station
+			} 
+			else 
+			{
+				$startStation = trim($stations[0]);
+			}
+			if(strpos($stations[1], "[") > 0)
+			{
+				$endStation = trim(substr($stations[1], 0, strpos($stations[1], "["))); // This should overpower the loop
+			} 
+			else if(strstr($stations[1], "-")) 
+			{
+				$endStation = trim(str_replace("-", " - ", $stations[1]));
+			} 
+			else 
+			{
+				$endStation = trim($stations[1]);
+			}
+			//get the station name
+
+			$stationOrder1 = $this->getStationWithOrder('['.$trainLine.']', $startStation); // Returns array line_id, station_id, station_order
+			$stationOrder2 = $this->getStationWithOrder('['.$trainLine.']', $endStation);
+
+			echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
+			echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
+
+		}
+		else if(strpos($change, 'run express') > 0 || strpos($change, 'run local') > 0)
 		{
 			$stationString     = substr($change, strpos($change, 'from ') + 5);
 			$stations          = explode(" to ", $stationString);
@@ -210,7 +207,7 @@ class Model_feed extends Model
 			$endIndex          = strpos($change, '-');
 			$boundStation      = substr($change, $startIndex, $endIndex - $startIndex);
 			$boundStationOrder = $this->getStationWithOrder('['.$trainLine.']', trim($boundStation));
-//
+
 			// get the station name
 			if(strstr($stations[0], "-")) {
 				$startStation = trim(str_replace("-", " - ", $stations[0])); //make it to be same style of name for station
@@ -224,7 +221,7 @@ class Model_feed extends Model
 			} else {
 				$endStation = trim($stations[1]);
 			}
-//
+
 			if($boundStationOrder['station_order'] > 1)
 			{
 				echo "DOWNTOWN";// Going downtown
@@ -233,9 +230,9 @@ class Model_feed extends Model
 			{
 				echo "UPTOWN";// Going uptown
 			}
-//
+
 			echo $boundStation . '-bound<br />';
-//
+
 			if(strpos($change, 'run express') > 0) // Service change runs express
 			{
 				$stationString = substr($change, strpos($change, 'from ') + 5);
@@ -243,7 +240,7 @@ class Model_feed extends Model
 				
 				$stationOrder1 = $this->getStationWithOrder('['.$trainLine.']', $startStation); // Returns array line_id, station_id, station_order
 				$stationOrder2 = $this->getStationWithOrder('['.$trainLine.']', $endStation);
-//
+
 				echo $trainLine . ' Trains run express' . '<br />';
 				echo $boundStation . ' : ' . $boundStationOrder['station_order'] . '<br />';
 				echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
@@ -258,20 +255,15 @@ class Model_feed extends Model
 				
 				$stationOrder1 = $this->getStationWithOrder('['.$trainLine.']', $startStation); // Returns array line_id, station_id, station_order
 				$stationOrder2 = $this->getStationWithOrder('['.$trainLine.']', $endStation);
-//
+
 				echo $trainLine . ' Trains run local' . '<br />';
 				echo $boundStation . ' : ' . $boundStationOrder['station_order'] . '<br />';
 				echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
 				echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
 				return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail);
 			}
-			else
-			{
-//
-			}
-			echo '<br />';
-
 		}
+		// else {}
 	}
 
 
