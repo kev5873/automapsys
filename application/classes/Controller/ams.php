@@ -40,13 +40,13 @@ class Controller_ams extends Controller_Template {
 		$this->template->routeDesignation = $line->getLineBullet($id);
 		$this->template->routeDetail = $line->getLineDescription($id);
 		$this->template->direction = ucfirst($direction);
-		//$this->template->advisory = $returnArray;
+		//$this->template->advisory = "TEST";
 		
 
 		//echo "something <br/>";
 				//need to determine the correct train output
 
-		//var_dump($returnArray);
+		var_dump($returnArray);
 		$size = sizeof($returnArray);
 		echo "<br/>";
 		//echo $size;
@@ -65,14 +65,14 @@ class Controller_ams extends Controller_Template {
 
 			if($lineID == $otherlineId)
 			{
-				$this->template ->advisory ='<br/>'.$returnArray[$i]['trainLine'].'<br/> Direction:'.$returnArray[$i]['boundStation'].' Bound <br/> Start: '
+				$this->template->advisory ='<br/>'.$returnArray[$i]['trainLine'].'<br/> Direction:'.$returnArray[$i]['boundStation'].' Bound <br/> Start: '
 				.$returnArray[$i]['startStation'].'<br/> End: '.$returnArray[$i]['endStation'].'<br/> Service Chg: '
 				.$returnArray[$i]['changeSummary'].'<br/>';
 				break;
 
 			}
 			else{
-				$this->template ->advisory = '<br/>Good Service';
+				$this->template->advisory = '<br/>Good Service';
 			}
 
 			$i++;
