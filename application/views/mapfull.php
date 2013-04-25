@@ -145,31 +145,31 @@ var marker = new google.maps.Marker({
     		<div style="padding: 10px; font-size: 16pt; text-decoration: underline;">New York City Subway Service Status</div>
     		<table border="0" cellspacing="0">
     			<tr>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
-    				<td style="text-align:center;"><img src="<?=URL::base()?>a/i/caution.png" class="miniC"/></td>
+                    <td style="text-align:center;"><?=$status1; ?></td>
+                    <td style="text-align:center;"><?=$status2; ?></td>
+                    <td style="text-align:center;"><?=$status3; ?></td>
+                    <td style="text-align:center;"><?=$status4; ?></td>
+                    <td style="text-align:center;"><?=$status5; ?></td>
+                    <td style="text-align:center;"><?=$status6; ?></td>
+                    <td style="text-align:center;"><?=$status8; ?></td>
+                    <td style="text-align:center;"><?=$status7; ?></td>
+                    <td style="text-align:center;"><?=$status9; ?></td>
+                    <td style="text-align:center;"><?=$status24; ?></td>
+                    <td style="text-align:center;"><?=$status10; ?></td>
+                    <td style="text-align:center;"><?=$status11; ?></td>
+                    <td style="text-align:center;"><?=$status12; ?></td>
+                    <td style="text-align:center;"><?=$status13; ?></td>
+                    <td style="text-align:center;"><?=$status14; ?></td>
+                    <td style="text-align:center;"><?=$status15; ?></td>
+                    <td style="text-align:center;"><?=$status16; ?></td>
+                    <td style="text-align:center;"><?=$status20; ?></td>
+                    <td style="text-align:center;"><?=$status22; ?></td>
+                    <td style="text-align:center;"><?=$status23; ?></td>
+                    <td style="text-align:center;"><?=$status21; ?></td>
+                    <td style="text-align:center;"><?=$status18; ?></td>
+                    <td style="text-align:center;"><?=$status17; ?></td>
+                    <td style="text-align:center;"><?=$status19; ?></td>
+                    <td style="text-align:center;"><?=$status25; ?></td>
     			</tr>
     			<tr>
     				<td><a href="?id=1"?><img src="<?=URL::base()?>a/bullet/1.png" class="mini"/></a></td>

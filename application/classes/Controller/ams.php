@@ -46,7 +46,7 @@ class Controller_ams extends Controller_Template {
 		//echo "something <br/>";
 				//need to determine the correct train output
 
-		var_dump($returnArray);
+		//var_dump($returnArray);
 		$size = sizeof($returnArray);
 		echo "<br/>";
 		//echo $size;
@@ -112,7 +112,7 @@ class Controller_ams extends Controller_Template {
 			{
 				$otherlineId1[$z] = $returnArray[$j]['trainLine'];
 				$z++;
-			}
+			}	
 			$j++;
 
 		}
