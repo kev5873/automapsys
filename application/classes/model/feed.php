@@ -68,8 +68,8 @@ class Model_feed extends Model
 			}
 		}
 
-		//var_dump($output);
-		//die();
+		var_dump($output);
+		die();
 
 		for($i=0;$i<11;$i++)
 		{
@@ -81,20 +81,20 @@ class Model_feed extends Model
 					{
 						$aChange = $output[$i]['change'][$j] . '<br />';
 						$bChange = $output[$i]['changeDetail'][$j];
-						 $retArr[$i]=$this->processIndividual($aChange, $bChange);
+						$retArr[$i]=$this->processIndividual($aChange, $bChange);
 					}
 				}
 			}
 		}
 
-		return $retArr;
-		/*
+		//return $retArr;
+		
 		$aChange = $output[3]['change'][0] . '<br />';
 		$bChange = $output[3]['changeDetail'][0];
 		//$aChange = $output[0]['change'][0] . '<br />';
 		//$bChange = $output[0]['changeDetail'][0];
-		$this->processIndividual($aChange, $bChange);
-		*/
+		//$this->processIndividual($aChange, $bChange);
+		
 
 		//return $output;
 

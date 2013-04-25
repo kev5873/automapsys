@@ -414,12 +414,12 @@ class Model_line extends Model
 					break;
 			}
 			$singleStation = $singleStation->execute()->as_array();
-			$singleStation[0]['color'] = $color;
 
-		
 			if(isset($singleStation[0]))
+			{
+				$singleStation[0]['color'] = $color;
 				array_push($returnArray,$singleStation[0]);
-
+			}
 
 		}
 		return $returnArray;

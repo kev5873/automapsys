@@ -40,6 +40,7 @@
               success:function(data){
                 var color = data[0].color;
                 for(i=0;i<data.length;i++) {
+                    console.log(data[i].coordinatex);
                     var myLatLng = new google.maps.LatLng(data[i].coordinatex, data[i].coorrdinatey);
                     addMarker(myLatLng);
                     //alert(myLatLng);
