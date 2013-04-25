@@ -93,10 +93,9 @@ class Model_feed extends Model
 		$bChange = $output[3]['changeDetail'][0];
 		//$aChange = $output[0]['change'][0] . '<br />';
 		//$bChange = $output[0]['changeDetail'][0];
-		//$this->processIndividual($aChange, $bChange);
+		// $this->processIndividual($aChange, $bChange);
 		
-
-		//return $output;
+		// return $output;
 
 		// Example Usage $output[trunkID][change/changeDetail][route(depends on # of advisories)]
 		//echo $output[3]['change'][0] . '<br />';
@@ -187,18 +186,11 @@ class Model_feed extends Model
 				}
 
 				$temp = array();
-				
-
-
-
 			}
 			else
 			{
 				echo 'got it';
 			}
-
-			
-			
 		
 			foreach ($stationlist as $i) {
 //				echo $i.'<br />';
@@ -320,6 +312,7 @@ class Model_feed extends Model
 	}
 
 	public function getStationWithOrder($line_name = NULL, $station_name = NULL)
+	// returns an array ( [line_id] , [station_id] , [station_order] ); 
 	{
 		$station_id = NULL; $line_id = NULL; $station_order = NULL; 
 		$line_name_parsed = $this->parse_line_name($line_name);
@@ -387,6 +380,60 @@ class Model_feed extends Model
 
 		}
 		return array( "line_id" => $line_id, "station_id" => $station_id , "station_order" => $station_order ); 
+	}
+
+	// public function insertToLineTrain( $line_id, $start_station )
+	// {
+
+	// }
+
+
+	public function insertToLineTrainArray( $line_id, $affected_stations, $start_time, $end_time, $service_replace_id, $filename )
+// line_id => integer, start_station => integer, end_station -> integer, start_time => integer (unixtimestamp) , end_time => integer (unixtimestamp),
+// service_replace_id => real (double) , filename => text		
+
+// SERVICE_REPLACE_ID CODE:
+// No trains running : 2
+// No trains between A & B : 3
+// Trains run express from A to B : 0
+// Trains run local from A to B: 1
+// Trains skip {stations} : 4	
+	{
+		foreach( $affected_stations as $affected )
+		{
+			if( !insertToLineTrain( $line_id, $affected_station, $affected_station, $start_time, $end_time, $service_replace_id, $filename ) )
+			{
+				return false; 
+			} 
+		}
+		return true; 
+	}
+
+	public function insertToLineTrain( $line_id, $start_station, $end_station, $start_time, $end_time, $service_replace_id, $filename)
+// line_id => integer, start_station => integer, end_station -> integer, start_time => integer (unixtimestamp) , end_time => integer (unixtimestamp),
+// service_replace_id => real (double) , filename => text	
+
+// SERVICE_REPLACE_ID CODE:
+// No trains running : 2
+// No trains between A & B : 3
+// Trains run express from A to B : 0
+// Trains run local from A to B: 1
+// Trains skip {stations} : 4
+
+	// returns a true or false, true if works, false, else. 
+	{
+		try{
+		$query = DB::insert('line_info', array( "line_id" , "start_station_id", "end_station_id" , "start_time" , "end_time", "service_replace_id", 
+			"filename" )
+		)->values( array( $line_id, $start_station, $end_station, $start_time, $end_time, $service_replace_id, $filename ) )->execute(); 
+			return true; 
+		}
+		catch(Exception $e)
+		{
+			die( Kohana::debug($e) ); 
+			return false; 
+		}
+
 	}
 
 

@@ -246,6 +246,17 @@ private function downloadFile ($url, $path) {
 	public function action_index()
 	{
 		echo 'Welcome!';
+
+		$feeder = new Model_feed(); 
+
+// $line_id, $start_station, $end_station, $start_time, $end_time, $service_replace_id, $filename)
+		$feeder->insertToLineTrain( 5, 10, 10, 20, 20, 30, 'asdf'  );
+
+		echo "<br />"; 
+
+		print_r( $feeder->getStationWithOrder( "[6]" , "116" ) ); 
+
+
 		// $pgconn = pg_connect('host=localhost dbname=ams user=postgres password=root'); 
 		// pg_insert($pgconn, 'multidata' , array('data'=>100)); 
 		// $multidata = ORM::factory('station'); 
