@@ -159,10 +159,11 @@ class Model_feed extends Model
 		//no train runing case
 		if(strpos($change, 'No trains running') > 0)
 		{
+			return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 2);
 			echo $change.'<br />';
 		}
 		//no train between case
-		else if(strpos($change, 'No trains between') > 0)
+		else if(strpos($change, 'No trains between') > 0) //
 		{
 			$stationString     = substr($change, strpos($change, 'between ') + 8);	
 			$stations          = explode(" and ", $stationString);	
@@ -196,9 +197,9 @@ class Model_feed extends Model
 
 			echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
 			echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
-
+			return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 3);
 		}
-		else if(strpos($change, 'run express') > 0 || strpos($change, 'run local') > 0)
+		else if(strpos($change, 'run express') > 0 || strpos($change, 'run local') > 0) // Runs Express/Local
 		{
 			$stationString     = substr($change, strpos($change, 'from ') + 5);
 			$stations          = explode(" to ", $stationString);
@@ -245,7 +246,7 @@ class Model_feed extends Model
 				echo $boundStation . ' : ' . $boundStationOrder['station_order'] . '<br />';
 				echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
 				echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
-				return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail);
+				return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 0);
 				// INSERT STUFF INTO THE DATABASE
 			}
 			else if(strpos($change, 'run local') > 0)
@@ -260,7 +261,7 @@ class Model_feed extends Model
 				echo $boundStation . ' : ' . $boundStationOrder['station_order'] . '<br />';
 				echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
 				echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
-				return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail);
+				return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 1);
 			}
 		}
 		// else {}
