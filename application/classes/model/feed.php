@@ -184,6 +184,7 @@ class Model_feed extends Model
 		}
 	}
 
+
 	public function findTrain($change)
 	{
 		$firstBracket = strpos($change, '[');
