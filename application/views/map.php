@@ -24,6 +24,7 @@
         var map;
         var markersArray = [];
         var lineArray    = [];
+        var windowsArray = [];
 
         function initialize() {
             var mapOptions = {
@@ -42,7 +43,7 @@
                 for(i=0;i<data.length;i++) {
                     console.log(data[i].coordinatex);
                     var myLatLng = new google.maps.LatLng(data[i].coordinatex, data[i].coorrdinatey);
-                    addMarker(myLatLng);
+                    addMarker(myLatLng, data[i].station_name);
                     //alert(myLatLng);
                 }
 
@@ -82,12 +83,14 @@
                   flightPath.set('icons', icons);
                 }, 50);
 
+
+
              }
              });
 
           }
 
-        function addMarker(location) {
+        function addMarker(location, station_name) {
     /*    var image = new google.maps.MarkerImage('/a/i/stationstop12px.png',
         // This marker is 20 pixels wide by 32 pixels tall.
         null,
@@ -106,24 +109,28 @@ var marker = new google.maps.Marker({
     });*/
 
         //==============================================
-            var infowindow = new google.maps.InfoWindow({
-                content: "TEST"
-            });
             var image = '/a/i/stationstop12px.png';
 
             //var image = new google.maps.MarkerImage('/a/i/stationstop12px.png', null, new google.maps.Point(0,0);
-
-
+            var infowindow = new google.maps.InfoWindow({
+                content: station_name,
+                color:'#FFFFFF'
+            });
+            
             var marker = new google.maps.Marker({
                 position: location,
                 map: map,
                 icon: image,
             });
+
             google.maps.event.addListener(marker, 'click', function() {
                 infowindow.open(map,marker);
             });
+
             markersArray.push(marker);
+            windowsArray.push(infowindow);
             lineArray.push(location);
+
         }
 
           google.maps.event.addDomListener(window, 'load', initialize);
@@ -195,7 +202,7 @@ var marker = new google.maps.Marker({
     		</table>
     	</div>
     	<div style="text-align:center; width: 920px; margin-left: auto; margin-right: auto; border: solid 1px black;">
-            <div id="map-canvas"/>
+            <div id="map-canvas" style="color: #000000;"/>
     	</div>
     </body>
 </html>

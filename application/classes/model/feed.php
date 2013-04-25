@@ -68,8 +68,8 @@ class Model_feed extends Model
 			}
 		}
 
-		var_dump($output);
-		die();
+		//var_dump($output);
+		//die();
 
 		for($i=0;$i<11;$i++)
 		{
@@ -175,8 +175,11 @@ class Model_feed extends Model
 				array_pop($stationlist);
 				for($i=0;$i<sizeof($temp);$i++)
 				{
-					if($temp[$i] != 'and' && $temp[$i] != 'Sts ')
+					//if($temp[$i] != 'and' && $temp[$i] != 'Sts')
+					if(strcmp($temp[$i], 'and') != 0)
 					{
+						echo strcmp(trim(strip_tags($temp[$i])), 'Sts');
+						//echo strcmp($temp[$i],'Sts ');
 						//echo 'Sts <br />';
 						echo $temp[$i].'temp<br />';
 						array_push($stationlist,$temp[$i]);
