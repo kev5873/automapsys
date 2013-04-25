@@ -17,6 +17,10 @@ class Controller_ams extends Controller_Template {
 		$feeder = new Model_feed();
         $returnArray = $feeder->processFeed('a/s/status-1366515360.xml');
 
+        // // echo 'a'; 
+        // echo count($returnArray); 
+        // print_r($returnArray); 
+
 		if(isset($_GET['id']))
 		{
 			$id = $_GET['id'];
@@ -69,7 +73,6 @@ class Controller_ams extends Controller_Template {
 				.$returnArray[$i]['startStation'].'<br/> End: '.$returnArray[$i]['endStation'].'<br/> Service Chg: '
 				.$returnArray[$i]['changeSummary'].'<br/>';
 				break;
-
 			}
 			else{
 				$this->template->advisory = '<br/>Good Service';
