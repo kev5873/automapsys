@@ -251,9 +251,9 @@ private function downloadFile ($url, $path) {
 
 // $line_id, $start_station, $end_station, $start_time, $end_time, $service_replace_id, $filename)
 
-		$stationset = array( 10, 30, 20, 40, 50, 60 ); 
+		// $stationset = array( 10, 30, 20, 40, 50, 60 ); 
 		// $feeder->insertToLineInfoArray( 6, $stationset, NULL,  NULL, NULL, 0, 'asdf'.time() );
-		// $feeder->insertToLineInfo( 17, NULL, NULL, NULL,  NULL, NULL, 2, 'asdf'.time() );
+		$feeder->insertToLineInfo( 18, NULL, NULL, NULL,  NULL, NULL, 2, 'asdf' );
 
 		// echo "<br />"; 
 
