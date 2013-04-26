@@ -253,11 +253,19 @@ private function downloadFile ($url, $path) {
 
 		$stationset = array( 10, 30, 20, 40, 50, 60 ); 
 		// $feeder->insertToLineInfoArray( 6, $stationset, NULL,  NULL, NULL, 0, 'asdf'.time() );
-		$feeder->insertToLineInfo( 6, 30, 30, NULL,  NULL, NULL, 0, 'asdf'.time() );
+		// $feeder->insertToLineInfo( 17, NULL, NULL, NULL,  NULL, NULL, 2, 'asdf'.time() );
 
-		echo "<br />"; 
+		// echo "<br />"; 
 
-		print_r( $feeder->getStationWithOrder( "[6]" , "116" ) ); 
+// $sets = array( array( "line_name" => "  " )  )
+// foreach($sets as $set)
+// {
+// 		print_r($feeder->getStationWithOrder( $set["line_name"] , $set["station_name"] ) ); 
+// 		echo "<br />";
+// }
+
+
+		// print_r( $feeder->getStationWithOrder( "[6]" , "116" ) ); 
 
 
 		// $pgconn = pg_connect('host=localhost dbname=ams user=postgres password=root'); 

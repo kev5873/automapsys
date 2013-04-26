@@ -330,7 +330,7 @@ class Model_feed extends Model
 			->where('line_id', '=', $line_id)->execute()->as_array(); 
 
 			$station_order = NULL; 
-			$station_id = NULL; 
+			$station_id = NULL;  
 			if( count($result) == 1 )
 			{
 				$station_id = $result[0]['station_id']; 
@@ -344,31 +344,6 @@ class Model_feed extends Model
 			{
 				echo "Missing Stuff for Station: $station_name on Line: $line_id ";  
 			}
-
-			// $result = DB::select('station_id')->from('station')->where('station_name', 'like', '%'.$station_name.'%')->execute()->as_array();
-			// print_r($result); 
-			// if( count($result) != 0)
-			// {
-			// 	$station_id = $result[0]['station_id']; 
-
-			// 	echo "StationID:".$station_id." for $station_name on $line_id to $line_name_parsed ;"; 
-			// 	// print_r($line_id);  
-
-			// 	$result = DB::select('order_number')
-			// 		->from('station_order')
-			// 		->where('line_id', '=', $line_id)
-			// 		->where('station_id', '=' , $station_id)
-			// 		->execute()->as_array();
-
-			// 	if( isset($result[0]) )
-			// 	{
-			// 	$station_order = $result[0]['order_number']; 		
-			// 	}
-			// 	else
-			// 	{
-			// 		print_r($result); 
-			// 	}
-			// }
 
 		}
 		return array( "line_id" => $line_id, "station_id" => $station_id , "station_order" => $station_order ); 
@@ -402,7 +377,8 @@ class Model_feed extends Model
 		return true; 
 	}
 
-	public function insertToLineInfo( $line_id, $start_station, $end_station, $bound_station_id, $start_time, $end_time, $service_replace_id, $filename)
+	public function insertToLineInfo( $line_id, $start_station, $end_station, $bound_station_id, $start_time, 
+		$end_time, $service_replace_id, $filename)
 // line_id => integer, start_station => integer, end_station -> integer, bound_station_id => direction(>1 for downtown, else for uptown),
 // start_time => integer (unixtimestamp) , end_time => integer (unixtimestamp),
 // service_replace_id => real (double) , filename => text	
@@ -416,34 +392,28 @@ class Model_feed extends Model
 
 	// returns a true or false, true if works, false, else. 
 	{
-		try{
 
-		$result = DB::select('line_id')->from('line_info')
-		->where('line_id', '=', $line_id)
-		->where('start_station_id', '=', $start_station)
-		->where('end_station_id', '=', $end_station)
-		->where('bound_station_id', '=', $bound_station)
-		->where('start_time', '=', $start_time)
-		->where('end_time', '=', $end_time)
-		->where('service_replace_id', '=', $service_replace_id)
-		->where('filename', '=', $filename)
-		->execute()->as_array(); 
-		
-		if( count($result['line_id']) != 0 )
+		$result = DB::select('id')->from('line_info')
+		->where('line_id', "=", $line_id)
+		->where('start_station_id', "= ", $start_station)
+		->where('end_station_id', "=", $end_station)
+		->where('bound_station_id', "=", $bound_station_id)
+		->where('start_time', "=", $start_time)
+		->where('end_time', "=", $end_time)
+		->where('service_replace_id', "=", $service_replace_id)
+		->where('filename', "=", $filename)
+		->execute()->as_array();
+
+		$result2 = DB::select( 'id' )->from('line_info')->execute()->as_array(); // check if the table has values; 
+
+		if( count($result) != 0 && count($result2) != 0 )	// does the record exists
 		{
-			return true; 
+				return true; 
 		}
 
 		$query = DB::insert('line_info', array( "line_id" , "start_station_id", "end_station_id" , "start_time" , "end_time", "service_replace_id", 
 			"filename", "bound_station_id" )
 		)->values( array( $line_id, $start_station, $end_station, $start_time, $end_time, $service_replace_id, $filename, $bound_station_id ) )->execute(); 
 			return true; 
-		
-		}
-		catch(Exception $e)
-		{
-			// die( Kohana::debug($e) ); 
-			return false; 
-		}
 	}
  }
