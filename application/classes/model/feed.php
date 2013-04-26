@@ -414,4 +414,25 @@ class Model_feed extends Model
 		)->values( array( $line_id, $start_station, $end_station, $start_time, $end_time, $service_replace_id, $filename, $bound_station_id ) )->execute(); 
 			return true; 
 	}
+
+
+	public function getServiceChange($filename)
+	{
+		$result = DB::select ('line_id','start_station_id','end_station_id','bound_station_id','service_replace_id','filename') ->from('line_info') ->where('filename','=', $filename)
+		->execute()->as_array();
+		$i=0;
+		foreach ($result as $res) {
+			$line_id = $res['line_id'];
+			$start_station = $res['start_station_id'];
+			$end_station = $res['end_station_id'];
+			$bound = $res['bound_station_id'];
+			$service = $res['service_replace_id'];
+			$theFile= $res['filename'];
+		$array1[$i]= array('line_id' => $line_id, 'start_station_id' => $start_station, 'end_station_id' => $end_station, 'bound_station_id' => $bound, 'SERVICE_REPLACE_ID' => $service, 'filename' => $theFile);
+		$i++;
+		}
+		return $array1;
+
+
+	}
  }
