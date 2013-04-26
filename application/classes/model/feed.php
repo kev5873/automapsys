@@ -393,7 +393,7 @@ class Model_feed extends Model
 	{
 		foreach( $affected_stations as $affected )
 		{
-			if( !insertToLineTrain( $line_id, $affected_station, $affected_station, $start_time, $end_time, $service_replace_id, $filename ) )
+			if( !insertToLineInfo( $line_id, $affected_station, $affected_station, $start_time, $end_time, $service_replace_id, $filename ) )
 			{
 				return false; 
 			} 
