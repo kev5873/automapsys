@@ -81,7 +81,7 @@ class Model_feed extends Model
 					{
 						$aChange = $output[$i]['change'][$j] . '<br />';
 						$bChange = $output[$i]['changeDetail'][$j];
-						array_push($retArr, $this->processIndividual($aChange, $bChange, $file));
+						array_push($retArr, $this->processIndividual($aChange, $bChange));
 						echo '<br />';
 						//$retArr[$i]=$this->processIndividual($aChange, $bChange);
 					}
@@ -104,7 +104,7 @@ class Model_feed extends Model
 		//echo $output[3]['changeDetail'][0];
 	}
 
-	public function processIndividual($change, $changeDetail, $filename)
+	public function processIndividual($change, $changeDetail)
 	{	
 		$change            = strip_tags($change);
 		$changeDetail      = strip_tags($changeDetail);
@@ -242,11 +242,12 @@ class Model_feed extends Model
 				$stationOrder1 = $this->getStationWithOrder('['.$trainLine.']', $startStation); // Returns array line_id, station_id, station_order
 				$stationOrder2 = $this->getStationWithOrder('['.$trainLine.']', $endStation);
 
-				$boundStation = $boundStationOrder['station_order'];
-				$startStation = $stationOrder1['station_order'];
-				$endStation = $stationOrder2['station_order'];
-				$this->insertToLineInfo( $stationOrder1['line_id'], $startStation, $endStation, $boundStation, NULL, NULL, 0, $filename);
+				echo $trainLine . ' Trains run express' . '<br />';
+				echo $boundStation . ' : ' . $boundStationOrder['station_order'] . '<br />';
+				echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
+				echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
 				return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 0);
+				// INSERT STUFF INTO THE DATABASE
 			}
 			else if(strpos($change, 'run local') > 0)
 			{
@@ -256,10 +257,10 @@ class Model_feed extends Model
 				$stationOrder1 = $this->getStationWithOrder('['.$trainLine.']', $startStation); // Returns array line_id, station_id, station_order
 				$stationOrder2 = $this->getStationWithOrder('['.$trainLine.']', $endStation);
 
-				$boundStation = $boundStationOrder['station_order'];
-				$startStation = $stationOrder1['station_order'];
-				$endStation = $stationOrder2['station_order'];
-				$this->insertToLineInfo($stationOrder1['line_id'], $startStation, $endStation, $boundStation, NULL, NULL, 1, $filename);
+				echo $trainLine . ' Trains run local' . '<br />';
+				echo $boundStation . ' : ' . $boundStationOrder['station_order'] . '<br />';
+				echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
+				echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
 				return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 1);
 			}
 		}
@@ -416,14 +417,32 @@ class Model_feed extends Model
 	// returns a true or false, true if works, false, else. 
 	{
 		try{
+
+		$result = DB::select('line_id')->from('line_info')
+		->where('line_id', '=', $line_id)
+		->where('start_station_id', '=', $start_station)
+		->where('end_station_id', '=', $end_station)
+		->where('bound_station_id', '=', $bound_station)
+		->where('start_time', '=', $start_time)
+		->where('end_time', '=', $end_time)
+		->where('service_replace_id', '=', $service_replace_id)
+		->where('filename', '=', $filename)
+		->execute()->as_array(); 
+		
+		if( count($result['line_id']) != 0 )
+		{
+			return true; 
+		}
+
 		$query = DB::insert('line_info', array( "line_id" , "start_station_id", "end_station_id" , "start_time" , "end_time", "service_replace_id", 
 			"filename", "bound_station_id" )
 		)->values( array( $line_id, $start_station, $end_station, $start_time, $end_time, $service_replace_id, $filename, $bound_station_id ) )->execute(); 
 			return true; 
+		
 		}
 		catch(Exception $e)
 		{
-			//die( Kohana::debug($e) ); 
+			// die( Kohana::debug($e) ); 
 			return false; 
 		}
 	}
