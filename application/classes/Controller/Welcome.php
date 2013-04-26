@@ -250,7 +250,9 @@ private function downloadFile ($url, $path) {
 		$feeder = new Model_feed(); 
 
 // $line_id, $start_station, $end_station, $start_time, $end_time, $service_replace_id, $filename)
-		$feeder->insertToLineInfo( 5, 10, 10, 20, 20, 30, 'asdf'  );
+
+		$stationset = array( 10, 30, 20, 40, 50, 60 ); 
+		$feeder->insertToLineInfoArray( 5, $stationset, 20, 20, 30, 'asdf'  );
 
 		echo "<br />"; 
 

@@ -381,7 +381,7 @@ class Model_feed extends Model
 
 
 	public function insertToLineInfoArray( $line_id, $affected_stations, $start_time, $end_time, $service_replace_id, $filename )
-// line_id => integer, start_station => integer, end_station -> integer, start_time => integer (unixtimestamp) , end_time => integer (unixtimestamp),
+// line_id => integer, affected_station => station_id_list, end_station -> integer, start_time => integer (unixtimestamp) , end_time => integer (unixtimestamp),
 // service_replace_id => real (double) , filename => text		
 
 // SERVICE_REPLACE_ID CODE:
@@ -393,7 +393,7 @@ class Model_feed extends Model
 	{
 		foreach( $affected_stations as $affected )
 		{
-			if( !insertToLineInfo( $line_id, $affected_station, $affected_station, $start_time, $end_time, $service_replace_id, $filename ) )
+			if( !$this->insertToLineInfo( $line_id, $affected, $affected, $start_time, $end_time, $service_replace_id, $filename ) )
 			{
 				return false; 
 			} 
