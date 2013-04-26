@@ -391,9 +391,9 @@ class Model_feed extends Model
 	// returns a true or false, true if works, false, else. 
 	{
 
-		$result = DB::select('id')->from('line_info')
+		$result = DB::select('*')->from('line_info')
 		->where('line_id', "=", $line_id)
-		->where('start_station_id', "= ", $start_station)
+		->where('start_station_id', "=", $start_station)
 		->where('end_station_id', "=", $end_station)
 		->where('bound_station_id', "=", $bound_station_id)
 		->where('start_time', "=", $start_time)
@@ -404,7 +404,8 @@ class Model_feed extends Model
 
 		$result2 = DB::select( 'id' )->from('line_info')->execute()->as_array(); // check if the table has values; 
 
-		if( count($result) != 0 && count($result2) != 0 )	// does the record exists
+		// var_dump( empty($result) ); 
+		if( !empty($result) && !empty($result2) )	// does the record exists
 		{
 				return true; 
 		}
