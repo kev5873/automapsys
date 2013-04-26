@@ -6,6 +6,7 @@ class Model_line extends Model
 	{
 		$advisories = DB::select()
 				->from('line_info')
+				->where('line_id' , '=', $line)
 				->where('filename', '=', $location)
 				->execute()->as_array();
 
@@ -21,11 +22,54 @@ class Model_line extends Model
 		foreach($advisories as $arr)
 		{
 			print_r($arr);
+			if($direction == 'downtown')
+			{
+				if($arr['bound_station_id'] >= 1 && $arr['service_replace_id'] == 0)
+				{
+					echo "Downtown runs express from";
+					echo $arr['start_station_id'];
+					echo $arr['end_station_id'];
+				}
+				else if($arr['bound_station_id'] >= 1 && $arr['service_replace_id'] == 1)
+				{
+					echo "Downtown runs local from";
+					echo $arr['start_station_id'];
+					echo $arr['end_station_id'];
+				}
+				else
+				{
+					echo "Some shit that wasn't supposed to happen happened.";
+				}
+			}
+			if($direction == 'uptown')
+			{
+				if($arr['bound_station_id'] > 1 && $arr['service_replace_id'] == 0)
+				{
+					echo "Uptown runs express from";
+					echo $arr['start_station_id'];
+					echo $arr['end_station_id'];
+				}
+				else if($arr['bound_station_id'] > 1 && $arr['service_replace_id'] == 1)
+				{
+					echo "Uptown runs local from";
+					echo $arr['start_station_id'];
+					echo $arr['end_station_id'];
+				}
+				else
+				{
+					echo "Some shit that wasn't supposed to happen happened.";
+				}
+			}
 			if($arr['service_replace_id'] == 2)
 				array_push($trainsNotRunning, $arr['line_id']);
 		}
 
-		print_r($trainsNotRunning);
+		if(in_array($line, $trainsNotRunning))
+		{
+			return '<tr>
+			<td style="font-size: 24pt;">Trains are not running.</td>
+			</tr>';
+		}
 
 		//die();
 
