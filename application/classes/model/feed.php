@@ -380,8 +380,9 @@ class Model_feed extends Model
 	// }
 
 
-	public function insertToLineInfoArray( $line_id, $affected_stations, $start_time, $end_time, $service_replace_id, $filename )
-// line_id => integer, affected_station => station_id_list, end_station -> integer, start_time => integer (unixtimestamp) , end_time => integer (unixtimestamp),
+	public function insertToLineInfoArray( $line_id, $affected_stations, $bound_station_id, $start_time, $end_time, $service_replace_id, $filename )
+// line_id => integer, affected_station => station_id_list, end_station -> integer,  bound_station_id => direction(>1 for downtown, else for uptown), 
+// start_time => integer (unixtimestamp) , end_time => integer (unixtimestamp),
 // service_replace_id => real (double) , filename => text		
 
 // SERVICE_REPLACE_ID CODE:
@@ -393,7 +394,7 @@ class Model_feed extends Model
 	{
 		foreach( $affected_stations as $affected )
 		{
-			if( !$this->insertToLineInfo( $line_id, $affected, $affected, $start_time, $end_time, $service_replace_id, $filename ) )
+			if( !$this->insertToLineInfo( $line_id, $affected, $affected, $bound_station_id, $start_time, $end_time, $service_replace_id, $filename ) )
 			{
 				return false; 
 			} 
@@ -401,8 +402,9 @@ class Model_feed extends Model
 		return true; 
 	}
 
-	public function insertToLineInfo( $line_id, $start_station, $end_station, $start_time, $end_time, $service_replace_id, $filename)
-// line_id => integer, start_station => integer, end_station -> integer, start_time => integer (unixtimestamp) , end_time => integer (unixtimestamp),
+	public function insertToLineInfo( $line_id, $start_station, $end_station, $bound_station_id, $start_time, $end_time, $service_replace_id, $filename)
+// line_id => integer, start_station => integer, end_station -> integer, bound_station_id => direction(>1 for downtown, else for uptown),
+// start_time => integer (unixtimestamp) , end_time => integer (unixtimestamp),
 // service_replace_id => real (double) , filename => text	
 
 // SERVICE_REPLACE_ID CODE:
@@ -416,8 +418,8 @@ class Model_feed extends Model
 	{
 		try{
 		$query = DB::insert('line_info', array( "line_id" , "start_station_id", "end_station_id" , "start_time" , "end_time", "service_replace_id", 
-			"filename" )
-		)->values( array( $line_id, $start_station, $end_station, $start_time, $end_time, $service_replace_id, $filename ) )->execute(); 
+			"filename", "bound_station_id" )
+		)->values( array( $line_id, $start_station, $end_station, $start_time, $end_time, $service_replace_id, $filename, $bound_station_id ) )->execute(); 
 			return true; 
 		}
 		catch(Exception $e)
