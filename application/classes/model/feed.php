@@ -104,7 +104,7 @@ class Model_feed extends Model
 		//echo $output[3]['changeDetail'][0];
 	}
 
-	public function processIndividual($change, $changeDetail)
+	public function processIndividual($change, $changeDetail, $filename)
 	{	
 		$change            = strip_tags($change);
 		$changeDetail      = strip_tags($changeDetail);
