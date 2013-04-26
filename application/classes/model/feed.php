@@ -81,7 +81,7 @@ class Model_feed extends Model
 					{
 						$aChange = $output[$i]['change'][$j] . '<br />';
 						$bChange = $output[$i]['changeDetail'][$j];
-						array_push($retArr, $this->processIndividual($aChange, $bChange));
+						array_push($retArr, $this->processIndividual($aChange, $bChange, $file));
 						echo '<br />';
 						//$retArr[$i]=$this->processIndividual($aChange, $bChange);
 					}
@@ -104,7 +104,7 @@ class Model_feed extends Model
 		//echo $output[3]['changeDetail'][0];
 	}
 
-	public function processIndividual($change, $changeDetail)
+	public function processIndividual($change, $changeDetail, $filename)
 	{	
 		$change            = strip_tags($change);
 		$changeDetail      = strip_tags($changeDetail);
@@ -159,16 +159,15 @@ class Model_feed extends Model
 		//no train runing case
 		if(strpos($change, 'No trains running') > 0)
 		{
+			$trainLineId = $this->getStationWithOrder('['.$trainLine.']');
+			$this->insertToLineInfo($trainLineId, NULL, NULL, NULL, NULL, NULL, 2, $filename);
 			// return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 2);
-			echo $change.'<br />';
 		}
 		//no train between case
 		else if(strpos($change, 'No trains between') > 0) //
 		{
 			$stationString     = substr($change, strpos($change, 'between ') + 8);	
 			$stations          = explode(" and ", $stationString);	
-			
-			echo $change.'<br />';
 
 			if(strstr($stations[0], "-")) 
 			{
@@ -195,8 +194,9 @@ class Model_feed extends Model
 			$stationOrder1 = $this->getStationWithOrder('['.$trainLine.']', $startStation); // Returns array line_id, station_id, station_order
 			$stationOrder2 = $this->getStationWithOrder('['.$trainLine.']', $endStation);
 
-			echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
-			echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
+			$startStation = $stationOrder1['station_order'];
+			$endStation = $stationOrder2['station_order'];
+			$this->insertToLineInfo( $stationOrder1['line_id'], $startStation, $endStation, NULL, NULL, NULL, 3, $filename);
 			// return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 3);
 		}
 		else if(strpos($change, 'run express') > 0 || strpos($change, 'run local') > 0) // Runs Express/Local
@@ -225,14 +225,12 @@ class Model_feed extends Model
 
 			if($boundStationOrder['station_order'] > 1)
 			{
-				echo "DOWNTOWN";// Going downtown
+				//echo "DOWNTOWN";// Going downtown
 			}
 			else
 			{
-				echo "UPTOWN";// Going uptown
+				//echo "UPTOWN";// Going uptown
 			}
-
-			echo $boundStation . '-bound<br />';
 
 			if(strpos($change, 'run express') > 0) // Service change runs express
 			{
