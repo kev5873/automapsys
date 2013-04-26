@@ -159,7 +159,7 @@ class Model_feed extends Model
 		//no train runing case
 		if(strpos($change, 'No trains running') > 0)
 		{
-			return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 2);
+			// return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 2);
 			echo $change.'<br />';
 		}
 		//no train between case
@@ -197,7 +197,7 @@ class Model_feed extends Model
 
 			echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
 			echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
-			return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 3);
+			// return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 3);
 		}
 		else if(strpos($change, 'run express') > 0 || strpos($change, 'run local') > 0) // Runs Express/Local
 		{
