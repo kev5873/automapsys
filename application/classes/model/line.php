@@ -2,7 +2,7 @@
 
 class Model_line extends Model
 {
-	public function grabStations($line,$direction, $location)
+	public function grabStations($line,$direction,$location)
 	{
 		// $advisories = DB::select()
 		// 		->from('line_info')
@@ -24,6 +24,7 @@ class Model_line extends Model
 		$advisories = $advisories_query->execute()->as_array(); 
 
 		print_r($advisories); 
+
 		// SERVICE_REPLACE_ID CODE:
 		// No trains running : 2
 		// No trains between A & B : 3
@@ -41,6 +42,13 @@ class Model_line extends Model
 		// }
 
 		// print_r($trainsNotRunning);
+
+		if(in_array($line, $trainsNotRunning))
+		{
+			return '<tr>
+			<td style="font-size: 24pt;">Trains are not running.</td>
+			</tr>';
+		}
 
 		//die();
 
@@ -64,6 +72,7 @@ class Model_line extends Model
 				->execute()->as_array();
 		//echo $theLine[0]['line_bullet'] . ' - ' . $theLine[0]['line_name'] . '<br />';
 
+		
 		if($direction =="downtown"||$direction =="DOWNTOWN")
 		{
 			//echo "in the range, for testing!";
@@ -73,7 +82,7 @@ class Model_line extends Model
 				->order_by('order_number','desc')
 				->execute()
 				->as_array();
-		} else
+		}else
 		{
 			$stations = DB::select()
 				->from('station_order')
@@ -82,6 +91,15 @@ class Model_line extends Model
 				->execute()
 				->as_array();
 		}
+
+
+// SERVICE_REPLACE_ID CODE:
+// No trains running : 2
+// No trains between A & B : 3
+// Trains run express from A to B : 0
+// Trains run local from A to B: 1
+// Trains skip {stations} : 4
+
 		
 		$returnString ='';
 		$numOfStation = sizeof($stations)-1;
@@ -546,4 +564,7 @@ class Model_line extends Model
 			->execute()->as_array();
 		return $theLine[0]['line_name'];
 	}
+
+
+	
 }
