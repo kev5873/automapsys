@@ -242,12 +242,11 @@ class Model_feed extends Model
 				$stationOrder1 = $this->getStationWithOrder('['.$trainLine.']', $startStation); // Returns array line_id, station_id, station_order
 				$stationOrder2 = $this->getStationWithOrder('['.$trainLine.']', $endStation);
 
-				echo $trainLine . ' Trains run express' . '<br />';
-				echo $boundStation . ' : ' . $boundStationOrder['station_order'] . '<br />';
-				echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
-				echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
+				$boundStation = $boundStationOrder['station_order'];
+				$startStation = $stationOrder1['station_order'];
+				$endStation = $stationOrder2['station_order'];
+				$this->insertToLineInfo( $stationOrder1['line_id'], $startStation, $endStation, $boundStation, NULL, NULL, 0, $filename);
 				return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 0);
-				insertToLineInfo( $station_order['line_id'], $startStation, $endStation, '0', '0', '0', $filename)
 			}
 			else if(strpos($change, 'run local') > 0)
 			{
@@ -257,10 +256,10 @@ class Model_feed extends Model
 				$stationOrder1 = $this->getStationWithOrder('['.$trainLine.']', $startStation); // Returns array line_id, station_id, station_order
 				$stationOrder2 = $this->getStationWithOrder('['.$trainLine.']', $endStation);
 
-				echo $trainLine . ' Trains run local' . '<br />';
-				echo $boundStation . ' : ' . $boundStationOrder['station_order'] . '<br />';
-				echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
-				echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
+				$boundStation = $boundStationOrder['station_order'];
+				$startStation = $stationOrder1['station_order'];
+				$endStation = $stationOrder2['station_order'];
+				$this->insertToLineInfo($stationOrder1['line_id'], $startStation, $endStation, $boundStation, NULL, NULL, 1, $filename);
 				return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 1);
 			}
 		}
@@ -424,7 +423,7 @@ class Model_feed extends Model
 		}
 		catch(Exception $e)
 		{
-			die( Kohana::debug($e) ); 
+			//die( Kohana::debug($e) ); 
 			return false; 
 		}
 	}
