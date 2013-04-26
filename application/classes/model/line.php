@@ -4,6 +4,30 @@ class Model_line extends Model
 {
 	public function grabStations($line,$direction)
 	{
+		$advisories = DB::select()
+				->from('line_info')
+				->where('filename', '=', $location)
+				->execute()->as_array();
+
+		// SERVICE_REPLACE_ID CODE:
+		// No trains running : 2
+		// No trains between A & B : 3
+		// Trains run express from A to B : 0
+		// Trains run local from A to B: 1
+		// Trains skip {stations} : 4
+
+		$trainsNotRunning = array();
+
+		foreach($advisories as $arr)
+		{
+			print_r($arr);
+			if($arr['service_replace_id'] == 2)
+				array_push($trainsNotRunning, $arr['line_id']);
+		}
+
+		print_r($trainsNotRunning);
+
+		//die();
 
 		$theLine = DB::select()
 				->from('line_train')
@@ -32,7 +56,6 @@ class Model_line extends Model
 		}
 
 
-
 // SERVICE_REPLACE_ID CODE:
 // No trains running : 2
 // No trains between A & B : 3
@@ -40,7 +63,7 @@ class Model_line extends Model
 // Trains run local from A to B: 1
 // Trains skip {stations} : 4
 
-
+		
 		$returnString ='';
 		$numOfStation = sizeof($stations)-1;
 
