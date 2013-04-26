@@ -82,7 +82,7 @@ class Model_feed extends Model
 						$aChange = $output[$i]['change'][$j] . '<br />';
 						$bChange = $output[$i]['changeDetail'][$j];
 						array_push($retArr, $this->processIndividual($aChange, $bChange, $file));
-						echo '<br />';
+						//echo '<br />';
 						//$retArr[$i]=$this->processIndividual($aChange, $bChange);
 					}
 				}
@@ -160,7 +160,7 @@ class Model_feed extends Model
 		if(strpos($change, 'No trains running') > 0)
 		{
 			$trainLineId = $this->getStationWithOrder('['.$trainLine.']');
-			$this->insertToLineInfo($trainLineId, NULL, NULL, NULL, NULL, NULL, 2, $filename);
+			$this->insertToLineInfo($trainLineId['line_id'], NULL, NULL, NULL, NULL, NULL, 2, $filename);
 			// return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 2);
 		}
 		//no train between case
@@ -240,10 +240,10 @@ class Model_feed extends Model
 				$stationOrder1 = $this->getStationWithOrder('['.$trainLine.']', $startStation); // Returns array line_id, station_id, station_order
 				$stationOrder2 = $this->getStationWithOrder('['.$trainLine.']', $endStation);
 
-				echo $trainLine . ' Trains run express' . '<br />';
-				echo $boundStation . ' : ' . $boundStationOrder['station_order'] . '<br />';
-				echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
-				echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
+				$boundStation = $boundStationOrder['station_order'];
+				$startStation = $stationOrder1['station_order'];
+				$endStation = $stationOrder2['station_order'];
+				$this->insertToLineInfo( $stationOrder1['line_id'], $startStation, $endStation, $boundStation, NULL, NULL, 0, $filename);
 				return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 0);
 				// INSERT STUFF INTO THE DATABASE
 			}
@@ -255,10 +255,10 @@ class Model_feed extends Model
 				$stationOrder1 = $this->getStationWithOrder('['.$trainLine.']', $startStation); // Returns array line_id, station_id, station_order
 				$stationOrder2 = $this->getStationWithOrder('['.$trainLine.']', $endStation);
 
-				echo $trainLine . ' Trains run local' . '<br />';
-				echo $boundStation . ' : ' . $boundStationOrder['station_order'] . '<br />';
-				echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
-				echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
+				$boundStation = $boundStationOrder['station_order'];
+				$startStation = $stationOrder1['station_order'];
+				$endStation = $stationOrder2['station_order'];
+				$this->insertToLineInfo( $stationOrder1['line_id'], $startStation, $endStation, $boundStation, NULL, NULL, 1, $filename);
 				return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 1);
 			}
 		}
@@ -416,22 +416,26 @@ class Model_feed extends Model
 	{
 		try{
 
+		/*		
 		$result = DB::select('line_id')->from('line_info')
 		->where('line_id', '=', $line_id)
 		->where('start_station_id', '=', $start_station)
 		->where('end_station_id', '=', $end_station)
-		->where('bound_station_id', '=', $bound_station)
+		->where('bound_station_id', '=', $bound_station_id)
 		->where('start_time', '=', $start_time)
 		->where('end_time', '=', $end_time)
 		->where('service_replace_id', '=', $service_replace_id)
 		->where('filename', '=', $filename)
-		->execute()->as_array(); 
+		->execute();//->as_array(); 
+
+		var_dump($result);
+		die();
 		
 		if( count($result['line_id']) != 0 )
-		{
-			return true; 
-		}
-
+			if( count( DB::select('*')->from('line_info')->execute()->as_array() ) != 0 )
+				return true;
+			*/
+		
 		$query = DB::insert('line_info', array( "line_id" , "start_station_id", "end_station_id" , "start_time" , "end_time", "service_replace_id", 
 			"filename", "bound_station_id" )
 		)->values( array( $line_id, $start_station, $end_station, $start_time, $end_time, $service_replace_id, $filename, $bound_station_id ) )->execute(); 
@@ -440,7 +444,7 @@ class Model_feed extends Model
 		}
 		catch(Exception $e)
 		{
-			// die( Kohana::debug($e) ); 
+			//die( Kohana::debug($e) ); 
 			return false; 
 		}
 	}

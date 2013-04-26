@@ -39,7 +39,7 @@ class Controller_ams extends Controller_Template {
 			$direction = "Downtown";
 		}
 
-		$this->template->lineData = $line->grabStations($id,$direction);
+		$this->template->lineData = $line->grabStations($id,$direction,'a/s/status-1366515360.xml');
 		$this->template->line = $id;
 		$this->template->routeDesignation = $line->getLineBullet($id);
 		$this->template->routeDetail = $line->getLineDescription($id);
