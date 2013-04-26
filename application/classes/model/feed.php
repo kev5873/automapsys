@@ -81,7 +81,7 @@ class Model_feed extends Model
 					{
 						$aChange = $output[$i]['change'][$j] . '<br />';
 						$bChange = $output[$i]['changeDetail'][$j];
-						array_push($retArr, $this->processIndividual($aChange, $bChange));
+						array_push($retArr, $this->processIndividual($aChange, $bChange, $file));
 						echo '<br />';
 						//$retArr[$i]=$this->processIndividual($aChange, $bChange);
 					}
@@ -104,7 +104,7 @@ class Model_feed extends Model
 		//echo $output[3]['changeDetail'][0];
 	}
 
-	public function processIndividual($change, $changeDetail)
+	public function processIndividual($change, $changeDetail, $filename)
 	{	
 		$change            = strip_tags($change);
 		$changeDetail      = strip_tags($changeDetail);
@@ -247,7 +247,7 @@ class Model_feed extends Model
 				echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
 				echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
 				return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 0);
-				// INSERT STUFF INTO THE DATABASE
+				insertToLineInfo( $station_order['line_id'], $startStation, $endStation, '0', '0', '0', $filename)
 			}
 			else if(strpos($change, 'run local') > 0)
 			{
