@@ -2,7 +2,7 @@
 
 class Model_line extends Model
 {
-	public function grabStations($line,$direction)
+	public function grabStations($line,$direction,$location)
 	{
 		$advisories = DB::select()
 				->from('line_info')
