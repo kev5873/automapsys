@@ -23,16 +23,23 @@ class Model_line extends Model
 
 		$advisories = $advisories_query->execute()->as_array(); 
 
-		print_r($advisories); 
-
 		// SERVICE_REPLACE_ID CODE:
-		// No trains running : 2
-		// No trains between A & B : 3
+		// No trains running : 2 (Done)
+		// No trains between A & B : 3 
 		// Trains run express from A to B : 0
 		// Trains run local from A to B: 1
-		// Trains skip {stations} : 4
+		// Trains skip {stations} : 4 (Cant do)
 
-		 $trainsNotRunning = array();
+		$trainsNotRunning = array();
+
+		foreach($advisories as $arr)
+		{
+			// print_r($arr);
+			if($arr['service_replace_id'] == 2)
+				array_push($trainsNotRunning, $arr['line_id']);
+		}
+
+		// print_r($trainsNotRunning);
 
 		if(in_array($line, $trainsNotRunning))
 		{
@@ -40,27 +47,15 @@ class Model_line extends Model
 			<td style="font-size: 24pt;">Trains are not running.</td>
 			</tr>';
 		}
+
 		// No Trains Between 3:
 
-		// print_r($advisories); 
-
-		foreach($advisories as $arr)
-		{
-					print_r($arr); 
-			if( $arr['service_replace_id'] == 3)
-			{
-				if( $line == $arr['line_id'] )
-				{
-					// echo $line; 
-				}
-			}
-		}
+		print_r($advisories); 
 
 		$theLine = DB::select()
 				->from('line_train')
 				->where('line_id', '=', $line)
 				->execute()->as_array();
-		//echo $theLine[0]['line_bullet'] . ' - ' . $theLine[0]['line_name'] . '<br />';
 
 		
 		if($direction =="downtown"||$direction =="DOWNTOWN")

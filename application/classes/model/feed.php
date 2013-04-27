@@ -123,12 +123,12 @@ class Model_feed extends Model
 			$boundStationOrder = $this->getStationWithOrder('['.$trainLine.']', trim($boundStation));
 
 
-			if($boundStationOrder['station_order'] > 1)
-				echo "DOWNTOWN";// Going downtown
-			else
-				echo "UPTOWN";// Going uptown
+			//if($boundStationOrder['station_order'] > 1)
+				//echo "DOWNTOWN";// Going downtown
+			//else
+				//echo "UPTOWN";// Going uptown
 
-			echo $boundStation . '-bound<br />';
+			//echo $boundStation . '-bound<br />';
 
 			$stationlist = array();
 
@@ -162,13 +162,13 @@ class Model_feed extends Model
 				for($i=0;$i<sizeof($stationlist);$i++)
 				{
 					array_push($stationOrder, $this->getStationWithOrder('['.$trainLine.']', $stationlist[$i])); 
-					echo $stationlist[$i] . ' : ' . $stationOrder[$i]['station_order'] . '<br />';
+					//echo $stationlist[$i] . ' : ' . $stationOrder[$i]['station_order'] . '<br />';
 				}
 
 			}
 			else//bound trains skip ..... and .... case
 			{
-				echo 'this is else --------------'.$change.'<br />';
+				//echo 'this is else --------------'.$change.'<br />';
 				$stationlist = explode(', ', $stationString);
 				$temp = explode('and ', end($stationlist));
 
@@ -181,7 +181,7 @@ class Model_feed extends Model
 				foreach ($stationlist as $key) 
 				{
 					$key= trim(strip_tags($key));
-					echo $key.'---THIS IS STATIONLIST<br />';
+					//echo $key.'---THIS IS STATIONLIST<br />';
 				}
 					
 				
@@ -190,7 +190,7 @@ class Model_feed extends Model
 
 				for($i=0;$i<sizeof($stationlist);$i++)
 				{
-					echo "TrainLine: $trainLine , StationListName: ".$stationlist[$i]."<br />";
+					//echo "TrainLine: $trainLine , StationListName: ".$stationlist[$i]."<br />";
 					//$gaga = $this->getStationWithOrder('['.$trainLine.']', $stationlist[$i]); 
 					//foreach ($gaga as $key)
 					//{
@@ -199,7 +199,7 @@ class Model_feed extends Model
 					//echo $trainLine."-----".$stationlist[$i];
 					//echo '<br />';
 					array_push($stationOrder, $this->getStationWithOrder('['.$trainLine.']', $stationlist[$i])); 
-					echo $stationlist[$i] . ' : ' . $stationOrder[$i]['station_order'] . '<br />';
+					//echo $stationlist[$i] . ' : ' . $stationOrder[$i]['station_order'] . '<br />';
 				}
 			}
 		}
@@ -208,7 +208,7 @@ class Model_feed extends Model
 		{
 			$trainLineId = $this->getStationWithOrder('['.$trainLine.']');
 			$this->insertToLineInfo($trainLineId['line_id'], NULL, NULL, NULL, NULL, NULL, 2, $filename);
-			// return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 2);
+			return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 2);
 		}
 		//no train between case
 		else if(strpos($change, 'No trains between') > 0) //
@@ -244,7 +244,7 @@ class Model_feed extends Model
 			$startStation = $stationOrder1['station_order'];
 			$endStation = $stationOrder2['station_order'];
 			$this->insertToLineInfo( $stationOrder1['line_id'], $startStation, $endStation, NULL, NULL, NULL, 3, $filename);
-			// return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 3);
+			 return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 3);
 		}
 		else if(strpos($change, 'run express') > 0 || strpos($change, 'run local') > 0) // Runs Express/Local
 		{
@@ -263,7 +263,7 @@ class Model_feed extends Model
 			// uptown downtown determination
 			$startIndex        = strpos($change, ' ');
 			$endIndex          = strpos($change, '-');
-			if(strpos($change, 'bound') > 0)
+			if(strstr($change, "bound"))
 			{
 				$boundStation      = substr($change, $startIndex, $endIndex - $startIndex);
 				$boundStationOrder = $this->getStationWithOrder('['.$trainLine.']', trim($boundStation));
@@ -271,6 +271,7 @@ class Model_feed extends Model
 			else
 			{
 				$boundStation = NULL; // This means both directions
+				$boundStationOrder = NULL;
 			}
 
 			// get the station name
@@ -287,7 +288,6 @@ class Model_feed extends Model
 				$endStation = trim($stations[1]);
 			}
 
-			$boundStationOrder = NULL;
 			/*
 			if($boundStationOrder['station_order'] > 1)
 			{
@@ -311,7 +311,7 @@ class Model_feed extends Model
 				$startStation = $stationOrder1['station_order'];
 				$endStation = $stationOrder2['station_order'];
 				$this->insertToLineInfo( $stationOrder1['line_id'], $startStation, $endStation, $boundStation, NULL, NULL, 0, $filename);
-				print_r(array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 0));
+				return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 0);
 			}
 			else if(strpos($change, 'run local') > 0)
 			{
@@ -325,7 +325,7 @@ class Model_feed extends Model
 				$startStation = $stationOrder1['station_order'];
 				$endStation = $stationOrder2['station_order'];
 				$this->insertToLineInfo( $stationOrder1['line_id'], $startStation, $endStation, $boundStation, NULL, NULL, 1, $filename);
-				print_r(array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 1));
+				return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 1);
 			}
 		}
 		// else {}
@@ -439,7 +439,7 @@ class Model_feed extends Model
 // No trains between A & B : 3
 // Trains run express from A to B : 0
 // Trains run local from A to B: 1
-// Trains skip {stations} : 4	
+// Trains skip {stations} : 4 (NOT DONE)
 	{
 		foreach( $affected_stations as $affected )
 		{
