@@ -39,7 +39,7 @@ class Controller_ams extends Controller_Template {
 			$direction = "Downtown";
 		}
 
-		$this->template->lineData = $line->grabStations($id,$direction,'a/s/status-1366515360.xml');
+		$this->template->lineData = $line->grabStations($id,$direction,'a/s/status-1367088029.xml');
 		$this->template->line = $id;
 		$this->template->routeDesignation = $line->getLineBullet($id);
 		$this->template->routeDetail = $line->getLineDescription($id);
@@ -50,10 +50,10 @@ class Controller_ams extends Controller_Template {
 		//echo "something <br/>";
 				//need to determine the correct train output
 
-		var_dump($returnArray);
+		//var_dump($returnArray);
 		$size = sizeof($returnArray);
-		echo "<br/>";
-		echo $size;
+		//echo "<br/>";
+		//echo $size;
 		$lineID = $line->getLineBullet($id);
 		//echo $lineID."  first train ID ";
 		$i=0;
@@ -84,8 +84,8 @@ class Controller_ams extends Controller_Template {
 				$otherlineIdLetter= $line->getLineBullet($otherlineId);
 				//echo $i;
 				//echo  $otherlineId;
-				echo $otherlineIdLetter;
-				echo $lineID;
+				//echo $otherlineIdLetter;
+				//echo $lineID;
 
 				if($lineID == $otherlineIdLetter)
 				{
