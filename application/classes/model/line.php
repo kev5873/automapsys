@@ -48,6 +48,12 @@ class Model_line extends Model
 			</tr>';
 		}
 
+		$runsExpress = false;
+		if($advisories[0]['service_replace_id'] == 0)
+		{
+			$runsExpress = true;
+		}
+
 		// No Trains Between 3:
 
 		// print_r($advisories); 
@@ -111,12 +117,51 @@ class Model_line extends Model
 			{
 				case 1:
 					$color = 'red';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+					}
+
 					if($currentStationOrderID == 36)
 						$singleStation = $singleStation->where('express', '=', 'true');
 					break;
 
 				case 2:
 					$color = 'red';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+					}
 					if($currentStationOrderID > 24 && $currentStationOrderID <41)
 					{
 						$singleStation = $singleStation->where('express', '=', 'true');
@@ -125,6 +170,25 @@ class Model_line extends Model
 
 				case 3:
 					$color = 'red';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+					}
 					if($currentStationOrderID > 6 && $currentStationOrderID < 23)
 					{
 						$singleStation = $singleStation->where('express', '=', 'true');
@@ -133,6 +197,25 @@ class Model_line extends Model
 				
 				case 4:
 					$color = 'green';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+					}
 					if(($currentStationOrderID == 13) || ($currentStationOrderID > 14 && $currentStationOrderID < 34) || ($currentStationOrderID > 39 && $currentStationOrderID<= 54) )
 					{
 						$singleStation = $singleStation->where('express', '=', 'true');
@@ -142,9 +225,26 @@ class Model_line extends Model
 
 				case 5:
 					$color = 'green';
-					
-
-					if($currentStationOrderID > 15 &&  $currentStationOrderID< 34 )
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+					}
+					if($currentStationOrderID > 15 &&  $currentStationOrderID < 34 )
 					{
 						$singleStation = $singleStation->where('express', '=', 'true');
 					}
@@ -152,23 +252,118 @@ class Model_line extends Model
 					break;
 
 				case 6:
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+					}
 					$color = 'green';
 					break;
 
 				case 7:
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+					}
 					$color = 'purple';
 					break;
 
 				case 8:
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+					}
 					$color = 'green';
 					break;
 
 				case 9: 
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+					}
 					$color = 'purple';
 					break;
 
 				case 10:
 					$color = 'blue';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+					}
 					if(($currentStationOrderID > 5 && $currentStationOrderID <27) || ($currentStationOrderID > 31 && $currentStationOrderID <44))
 					{
 						$singleStation = $singleStation->where('express', '=', 'true');
@@ -176,11 +371,49 @@ class Model_line extends Model
 					break;
 
 				case 11:
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+					}
 					$color = 'blue';
 					break;
 
 				case 12:
 					$color = 'blue';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+					}
 					if(($currentStationOrderID > 3 && $currentStationOrderID <20) )
 					{
 						$singleStation = $singleStation->where('express', '=', 'true');
@@ -189,34 +422,151 @@ class Model_line extends Model
 				
 				case 13:
 					$color = 'orange';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+					}
 					break;
 
 				case 14:
 					$color = 'orange';
-					if(($currentStationOrderID == 24) )
+					if($runsExpress)
 					{
-						$singleStation = $singleStation->where('express', '=', 'false');
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
 					}
-					if(($currentStationOrderID > 25 && $currentStationOrderID <30) )
+					else
 					{
-						$singleStation = $singleStation->where('express', '=', 'true');
+						if(($currentStationOrderID == 24) )
+						{
+							$singleStation = $singleStation->where('express', '=', 'false');
+						}
+						if(($currentStationOrderID > 25 && $currentStationOrderID <30) )
+						{
+							$singleStation = $singleStation->where('express', '=', 'true');
+						}
 					}
 					break;
 
 				case 15: 
 					$color = 'orange';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+					}
 					break;
 
 				case 16:
 					$color = 'orange';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+					}
 					break;
 
 				case 17:
 					$color = 'lemon_yellow';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+					}
 					break;
 
 				case 18:
 					$color = 'lemon_yellow';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+					}
 					if(($currentStationOrderID >19 &&$currentStationOrderID< 25) )
 					{
 						$singleStation = $singleStation->where('express', '=', 'false');
@@ -234,30 +584,165 @@ class Model_line extends Model
 
 				case 19:
 					$color = 'lemon_yellow';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+					}
+
 					break;
 
 				case 20:
 					$color = 'lime';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+					}
 					break;
 
 				case 21:
 					$color = 'light gray';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+					}
 					break;
 
 				case 22:
 					$color = 'brown';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+					}
 					break;
 
 				case 23:
 					$color = 'brown';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+					}
 					break;
 
 				case 24:
 					$color = 'light gray';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+					}
 					break;
 
 				case 25:
 					$color = 'light gray';
+					if($runsExpress)
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								echo "TEST";
+							}
+						}
+					}
 					break;
 
 
