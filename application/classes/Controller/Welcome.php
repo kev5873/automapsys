@@ -249,16 +249,18 @@ private function downloadFile ($url, $path) {
 
 		$feeder = new Model_feed(); 
 
+		var_dump(shell_exec("C:\Users\Kenneth Li\Documents\ams\automapsys\a\ams downloader.exe")); 
+
 // $line_id, $start_station, $end_station, $start_time, $end_time, $service_replace_id, $filename)
 
 		// $stationset = array( 10, 30, 20, 40, 50, 60 ); 
 		// $feeder->insertToLineInfoArray( 6, $stationset, NULL,  NULL, NULL, 0, 'asdf'.time() );
-		$feeder->insertToLineInfo( 18, NULL, NULL, NULL,  NULL, NULL, 2, 'asdf' );
+		// $feeder->insertToLineInfo( 18, NULL, NULL, NULL,  NULL, NULL, 2, 'asdf' );
 
 		// echo "<br />"; 
 
-		$arr = $feeder->getStationWithOrder( "[2]" , "34 St" ); 
-		print_r($arr); 
+		// $arr = $feeder->getStationWithOrder( "[2]" , "34 St" ); 
+		// print_r($arr); 
 // $sets = array( array( "line_name" => "[3]" , "station_name" => "28 St" ) , array( "line_name" => "[6]" , "station_name" => "33 St" )  ); 
 // foreach($sets as $set)
 // {

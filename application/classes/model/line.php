@@ -50,7 +50,14 @@ class Model_line extends Model
 
 		// No Trains Between 3:
 
-		print_r($advisories); 
+		// print_r($advisories); 
+		// print_r($line); 
+		// foreach($advisories as $advisory)
+		// {
+		// 	if(  )
+		// }
+
+		if(  )
 
 		$theLine = DB::select()
 				->from('line_train')
