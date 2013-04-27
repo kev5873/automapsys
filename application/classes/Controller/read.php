@@ -16,7 +16,8 @@ class Controller_read extends Controller_Template {
 		$feeder = new Model_feed();
 		//$feeder->downloadFeed();
 	// 'a/s/status-1366255687.xml'
-		$fedArr = $feeder->processFeed('a/s/status-1366515360.xml');
+		//$fedArr = $feeder->processFeed('a/s/status-1366515360.xml');
+		$fedArr = $feeder->processFeed('a/s/status-1367088029.xml');
 	}
 
 } // End Welcome

@@ -7,7 +7,7 @@ class Model_feed extends Model
 	{
 		$url         = 'http://www.mta.info/status/serviceStatus.txt';
 		$currentTime = time();
-		$path        = gtecwd()."/a/s/status-".$currentTime.".xml";
+		$path        = getcwd()."/a/s/status-".$currentTime.".xml";
 		$newfname    = $path;
 		$file        = fopen ($url, "rb");
 		if($file)
