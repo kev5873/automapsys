@@ -257,12 +257,14 @@ private function downloadFile ($url, $path) {
 
 		// echo "<br />"; 
 
-$sets = array( array( "line_name" => "[6]" , "station_name" => "28 St" ) , array( "line_name" => "[6]" , "station_name" => "33 St" )  ); 
-foreach($sets as $set)
-{
-		print_r($feeder->getStationWithOrder( $set["line_name"] , $set["station_name"] ) ); 
-		echo "<br />";
-}
+		$arr = $feeder->getStationWithOrder( "[2]" , "34 St" ); 
+		print_r($arr); 
+// $sets = array( array( "line_name" => "[3]" , "station_name" => "28 St" ) , array( "line_name" => "[6]" , "station_name" => "33 St" )  ); 
+// foreach($sets as $set)
+// {
+// 		print_r($feeder->getStationWithOrder( $set["line_name"] , $set["station_name"] ) ); 
+// 		echo "<br />";
+// }
 		// print_r( $feeder->getStationWithOrder( "[6]" , "116" ) ); 
 
 

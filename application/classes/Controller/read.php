@@ -14,10 +14,10 @@ class Controller_read extends Controller_Template {
 		$this->template->message = 'hello, world!';
 
 		$feeder = new Model_feed();
-		//$feeder->downloadFeed();
+		// $feeder->downloadFeed();
 	// 'a/s/status-1366255687.xml'
-		//$fedArr = $feeder->processFeed('a/s/status-1366515360.xml');
-		$fedArr = $feeder->processFeed('a/s/status-1367088029.xml');
+	$fedArr = $feeder->processFeed('a/s/status-1367088556.xml');
+
 	}
 
 } // End Welcome
