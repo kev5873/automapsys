@@ -32,14 +32,18 @@ class Model_line extends Model
 		// Trains run local from A to B: 1
 		// Trains skip {stations} : 4
 
-		 $trainsNotRunning = array();
+		$trainsNotRunning = array();
 
-		// foreach($advisories as $arr)
-		// {
-		// 	print_r($arr);
-		// 	if($arr['service_replace_id'] == 2)
-		// 		array_push($trainsNotRunning, $arr['line_id']);
-		// }
+		foreach($advisories as $arr)
+		{
+			print_r($arr);
+			if($arr['service_replace_id'] == 2)
+				{array_push($trainsNotRunning, $arr['line_id']);}
+			else if($arr['service_replace_id'] == 1)
+			{
+				$local_service = array('line_id'=> $arr['line_id'],'start_station_id'=>$arr['start_station_id'],'end_station_id'=>$arr['end_station_id']);
+			}
+		}
 
 		// print_r($trainsNotRunning);
 
@@ -65,6 +69,8 @@ class Model_line extends Model
 		// 		}
 		// 	}
 		// }
+
+
 
 		$theLine = DB::select()
 				->from('line_train')
@@ -271,6 +277,11 @@ class Model_line extends Model
 
 
 			}
+			if($line== $local_service['line_id'])
+			{
+				
+			}
+
 			$singleStation = $singleStation->execute()->as_array();
 					
 			if(isset($singleStation[0]))
@@ -278,6 +289,7 @@ class Model_line extends Model
 
 		}
 
+		
 		return $returnString;
 		
 	}
