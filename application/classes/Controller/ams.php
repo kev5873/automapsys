@@ -15,7 +15,7 @@ class Controller_ams extends Controller_Template {
 
 		$line = new Model_line();
 		$feeder = new Model_feed();
-        $returnArray = $feeder->processFeed('a/s/status-1366515360.xml');
+        $returnArray = $feeder->getServiceChange('a/s/status-1367088029.xml');
 
         // // echo 'a'; 
         // echo count($returnArray); 
@@ -39,7 +39,7 @@ class Controller_ams extends Controller_Template {
 			$direction = "Downtown";
 		}
 
-		$this->template->lineData = $line->grabStations($id,$direction);
+		$this->template->lineData = $line->grabStations($id,$direction,'a/s/status-1366515360.xml');
 		$this->template->line = $id;
 		$this->template->routeDesignation = $line->getLineBullet($id);
 		$this->template->routeDetail = $line->getLineDescription($id);
@@ -50,10 +50,10 @@ class Controller_ams extends Controller_Template {
 		//echo "something <br/>";
 				//need to determine the correct train output
 
-		//var_dump($returnArray);
+		var_dump($returnArray);
 		$size = sizeof($returnArray);
 		echo "<br/>";
-		//echo $size;
+		echo $size;
 		$lineID = $line->getLineBullet($id);
 		//echo $lineID."  first train ID ";
 		$i=0;
@@ -63,9 +63,9 @@ class Controller_ams extends Controller_Template {
 		$otherlineId1[0]='';
 		while($j<=$size ){
 
-			if(isset($returnArray[$j]['trainLine']))
-			{
-				$otherlineId1[$z] = $returnArray[$j]['trainLine'];
+			if(isset($returnArray[$j]['line_id'])) {
+				$otherlineId1[$z] = $returnArray[$j]['line_id'];
+
 				$otherArr[$z]=$returnArray[$j];
 				$z++;
 			}	
@@ -77,16 +77,22 @@ class Controller_ams extends Controller_Template {
 
 		 while($i<$size ){
 				//echo $i;
-			if($returnArray[$i]['trainLine']!="")
+			if($returnArray[$i]['line_id']!="")
 			{
-				$otherlineId = $returnArray[$i]['trainLine'];
+				$otherlineId = $returnArray[$i]['line_id'];
+				//$line->getLineBullet($id);
+				$otherlineIdLetter= $line->getLineBullet($otherlineId);
 				//echo $i;
 				//echo  $otherlineId;
-				if($lineID == $otherlineId)
+				echo $otherlineIdLetter;
+				echo $lineID;
+
+				if($lineID == $otherlineIdLetter)
 				{
-					$this->template->advisory ='<br/>'.$returnArray[$i]['trainLine'].'<br/> Direction:'.$returnArray[$i]['boundStation'].' Bound <br/> Start: '
-					.$returnArray[$i]['startStation'].'<br/> End: '.$returnArray[$i]['endStation'].'<br/> Service Chg: '
-					.$returnArray[$i]['changeSummary'].'<br/>';
+					 $this->template->advisory ='<br/>'.$returnArray[$i]['line_id'].'<br/> Direction:'.$returnArray[$i]['bound_station_id'].' Bound <br/> Start: '
+					 .$returnArray[$i]['start_station_id'].'<br/> End: '.$returnArray[$i]['end_station_id'].'<br/> Service Chg: '
+					 ;
+					//$this->template->advisory = $returnArray[$i]['line_id'];
 					break;
 				}
 				else{
@@ -128,8 +134,10 @@ class Controller_ams extends Controller_Template {
 		{
 			$lineStatus = $otherlineId1[$k];
 			//echo $lineStatus;
+			$otherlineIdLetter= $line->getLineBullet($lineStatus);
 
-			switch($lineStatus)
+
+			switch($otherlineIdLetter)
 			{
 				case '1':$this->template->status1= "<img src='a/i/caution.png' class='miniC'/>";break;
 				case '2':$this->template->status2= "<img src='a/i/caution.png' class='miniC'/>";break;

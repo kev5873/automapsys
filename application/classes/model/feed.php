@@ -7,7 +7,7 @@ class Model_feed extends Model
 	{
 		$url         = 'http://www.mta.info/status/serviceStatus.txt';
 		$currentTime = time();
-		$path        = gtecwd()."/a/s/status-".$currentTime.".xml";
+		$path        = getcwd()."/a/s/status-".$currentTime.".xml";
 		$newfname    = $path;
 		$file        = fopen ($url, "rb");
 		if($file)
@@ -82,7 +82,7 @@ class Model_feed extends Model
 						$aChange = $output[$i]['change'][$j] . '<br />';
 						$bChange = $output[$i]['changeDetail'][$j];
 						array_push($retArr, $this->processIndividual($aChange, $bChange, $file));
-						echo '<br />';
+						//echo '<br />';
 						//$retArr[$i]=$this->processIndividual($aChange, $bChange);
 					}
 				}
@@ -191,124 +191,132 @@ class Model_feed extends Model
 				for($i=0;$i<sizeof($stationlist);$i++)
 				{
 					echo "TrainLine: $trainLine , StationListName: ".$stationlist[$i]."<br />";
-					$gaga = $this->getStationWithOrder('['.$trainLine.']', $stationlist[$i]); 
+					//$gaga = $this->getStationWithOrder('['.$trainLine.']', $stationlist[$i]); 
 					//foreach ($gaga as $key)
 					//{
 					//	echo $key;
 					//}
 					//echo $trainLine."-----".$stationlist[$i];
 					//echo '<br />';
-					//array_push($stationOrder, $this->getStationWithOrder('['.$trainLine.']', $stationlist[$i])); 
-					//echo $stationlist[$i] . ' : ' . $stationOrder[$i]['station_order'] . '<br />';
+					array_push($stationOrder, $this->getStationWithOrder('['.$trainLine.']', $stationlist[$i])); 
+					echo $stationlist[$i] . ' : ' . $stationOrder[$i]['station_order'] . '<br />';
 				}
 			}
 		}
 		//no train runing case
-		//else if(strpos($change, 'No trains running') > 0)
-		//{
-		//	$trainLineId = $this->getStationWithOrder('['.$trainLine.']');
-		//	$this->insertToLineInfo($trainLineId, NULL, NULL, NULL, NULL, NULL, 2, $filename);
-		//	// return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 2);
-		//}
-		////no train between case
-		//else if(strpos($change, 'No trains between') > 0) //
-		//{
-		//	$stationString     = substr($change, strpos($change, 'between ') + 8);	
-		//	$stations          = explode(" and ", $stationString);	
-////
-		//	if(strstr($stations[0], "-")) 
-		//	{
-		//		$startStation = trim(str_replace("-", " - ", $stations[0])); //make it to be same style of name for station
-		//	} 
-		//	else 
-		//	{
-		//		$startStation = trim($stations[0]);
-		//	}
-		//	if(strpos($stations[1], "[") > 0)
-		//	{
-		//		$endStation = trim(substr($stations[1], 0, strpos($stations[1], "["))); // This should overpower the loop
-		//	} 
-		//	else if(strstr($stations[1], "-")) 
-		//	{
-		//		$endStation = trim(str_replace("-", " - ", $stations[1]));
-		//	} 
-		//	else 
-		//	{
-		//		$endStation = trim($stations[1]);
-		//	}
-		//	//get the station name
-////
-		//	$stationOrder1 = $this->getStationWithOrder('['.$trainLine.']', $startStation); // Returns array line_id, station_id, station_order
-		//	$stationOrder2 = $this->getStationWithOrder('['.$trainLine.']', $endStation);
-////
-		//	$startStation = $stationOrder1['station_order'];
-		//	$endStation = $stationOrder2['station_order'];
-		//	$this->insertToLineInfo( $stationOrder1['line_id'], $startStation, $endStation, NULL, NULL, NULL, 3, $filename);
-		//	// return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 3);
-		//}
-		//else if(strpos($change, 'run express') > 0 || strpos($change, 'run local') > 0) // Runs Express/Local
-		//{
-		//	$stationString     = substr($change, strpos($change, 'from ') + 5);
-		//	$stations          = explode(" to ", $stationString);
-		//	// uptown downtown determination
-		//	$startIndex        = strpos($change, ' ');
-		//	$endIndex          = strpos($change, '-');
-		//	$boundStation      = substr($change, $startIndex, $endIndex - $startIndex);
-		//	$boundStationOrder = $this->getStationWithOrder('['.$trainLine.']', trim($boundStation));
-		//	
-		//	// get the station name
-		//	if(strstr($stations[0], "-")) {
-		//		$startStation = trim(str_replace("-", " - ", $stations[0])); //make it to be same style of name for station
-		//	} else {
-		//		$startStation = trim($stations[0]);
-		//	}
-		//	if(strpos($stations[1], "[") > 0) {
-		//		$endStation = trim(substr($stations[1], 0, strpos($stations[1], "["))); // This should overpower the loop
-		//	} else if(strstr($stations[1], "-")) {
-		//		$endStation = trim(str_replace("-", " - ", $stations[1]));
-		//	} else {
-		//		$endStation = trim($stations[1]);
-		//	}
-////
-		//	if($boundStationOrder['station_order'] > 1)
-		//	{
-		//		echo "DOWNTOWN ";// Going downtown
-		//	}
-		//	else
-		//	{
-		//		echo "UPTOWN ";// Going uptown
-		//	}
-////
-		//	if(strpos($change, 'run express') > 0) // Service change runs express
-		//	{
-		//		$stationString = substr($change, strpos($change, 'from ') + 5);
-		//		$stations      = explode(" to ", $stationString);
-		//		
-		//		$stationOrder1 = $this->getStationWithOrder('['.$trainLine.']', $startStation); // Returns array line_id, station_id, station_order
-		//		$stationOrder2 = $this->getStationWithOrder('['.$trainLine.']', $endStation);
-////
-		//		echo $trainLine . ' Trains run express' . '<br />';
-		//		echo $boundStation . ' : ' . $boundStationOrder['station_order'] . '<br />';
-		//		echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
-		//		echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
-		//		return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 0);
-		//		// INSERT STUFF INTO THE DATABASE
-		//	}
-		//	else if(strpos($change, 'run local') > 0)
-		//	{
-		//		$stationString = substr($change, strpos($change, 'from ') + 5);
-		//		$stations      = explode(" to ", $stationString);
-		//		
-		//		$stationOrder1 = $this->getStationWithOrder('['.$trainLine.']', $startStation); // Returns array line_id, station_id, station_order
-		//		$stationOrder2 = $this->getStationWithOrder('['.$trainLine.']', $endStation);
-////
-		//		echo $trainLine . ' Trains run local' . '<br />';
-		//		echo $boundStation . ' : ' . $boundStationOrder['station_order'] . '<br />';
-		//		echo $startStation . ' : ' . $stationOrder1['station_order'] . '<br />';
-		//		echo $endStation . ' : ' . $stationOrder2['station_order'] . '<br />';
-		//		return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 1);
-		//	}
-		//}
+		else if(strpos($change, 'No trains running') > 0)
+		{
+			$trainLineId = $this->getStationWithOrder('['.$trainLine.']');
+			$this->insertToLineInfo($trainLineId['line_id'], NULL, NULL, NULL, NULL, NULL, 2, $filename);
+			// return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 2);
+		}
+		//no train between case
+		else if(strpos($change, 'No trains between') > 0) //
+		{
+			$stationString     = substr($change, strpos($change, 'between ') + 8);	
+			$stations          = explode(" and ", $stationString);	
+
+			if(strstr($stations[0], "-")) 
+			{
+				$startStation = trim(str_replace("-", " - ", $stations[0])); //make it to be same style of name for station
+			} 
+			else 
+			{
+				$startStation = trim($stations[0]);
+			}
+			if(strpos($stations[1], "[") > 0)
+			{
+				$endStation = trim(substr($stations[1], 0, strpos($stations[1], "["))); // This should overpower the loop
+			} 
+			else if(strstr($stations[1], "-")) 
+			{
+				$endStation = trim(str_replace("-", " - ", $stations[1]));
+			} 
+			else 
+			{
+				$endStation = trim($stations[1]);
+			}
+			//get the station name
+
+			$stationOrder1 = $this->getStationWithOrder('['.$trainLine.']', $startStation); // Returns array line_id, station_id, station_order
+			$stationOrder2 = $this->getStationWithOrder('['.$trainLine.']', $endStation);
+
+			$startStation = $stationOrder1['station_order'];
+			$endStation = $stationOrder2['station_order'];
+			$this->insertToLineInfo( $stationOrder1['line_id'], $startStation, $endStation, NULL, NULL, NULL, 3, $filename);
+			// return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 3);
+		}
+		else if(strpos($change, 'run express') > 0 || strpos($change, 'run local') > 0) // Runs Express/Local
+		{
+			if(strpos($change, 'from ') > 0)
+			{
+				$stationString     = substr($change, strpos($change, 'from ') + 5);
+				$stations          = explode(" to ", $stationString);
+			}
+			else
+			{
+				$stationString     = substr($change, strpos($change, 'between ') + 8);
+				$stations          = explode(" and ", $stationString);
+			}
+			// uptown downtown determination
+			$startIndex        = strpos($change, ' ');
+			$endIndex          = strpos($change, '-');
+			$boundStation      = substr($change, $startIndex, $endIndex - $startIndex);
+			$boundStationOrder = $this->getStationWithOrder('['.$trainLine.']', trim($boundStation));
+
+			// get the station name
+			if(strstr($stations[0], "-")) {
+				$startStation = trim(str_replace("-", " - ", $stations[0])); //make it to be same style of name for station
+			} else {
+				$startStation = trim($stations[0]);
+			}
+			if(strpos($stations[1], "[") > 0) {
+				$endStation = trim(substr($stations[1], 0, strpos($stations[1], "["))); // This should overpower the loop
+			} else if(strstr($stations[1], "-")) {
+				$endStation = trim(str_replace("-", " - ", $stations[1]));
+			} else {
+				$endStation = trim($stations[1]);
+			}
+
+			if($boundStationOrder['station_order'] > 1)
+			{
+				//echo "DOWNTOWN";// Going downtown
+			}
+			else
+			{
+				//echo "UPTOWN";// Going uptown
+			}
+
+			if(strpos($change, 'run express') > 0) // Service change runs express
+			{
+				$stationString = substr($change, strpos($change, 'from ') + 5);
+				$stations      = explode(" to ", $stationString);
+				
+				$stationOrder1 = $this->getStationWithOrder('['.$trainLine.']', $startStation); // Returns array line_id, station_id, station_order
+				$stationOrder2 = $this->getStationWithOrder('['.$trainLine.']', $endStation);
+
+				$boundStation = $boundStationOrder['station_order'];
+				$startStation = $stationOrder1['station_order'];
+				$endStation = $stationOrder2['station_order'];
+				$this->insertToLineInfo( $stationOrder1['line_id'], $startStation, $endStation, $boundStation, NULL, NULL, 0, $filename);
+				return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 0);
+				// INSERT STUFF INTO THE DATABASE
+			}
+			else if(strpos($change, 'run local') > 0)
+			{
+				$stationString = substr($change, strpos($change, 'from ') + 5);
+				$stations      = explode(" to ", $stationString);
+				
+				$stationOrder1 = $this->getStationWithOrder('['.$trainLine.']', $startStation); // Returns array line_id, station_id, station_order
+				$stationOrder2 = $this->getStationWithOrder('['.$trainLine.']', $endStation);
+
+				$boundStation = $boundStationOrder['station_order'];
+				$startStation = $stationOrder1['station_order'];
+				$endStation = $stationOrder2['station_order'];
+				$this->insertToLineInfo( $stationOrder1['line_id'], $startStation, $endStation, $boundStation, NULL, NULL, 1, $filename);
+				return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 1);
+			}
+		}
 		// else {}
 	}
 
@@ -375,7 +383,7 @@ class Model_feed extends Model
 			->where('line_id', '=', $line_id)->execute()->as_array(); 
 
 			$station_order = NULL; 
-			$station_id = NULL; 
+			$station_id = NULL;  
 			if( count($result) == 1 )
 			{
 				$station_id = $result[0]['station_id']; 
@@ -389,31 +397,6 @@ class Model_feed extends Model
 			{
 				echo "Missing Stuff for Station: $station_name on Line: $line_id ";  
 			}
-
-			// $result = DB::select('station_id')->from('station')->where('station_name', 'like', '%'.$station_name.'%')->execute()->as_array();
-			// print_r($result); 
-			// if( count($result) != 0)
-			// {
-			// 	$station_id = $result[0]['station_id']; 
-
-			// 	echo "StationID:".$station_id." for $station_name on $line_id to $line_name_parsed ;"; 
-			// 	// print_r($line_id);  
-
-			// 	$result = DB::select('order_number')
-			// 		->from('station_order')
-			// 		->where('line_id', '=', $line_id)
-			// 		->where('station_id', '=' , $station_id)
-			// 		->execute()->as_array();
-
-			// 	if( isset($result[0]) )
-			// 	{
-			// 	$station_order = $result[0]['order_number']; 		
-			// 	}
-			// 	else
-			// 	{
-			// 		print_r($result); 
-			// 	}
-			// }
 
 		}
 		return array( "line_id" => $line_id, "station_id" => $station_id , "station_order" => $station_order ); 
@@ -447,7 +430,8 @@ class Model_feed extends Model
 		return true; 
 	}
 
-	public function insertToLineInfo( $line_id, $start_station, $end_station, $bound_station_id, $start_time, $end_time, $service_replace_id, $filename)
+	public function insertToLineInfo( $line_id, $start_station, $end_station, $bound_station_id, $start_time, 
+		$end_time, $service_replace_id, $filename)
 // line_id => integer, start_station => integer, end_station -> integer, bound_station_id => direction(>1 for downtown, else for uptown),
 // start_time => integer (unixtimestamp) , end_time => integer (unixtimestamp),
 // service_replace_id => real (double) , filename => text	
@@ -461,34 +445,49 @@ class Model_feed extends Model
 
 	// returns a true or false, true if works, false, else. 
 	{
-		try{
+		$result = DB::select('*')->from('line_info')
+		->where('line_id', "=", $line_id)
+		->where('start_station_id', "=", $start_station)
+		->where('end_station_id', "=", $end_station)
+		->where('bound_station_id', "=", $bound_station_id)
+		->where('start_time', "=", $start_time)
+		->where('end_time', "=", $end_time)
+		->where('service_replace_id', "=", $service_replace_id)
+		->where('filename', "=", $filename)
+		->execute()->as_array();
 
-		$result = DB::select('line_id')->from('line_info')
-		->where('line_id', '=', $line_id)
-		->where('start_station_id', '=', $start_station)
-		->where('end_station_id', '=', $end_station)
-		->where('bound_station_id', '=', $bound_station)
-		->where('start_time', '=', $start_time)
-		->where('end_time', '=', $end_time)
-		->where('service_replace_id', '=', $service_replace_id)
-		->where('filename', '=', $filename)
-		->execute()->as_array(); 
-		
-		if( count($result['line_id']) != 0 )
+		$result2 = DB::select( 'id' )->from('line_info')->execute()->as_array(); // check if the table has values; 
+
+		// var_dump( empty($result) ); 
+		if( !empty($result) && !empty($result2) )	// does the record exists
 		{
-			return true; 
+				return true; 
 		}
 
 		$query = DB::insert('line_info', array( "line_id" , "start_station_id", "end_station_id" , "start_time" , "end_time", "service_replace_id", 
 			"filename", "bound_station_id" )
 		)->values( array( $line_id, $start_station, $end_station, $start_time, $end_time, $service_replace_id, $filename, $bound_station_id ) )->execute(); 
 			return true; 
-		
+	}
+
+
+	public function getServiceChange($filename)
+	{
+		$result = DB::select ('line_id','start_station_id','end_station_id','bound_station_id','service_replace_id','filename') ->from('line_info') ->where('filename','=', $filename)
+		->execute()->as_array();
+		$i=0;
+		foreach ($result as $res) {
+			$line_id = $res['line_id'];
+			$start_station = $res['start_station_id'];
+			$end_station = $res['end_station_id'];
+			$bound = $res['bound_station_id'];
+			$service = $res['service_replace_id'];
+			$theFile= $res['filename'];
+		$array1[$i]= array('line_id' => $line_id, 'start_station_id' => $start_station, 'end_station_id' => $end_station, 'bound_station_id' => $bound, 'SERVICE_REPLACE_ID' => $service, 'filename' => $theFile);
+		$i++;
 		}
-		catch(Exception $e)
-		{
-			// die( Kohana::debug($e) ); 
-			return false; 
-		}
+		return $array1;
+
+
 	}
  }

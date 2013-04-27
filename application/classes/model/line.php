@@ -2,8 +2,69 @@
 
 class Model_line extends Model
 {
-	public function grabStations($line,$direction)
+	public function grabStations($line,$direction,$location)
 	{
+		// $advisories = DB::select()
+		// 		->from('line_info')
+		// 		->where('filename', '=', $location)
+		// 		->where()
+		// 		->execute()->as_array();
+
+		$direction = strtolower($direction); 
+		if( $direction == "downtown"){
+		$advisories_query = DB::query( Database::SELECT , "select * from line_info where filename = :filename and line_id = :line_id
+			and ( bound_station_id > 1 or bound_station_id is NULL ); " ); }
+		else {
+			$advisories_query = DB::query( Database::SELECT , "select * from line_info where filename = :filename and line_id = :line_id
+			and ( bound_station_id <= 1 or bound_station_id is NULL ); " ); }
+
+		$advisories_query->param( ":filename" , $location); 
+		$advisories_query->param( ":line_id" , $line); 
+
+		$advisories = $advisories_query->execute()->as_array(); 
+
+		print_r($advisories); 
+
+		// SERVICE_REPLACE_ID CODE:
+		// No trains running : 2
+		// No trains between A & B : 3
+		// Trains run express from A to B : 0
+		// Trains run local from A to B: 1
+		// Trains skip {stations} : 4
+
+		 $trainsNotRunning = array();
+
+		// foreach($advisories as $arr)
+		// {
+		// 	print_r($arr);
+		// 	if($arr['service_replace_id'] == 2)
+		// 		array_push($trainsNotRunning, $arr['line_id']);
+		// }
+
+		// print_r($trainsNotRunning);
+
+		if(in_array($line, $trainsNotRunning))
+		{
+			return '<tr>
+			<td style="font-size: 24pt;">Trains are not running.</td>
+			</tr>';
+		}
+
+		//die();
+
+		// No Trains Between:
+
+		// print_r($advisories); 
+		// foreach($advisories as $arr)
+		// {
+		// 	if( $arr['service_replace_id'] == 3)
+		// 	{
+		// 		if( $line == $arr['line_id'] && )
+		// 		{
+
+		// 		}
+		// 	}
+		// }
 
 		$theLine = DB::select()
 				->from('line_train')
@@ -32,6 +93,12 @@ class Model_line extends Model
 		}
 
 
+// SERVICE_REPLACE_ID CODE:
+// No trains running : 2
+// No trains between A & B : 3
+// Trains run express from A to B : 0
+// Trains run local from A to B: 1
+// Trains skip {stations} : 4
 
 		
 		$returnString ='';
@@ -497,4 +564,7 @@ class Model_line extends Model
 			->execute()->as_array();
 		return $theLine[0]['line_name'];
 	}
+
+
+	
 }
