@@ -33,15 +33,6 @@ class Model_line extends Model
 		// Trains skip {stations} : 4
 
 		 $trainsNotRunning = array();
-		 
-		// foreach($advisories as $arr)
-		// {
-		// 	print_r($arr);
-		// 	if($arr['service_replace_id'] == 2)
-		// 		array_push($trainsNotRunning, $arr['line_id']);
-		// }
-
-		// print_r($trainsNotRunning);
 
 		if(in_array($line, $trainsNotRunning))
 		{
@@ -49,22 +40,21 @@ class Model_line extends Model
 			<td style="font-size: 24pt;">Trains are not running.</td>
 			</tr>';
 		}
-
-		//die();
-
-		// No Trains Between:
+		// No Trains Between 3:
 
 		// print_r($advisories); 
-		// foreach($advisories as $arr)
-		// {
-		// 	if( $arr['service_replace_id'] == 3)
-		// 	{
-		// 		if( $line == $arr['line_id'] && )
-		// 		{
 
-		// 		}
-		// 	}
-		// }
+		foreach($advisories as $arr)
+		{
+					print_r($arr); 
+			if( $arr['service_replace_id'] == 3)
+			{
+				if( $line == $arr['line_id'] )
+				{
+					// echo $line; 
+				}
+			}
+		}
 
 		$theLine = DB::select()
 				->from('line_train')
