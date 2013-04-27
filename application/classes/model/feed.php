@@ -416,16 +416,15 @@ class Model_feed extends Model
 				} 	
 			}
 			else if( $station_name == "36 St" && count($result) == 2 )
-		    {
-		    	if( abs( 33 - $result[0]["order_number"] ) < abs( 33 - $result[1]["order_number"] )   )
-		    	{
-		        	$station_order = $result[0]["order_number"]; 
-		    	}
-		    	else
-		    	{
-		     		$station_order = $result[1]["order_number"];
-		  		}  
-		   	}
+			{
+				if( abs( 33 - $result[0]["order_number"] ) < abs( 33 - $result[1]["order_number"] )   )
+				{
+					$station_order = $result[0]["order_number"]; 
+				}
+				else{
+				$station_order = $result[1]["order_number"];
+				}  
+			}
 			else
 			{
 				echo "Missing Stuff for Station: '$station_name' on Line_ID: '$line_id' for Line_Name: $line_name. ";   
@@ -515,11 +514,18 @@ class Model_feed extends Model
 			$bound = $res['bound_station_id'];
 			$service = $res['service_replace_id'];
 			$theFile= $res['filename'];
-		$array1[$i]= array('line_id' => $line_id, 'start_station_id' => $start_station, 'end_station_id' => $end_station, 'bound_station_id' => $bound, 'SERVICE_REPLACE_ID' => $service, 'filename' => $theFile);
+		$array1[$i]= array('line_id' => $line_id, 'start_station_id' => $start_station, 'end_station_id' => $end_station, 'bound_station_id' => $bound, 'service_replace_id' => $service, 'filename' => $theFile);
 		$i++;
 		}
 		return $array1;
+	}
 
+	public function getStationNameforStationOrder($lineID, $stationOrder){
 
+		$name = DB::	select('station_name') 
+		->from('station')->join('station_order')->on('station.station_id', '=', 'station_order.station_id') ->where ('line_id','=',$lineID) ->where('order_number','=',$stationOrder)
+		->execute()->as_array();
+
+		return $name;
 	}
  }

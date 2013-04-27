@@ -89,10 +89,37 @@ class Controller_ams extends Controller_Template {
 
 				if($lineID == $otherlineIdLetter)
 				{
-					 $this->template->advisory ='<br/>'.$returnArray[$i]['line_id'].'<br/> Direction:'.$returnArray[$i]['bound_station_id'].' Bound <br/> Start: '
-					 .$returnArray[$i]['start_station_id'].'<br/> End: '.$returnArray[$i]['end_station_id'].'<br/> Service Chg: '
-					 ;
+					if((($returnArray[$i]['start_station_id'])=="" )&& (($returnArray[$i]['end_station_id'])=="")){
+
+						$this->template->advisory ="<br/>No train running";
+						break;
+					}
+					else{ 
+					$startStation= $feeder->getStationNameforStationOrder($otherlineId,$returnArray[$i]['start_station_id']);
+					$endStation= $feeder->getStationNameforStationOrder($otherlineId,$returnArray[$i]['end_station_id']);
+				}
+						
+					$directionStation= $feeder->getStationNameforStationOrder($otherlineId,$returnArray[$i]['bound_station_id']);
+
+					if($directionStation[0]['station_name']!=""){} else{$directionStation[0]['station_name']="none";}
+
+					 $commanCase='<br/> Line: '.$lineID.'<br/> Direction:'.$directionStation[0]['station_name'].' Bound <br/> Start: '
+					 .$startStation[0]['station_name'].'<br/> End: '.$endStation[0]['station_name'].'<br/> Service Chg: ';
+
+
+					 if($returnArray[$i]['service_replace_id']==1){$this->template->advisory = $commanCase." Trains run local from ".$startStation[0]['station_name']." to ".$endStation[0]['station_name'];}
+					 	else if($returnArray[$i]['service_replace_id']==3){$this->template->advisory = $commanCase." there is no train from ".$startStation[0]['station_name']." to ".$endStation[0]['station_name']; }
+					 	else if($returnArray[$i]['service_replace_id']==4){ $this->template->advisory = $commanCase." Trains skip from ".$startStation[0]['station_name']." to ".$endStation[0]['station_name'];}
+					 	else if($returnArray[$i]['service_replace_id']==0){ $this->template->advisory = $commanCase." Trains run express from ".$startStation[0]['station_name']." to ".$endStation[0]['station_name'];}
+
+					 //$this->template->advisory =
 					//$this->template->advisory = $returnArray[$i]['line_id'];
+					 	// SERVICE_REPLACE_ID CODE:
+// No trains running : 2
+// No trains between A & B : 3
+// Trains run express from A to B : 0
+// Trains run local from A to B: 1
+// Trains skip {stations} : 4
 					break;
 				}
 				else{
