@@ -201,8 +201,16 @@ class Model_feed extends Model
 		}
 		else if(strpos($change, 'run express') > 0 || strpos($change, 'run local') > 0) // Runs Express/Local
 		{
-			$stationString     = substr($change, strpos($change, 'from ') + 5);
-			$stations          = explode(" to ", $stationString);
+			if(strpos($change, 'from ') > 0)
+			{
+				$stationString     = substr($change, strpos($change, 'from ') + 5);
+				$stations          = explode(" to ", $stationString);
+			}
+			else
+			{
+				$stationString     = substr($change, strpos($change, 'between ') + 8);
+				$stations          = explode(" and ", $stationString);
+			}
 			// uptown downtown determination
 			$startIndex        = strpos($change, ' ');
 			$endIndex          = strpos($change, '-');
