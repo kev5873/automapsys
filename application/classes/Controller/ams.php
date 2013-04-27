@@ -95,17 +95,26 @@ class Controller_ams extends Controller_Template {
 						break;
 					}
 					else{ 
-					$startStation= $feeder->getStationNameforStationOrder($otherlineId,$returnArray[$i]['start_station_id']);
-					$endStation= $feeder->getStationNameforStationOrder($otherlineId,$returnArray[$i]['end_station_id']);
-				}
+						$startStation= $feeder->getStationNameforStationOrder($otherlineId,$returnArray[$i]['start_station_id']);
+						$endStation= $feeder->getStationNameforStationOrder($otherlineId,$returnArray[$i]['end_station_id']);
+						}
 						
-					$directionStation= $feeder->getStationNameforStationOrder($otherlineId,$returnArray[$i]['bound_station_id']);
+					if($returnArray[$i]['bound_station_id']!="")						
+					{
+						$directionStation= $feeder->getStationNameforStationOrder($otherlineId,$returnArray[$i]['bound_station_id']);
+					 	$commanCase='<br/> Line: '.$lineID.'<br/> Direction:'.$directionStation[0]['station_name'].' Bound <br/> Start: '
+						 .$startStation[0]['station_name'].'<br/> End: '.$endStation[0]['station_name'].'<br/> Service Chg: ';
 
-					if($directionStation[0]['station_name']!=""){} else{$directionStation[0]['station_name']="none";}
 
-					 $commanCase='<br/> Line: '.$lineID.'<br/> Direction:'.$directionStation[0]['station_name'].' Bound <br/> Start: '
-					 .$startStation[0]['station_name'].'<br/> End: '.$endStation[0]['station_name'].'<br/> Service Chg: ';
+					}
+					else{
+						
+						 $commanCase='<br/> Line: '.$lineID.'<br/>'.'Start: '
+						 .$startStation[0]['station_name'].'<br/> End: '.$endStation[0]['station_name'].'<br/> Service Chg: ';
+					}
 
+
+					
 
 					 if($returnArray[$i]['service_replace_id']==1){$this->template->advisory = $commanCase." Trains run local from ".$startStation[0]['station_name']." to ".$endStation[0]['station_name'];}
 					 	else if($returnArray[$i]['service_replace_id']==3){$this->template->advisory = $commanCase." there is no train from ".$startStation[0]['station_name']." to ".$endStation[0]['station_name']; }
