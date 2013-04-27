@@ -257,7 +257,7 @@ private function downloadFile ($url, $path) {
 
 		// echo "<br />"; 
 
-		$arr = $feeder->getStationWithOrder( "[3]" , "34 St" ); 
+		$arr = $feeder->getStationWithOrder( "[2]" , "34 St" ); 
 		print_r($arr); 
 // $sets = array( array( "line_name" => "[3]" , "station_name" => "28 St" ) , array( "line_name" => "[6]" , "station_name" => "33 St" )  ); 
 // foreach($sets as $set)
