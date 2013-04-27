@@ -49,9 +49,12 @@ class Model_line extends Model
 		}
 
 		$runsExpress = false;
-		if($advisories[0]['service_replace_id'] == 0)
+		if(isset($advisories[0]))
 		{
-			$runsExpress = true;
+			if($advisories[0]['service_replace_id'] == 0)
+			{
+				$runsExpress = true;
+			}
 		}
 
 		// No Trains Between 3:
