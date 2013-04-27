@@ -393,11 +393,21 @@ class Model_feed extends Model
 			{
 				echo 'Multiple Result Error';
 			}
+			else if( $station_name == "36 St" && count($result) == 2 )
+		    {
+		    	if( abs( 33 - $result[0]["order_number"] ) < abs( 33 - $result[1]["order_number"] )   )
+		    	{
+		        	$station_order = $result[0]["order_number"]; 
+		    	}
+		    	else
+		    	{
+		     		$station_order = $result[1]["order_number"];
+		  		}  
+		   	}
 			else
 			{
 				echo "Missing Stuff for Station: $station_name on Line: $line_id ";  
 			}
-
 		}
 		return array( "line_id" => $line_id, "station_id" => $station_id , "station_order" => $station_order ); 
 	}
