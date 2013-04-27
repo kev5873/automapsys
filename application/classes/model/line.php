@@ -23,23 +23,24 @@ class Model_line extends Model
 
 		$advisories = $advisories_query->execute()->as_array(); 
 
-		print_r($advisories); 
-
 		// SERVICE_REPLACE_ID CODE:
-		// No trains running : 2
-		// No trains between A & B : 3
+		// No trains running : 2 (Done)
+		// No trains between A & B : 3 
 		// Trains run express from A to B : 0
 		// Trains run local from A to B: 1
-		// Trains skip {stations} : 4
+		// Trains skip {stations} : 4 (Cant do)
 
-		 $trainsNotRunning = array();
+		print_r($advisories);
+		die();
 
-		// foreach($advisories as $arr)
-		// {
-		// 	print_r($arr);
-		// 	if($arr['service_replace_id'] == 2)
-		// 		array_push($trainsNotRunning, $arr['line_id']);
-		// }
+		$trainsNotRunning = array();
+
+		foreach($advisories as $arr)
+		{
+			print_r($arr);
+			if($arr['service_replace_id'] == 2)
+				array_push($trainsNotRunning, $arr['line_id']);
+		}
 
 		// print_r($trainsNotRunning);
 
@@ -50,6 +51,11 @@ class Model_line extends Model
 			</tr>';
 		}
 
+		/*if($advisories[0]['service_replace_id'] == 0)
+		{
+
+		}
+		*/
 		//die();
 
 		// No Trains Between:
