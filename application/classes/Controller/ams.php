@@ -52,7 +52,7 @@ class Controller_ams extends Controller_Template {
 
 		//var_dump($returnArray);
 		$size = sizeof($returnArray);
-\
+
 		echo "<br/>";
 		//echo "<br/>";
 		//echo $size;

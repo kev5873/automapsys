@@ -6,7 +6,7 @@ class Model_line extends Model
 	{
 		// $advisories = DB::select()
 		// 		->from('line_info')
-		// 		->where('filename', '=', $location)
+		// 		->where('filename', '=', $location) 	
 		// 		->where()
 		// 		->execute()->as_array();
 
