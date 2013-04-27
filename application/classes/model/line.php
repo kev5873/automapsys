@@ -33,7 +33,7 @@ class Model_line extends Model
 		// Trains skip {stations} : 4
 
 		 $trainsNotRunning = array();
-
+		 
 		// foreach($advisories as $arr)
 		// {
 		// 	print_r($arr);
