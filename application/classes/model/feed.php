@@ -428,11 +428,18 @@ class Model_feed extends Model
 			$bound = $res['bound_station_id'];
 			$service = $res['service_replace_id'];
 			$theFile= $res['filename'];
-		$array1[$i]= array('line_id' => $line_id, 'start_station_id' => $start_station, 'end_station_id' => $end_station, 'bound_station_id' => $bound, 'SERVICE_REPLACE_ID' => $service, 'filename' => $theFile);
+		$array1[$i]= array('line_id' => $line_id, 'start_station_id' => $start_station, 'end_station_id' => $end_station, 'bound_station_id' => $bound, 'service_replace_id' => $service, 'filename' => $theFile);
 		$i++;
 		}
 		return $array1;
+	}
 
+	public function getStationNameforStationOrder($lineID, $stationOrder){
 
+		$name = DB::	select('station_name') 
+		->from('station')->join('station_order')->on('station.station_id', '=', 'station_order.station_id') ->where ('line_id','=',$lineID) ->where('order_number','=',$stationOrder)
+		->execute()->as_array();
+
+		return $name;
 	}
  }
