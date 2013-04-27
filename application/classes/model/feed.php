@@ -261,8 +261,15 @@ class Model_feed extends Model
 			// uptown downtown determination
 			$startIndex        = strpos($change, ' ');
 			$endIndex          = strpos($change, '-');
-			$boundStation      = substr($change, $startIndex, $endIndex - $startIndex);
-			$boundStationOrder = $this->getStationWithOrder('['.$trainLine.']', trim($boundStation));
+			if(strpos($change, 'bound') > 0)
+			{
+				$boundStation      = substr($change, $startIndex, $endIndex - $startIndex);
+				$boundStationOrder = $this->getStationWithOrder('['.$trainLine.']', trim($boundStation));
+			}
+			else
+			{
+				$boundStation = NULL; // This means both directions
+			}
 
 			// get the station name
 			if(strstr($stations[0], "-")) {
@@ -278,6 +285,8 @@ class Model_feed extends Model
 				$endStation = trim($stations[1]);
 			}
 
+			$boundStationOrder = NULL;
+			/*
 			if($boundStationOrder['station_order'] > 1)
 			{
 				//echo "DOWNTOWN";// Going downtown
@@ -286,6 +295,7 @@ class Model_feed extends Model
 			{
 				//echo "UPTOWN";// Going uptown
 			}
+			*/
 
 			if(strpos($change, 'run express') > 0) // Service change runs express
 			{
@@ -299,8 +309,7 @@ class Model_feed extends Model
 				$startStation = $stationOrder1['station_order'];
 				$endStation = $stationOrder2['station_order'];
 				$this->insertToLineInfo( $stationOrder1['line_id'], $startStation, $endStation, $boundStation, NULL, NULL, 0, $filename);
-				return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 0);
-				// INSERT STUFF INTO THE DATABASE
+				print_r(array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 0));
 			}
 			else if(strpos($change, 'run local') > 0)
 			{
@@ -314,7 +323,7 @@ class Model_feed extends Model
 				$startStation = $stationOrder1['station_order'];
 				$endStation = $stationOrder2['station_order'];
 				$this->insertToLineInfo( $stationOrder1['line_id'], $startStation, $endStation, $boundStation, NULL, NULL, 1, $filename);
-				return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 1);
+				print_r(array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 1));
 			}
 		}
 		// else {}
