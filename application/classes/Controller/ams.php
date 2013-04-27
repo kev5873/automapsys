@@ -15,7 +15,7 @@ class Controller_ams extends Controller_Template {
 
 		$line = new Model_line();
 		$feeder = new Model_feed();
-        $returnArray = $feeder->getServiceChange('a/s/status-1366515360.xml');
+        $returnArray = $feeder->getServiceChange('a/s/status-1367088029.xml');
 
         // // echo 'a'; 
         // echo count($returnArray); 

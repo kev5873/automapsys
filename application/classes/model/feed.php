@@ -7,7 +7,7 @@ class Model_feed extends Model
 	{
 		$url         = 'http://www.mta.info/status/serviceStatus.txt';
 		$currentTime = time();
-		$path        = gtecwd()."/a/s/status-".$currentTime.".xml";
+		$path        = getcwd()."/a/s/status-".$currentTime.".xml";
 		$newfname    = $path;
 		$file        = fopen ($url, "rb");
 		if($file)
@@ -201,7 +201,7 @@ class Model_feed extends Model
 		}
 		else if(strpos($change, 'run express') > 0 || strpos($change, 'run local') > 0) // Runs Express/Local
 		{
-			$stationString     = substr($change, strpos($change, 'from ') + 5);
+			$stationString     = substr($change, strpos($change, 'from ') + 5);	
 			$stations          = explode(" to ", $stationString);
 			// uptown downtown determination
 			$startIndex        = strpos($change, ' ');
@@ -301,7 +301,7 @@ class Model_feed extends Model
 		return $matches[1][0];
 	}
 
-	public function getStationWithOrder($line_name = NULL, $station_name = NULL)
+	public function getStationWithOrder($line_name = NULL, $station_name = NULL )
 	// returns an array ( [line_id] , [station_id] , [station_order] ); 
 	{
 		$station_id = NULL; $line_id = NULL; $station_order = NULL; 

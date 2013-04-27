@@ -32,7 +32,7 @@ class Model_line extends Model
 		// Trains run local from A to B: 1
 		// Trains skip {stations} : 4
 
-		// $trainsNotRunning = array();
+		 $trainsNotRunning = array();
 
 		// foreach($advisories as $arr)
 		// {
