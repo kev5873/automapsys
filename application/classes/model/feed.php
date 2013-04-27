@@ -407,23 +407,13 @@ class Model_feed extends Model
 			}
 			else if( $station_name == "36 St" && count($result) == 2 )
 			{
-				if( abs( 33 - $result[0]["order_number"] ) < abs( 33 - $result[1]["order_number"] )   )
-				{
-					$station_order = $result[0]["order_number"]; 
-				}
-				else{
-					$station_order = $result[1]["order_number"];
-				} 	
-			}
-			else if( $station_name == "36 St" && count($result) == 2 )
-			{
-				if( abs( 33 - $result[0]["order_number"] ) < abs( 33 - $result[1]["order_number"] )   )
-				{
+				if( abs( 33 - $result[0]["order_number"] ) < abs( 33 - $result[1]["order_number"] ) )
+				{	
 					$station_order = $result[0]["order_number"]; 
 				}
 				else{
 				$station_order = $result[1]["order_number"];
-				}  
+				} 
 			}
 			else
 			{
