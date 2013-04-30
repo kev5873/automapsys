@@ -194,10 +194,31 @@ var marker = new google.maps.Marker({
     				<td><a href="?id=25"?><img src="<?=URL::base()?>a/bullet/S.png" class="mini"/></a></td>
     			</tr>
     			<tr>
-    				<td colspan="25" style="text-align:center;">
+    				<td colspan="20" style="text-align:center;">
     					<img src="<?= URL::base(); ?>a/bullet/<?= $routeDesignation; ?>.png" style="padding-bottom: 20px; vertical-align: middle;"/><span style="font-size: 18pt;"><?= $routeDetail; ?></span>
     				</td>
+                    <td colspan="5" >
+                                        <table>
+                    <tr>
+                        <td style="font-size: 14pt; overflow: hidden;" colspan="2">
+                            Direction : <?= ucfirst($direction); ?>
+                    </tr>
+                    <tr>
+                        <td><a href="<?=URL::base()?>map/?id=<?= $line; ?>&direction=uptown"><img src="<?=URL::base()?>a/i/up-arrow.png" class="mini"/></a></td>
+                        <td style="font-size: 14pt;">
+                            <img src="<?=URL::base()?>a/bullet/<?= $routeDesignation; ?>.png" style="padding-bottom: 5px; vertical-align: middle;" class="mini"/>
+                            Uptown</td>
+                    </tr>
+                    <tr>
+                        <td><a href="<?=URL::base()?>map/?id=<?= $line; ?>&direction=downtown"><img src="<?=URL::base()?>a/i/down-arrow.png" class="mini"/></a></td>
+                        <td style="font-size: 14pt;">
+                            <img src="<?=URL::base()?>a/bullet/<?= $routeDesignation; ?>.png" style="padding-bottom: 5px; vertical-align: middle;" class="mini"/>
+                            Downtown</td>
+                    </tr>
+                </table>
+                    </td>
     			</tr>
+
     		</table>
     	</div>
     	<div style="text-align:center; width: 920px; margin-left: auto; margin-right: auto; border: solid 1px black;">

@@ -45,13 +45,20 @@ class Controller_map extends Controller_Template {
 		{
 			$direction = "downtown";
 		}
+
+		$feeder = new Model_feed();
+		if(isset($_GET['filename']))
+		{
+			$feeder->filestart = $_GET['filename']; 
+		}
+
 		$this->template->line = $id;
 		$this->template->direction = $direction;
 		$this->template->routeDesignation = $line->getLineBullet($id);
 		$this->template->routeDetail = $line->getLineDescription($id);
 
 		$feeder = new Model_feed();
-        $returnArray = $feeder->processFeed('a/s/status-1367340363.xml');
+        $returnArray = $feeder->processFeed($feeder->filestart);
 
 		$size = sizeof($returnArray);
 		echo "<br/>";
@@ -194,7 +201,11 @@ class Controller_map extends Controller_Template {
 		$this->template->routeDetail = $line->getLineDescription($id);
 
 		$feeder = new Model_feed();
-        $returnArray = $feeder->processFeed('a/s/status-1366515360.xml');
+		if(isset($_GET['filename']))
+		{
+			$feeder->filestart = $_GET['filename']; 
+		}
+        $returnArray = $feeder->processFeed($feeder->filestart);
 
 		$size = sizeof($returnArray);
 		echo "<br/>";
@@ -324,8 +335,13 @@ class Controller_map extends Controller_Template {
 		{
 			$direction = "downtown";
 		}
-
-		echo json_encode($line->grabStationsRaw($id, $direction, 'a/s/status-1367340363.xml'));
+		
+		$feeder = new Model_feed();
+		if(isset($_GET['filename']))
+		{
+			$feeder->filestart = $_GET['filename']; 
+		}
+		echo json_encode($line->grabStationsRaw($id, $direction, $feeder->filestart));
 	}
 
 }

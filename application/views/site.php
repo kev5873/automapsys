@@ -255,13 +255,6 @@ var marker = new google.maps.Marker({
                             <div id="map-canvas" style="color: #000000; width:420px; height:420px;"></div>
 						</td>
 					</tr>
-
-                    <tr>
-                        <td style="font-size: 14pt; overflow: hidden;" colspan="2">
-
-                        </td>
-                    </tr>
-
 				</table>
 			</div>
     	</div>
