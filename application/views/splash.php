@@ -16,6 +16,9 @@
         	width: 24px;
         	height: 24px;
         }
+        a{
+            color: white;
+        }
         </style>
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqCjOtUb9nrWCFPKpQ6AFkwOSH766zvc8&sensor=true"></script>
         <script type="text/javascript" src="/a/i/jquery-1.9.1.min.js"></script>
@@ -187,83 +190,47 @@ var marker = new google.maps.Marker({
     				<td style="text-align:center;"><?=$status25; ?></td>
     			</tr>
     			<tr>
-    				<td><a href="?id=1"?><img src="<?=URL::base()?>a/bullet/1.png" class="mini"/></a></td>
-    				<td><a href="?id=2"?><img src="<?=URL::base()?>a/bullet/2.png" class="mini"/></a></td>
-    				<td><a href="?id=3"?><img src="<?=URL::base()?>a/bullet/3.png" class="mini"/></a></td>
-    				<td><a href="?id=4"?><img src="<?=URL::base()?>a/bullet/4.png" class="mini"/></a></td>
-    				<td><a href="?id=5"?><img src="<?=URL::base()?>a/bullet/5.png" class="mini"/></a></td>
-    				<td><a href="?id=6"?><img src="<?=URL::base()?>a/bullet/6.png" class="mini"/></a></td>
-    				<td><a href="?id=8"?><img src="<?=URL::base()?>a/bullet/6D.png" class="mini"/></a></td>
-    				<td><a href="?id=7"?><img src="<?=URL::base()?>a/bullet/7.png" class="mini"/></a></td>
-    				<td><a href="?id=9"?><img src="<?=URL::base()?>a/bullet/7D.png" class="mini"/></a></td>
-    				<td><a href="?id=24"?><img src="<?=URL::base()?>a/bullet/S.png" class="mini"/></a></td>
-    				<td><a href="?id=10"?><img src="<?=URL::base()?>a/bullet/A.png" class="mini"/></a></td>
-    				<td><a href="?id=11"?><img src="<?=URL::base()?>a/bullet/C.png" class="mini"/></a></td>
-    				<td><a href="?id=12"?><img src="<?=URL::base()?>a/bullet/E.png" class="mini"/></a></td>
-    				<td><a href="?id=13"?><img src="<?=URL::base()?>a/bullet/B.png" class="mini"/></a></td>
-    				<td><a href="?id=14"?><img src="<?=URL::base()?>a/bullet/D.png" class="mini"/></a></td>
-    				<td><a href="?id=15"?><img src="<?=URL::base()?>a/bullet/F.png" class="mini"/></a></td>
-    				<td><a href="?id=16"?><img src="<?=URL::base()?>a/bullet/M.png" class="mini"/></a></td>
-    				<td><a href="?id=20"?><img src="<?=URL::base()?>a/bullet/G.png" class="mini"/></a></td>
-    				<td><a href="?id=22"?><img src="<?=URL::base()?>a/bullet/J.png" class="mini"/></a></td>
-    				<td><a href="?id=23"?><img src="<?=URL::base()?>a/bullet/Z.png" class="mini"/></a></td>
-    				<td><a href="?id=21"?><img src="<?=URL::base()?>a/bullet/L.png" class="mini"/></a></td>
-    				<td><a href="?id=18"?><img src="<?=URL::base()?>a/bullet/N.png" class="mini"/></a></td>
-    				<td><a href="?id=17"?><img src="<?=URL::base()?>a/bullet/Q.png" class="mini"/></a></td>
-    				<td><a href="?id=19"?><img src="<?=URL::base()?>a/bullet/R.png" class="mini"/></a></td>
-    				<td><a href="?id=25"?><img src="<?=URL::base()?>a/bullet/S.png" class="mini"/></a></td>
-    			</tr>
-    			<tr>
-    				<td colspan="25" style="text-align:center;">
-    					<img src="<?= URL::base(); ?>a/bullet/<?= $routeDesignation; ?>.png" style="padding-bottom: 20px; vertical-align: middle;"/><span style="font-size: 18pt;"><?= $routeDetail; ?></span>
-    				</td>
+    				<td><a href="ams/?id=1"?><img src="<?=URL::base()?>a/bullet/1.png" class="mini"/></a></td>
+    				<td><a href="ams/?id=2"?><img src="<?=URL::base()?>a/bullet/2.png" class="mini"/></a></td>
+    				<td><a href="ams/?id=3"?><img src="<?=URL::base()?>a/bullet/3.png" class="mini"/></a></td>
+    				<td><a href="ams/?id=4"?><img src="<?=URL::base()?>a/bullet/4.png" class="mini"/></a></td>
+    				<td><a href="ams/?id=5"?><img src="<?=URL::base()?>a/bullet/5.png" class="mini"/></a></td>
+    				<td><a href="ams/?id=6"?><img src="<?=URL::base()?>a/bullet/6.png" class="mini"/></a></td>
+    				<td><a href="ams/?id=8"?><img src="<?=URL::base()?>a/bullet/6D.png" class="mini"/></a></td>
+    				<td><a href="ams/?id=7"?><img src="<?=URL::base()?>a/bullet/7.png" class="mini"/></a></td>
+    				<td><a href="ams/?id=9"?><img src="<?=URL::base()?>a/bullet/7D.png" class="mini"/></a></td>
+    				<td><a href="ams/?id=24"?><img src="<?=URL::base()?>a/bullet/S.png" class="mini"/></a></td>
+    				<td><a href="ams/?id=10"?><img src="<?=URL::base()?>a/bullet/A.png" class="mini"/></a></td>
+    				<td><a href="ams/?id=11"?><img src="<?=URL::base()?>a/bullet/C.png" class="mini"/></a></td>
+    				<td><a href="ams/?id=12"?><img src="<?=URL::base()?>a/bullet/E.png" class="mini"/></a></td>
+    				<td><a href="ams/?id=13"?><img src="<?=URL::base()?>a/bullet/B.png" class="mini"/></a></td>
+    				<td><a href="ams/?id=14"?><img src="<?=URL::base()?>a/bullet/D.png" class="mini"/></a></td>
+    				<td><a href="ams/?id=15"?><img src="<?=URL::base()?>a/bullet/F.png" class="mini"/></a></td>
+    				<td><a href="ams/?id=16"?><img src="<?=URL::base()?>a/bullet/M.png" class="mini"/></a></td>
+    				<td><a href="ams/?id=20"?><img src="<?=URL::base()?>a/bullet/G.png" class="mini"/></a></td>
+    				<td><a href="ams/?id=22"?><img src="<?=URL::base()?>a/bullet/J.png" class="mini"/></a></td>
+    				<td><a href="ams/?id=23"?><img src="<?=URL::base()?>a/bullet/Z.png" class="mini"/></a></td>
+    				<td><a href="ams/?id=21"?><img src="<?=URL::base()?>a/bullet/L.png" class="mini"/></a></td>
+    				<td><a href="ams/?id=18"?><img src="<?=URL::base()?>a/bullet/N.png" class="mini"/></a></td>
+    				<td><a href="ams/?id=17"?><img src="<?=URL::base()?>a/bullet/Q.png" class="mini"/></a></td>
+    				<td><a href="ams/?id=19"?><img src="<?=URL::base()?>a/bullet/R.png" class="mini"/></a></td>
+    				<td><a href="ams/?id=25"?><img src="<?=URL::base()?>a/bullet/S.png" class="mini"/></a></td>
     			</tr>
     		</table>
     	</div>
-    	<div style="text-align:center; width: 920px; margin-left: auto; margin-right: auto; border: solid 1px black;">
-    		<div style="width: 500px; float:left; margin-left: 0; margin-top: -5px;">
-		        <table border="0" cellspacing="0">
-		        	<?= $lineData; ?>
-		        </table><br/><br/><br/><br/><br/>
-                Sign up for email alerts : <input type="text" id="email"/><span onclick="sendEmail()">TEST</span>
-			</div>
-			<div style="float:left; position: relative; width: 420px">
-				<table>
-					<tr>
-						<td style="font-size: 14pt; overflow: hidden;" colspan="2">
-							Dircetion : <?= $direction; ?>
+    	<div style="text-align:center; width: 920px; margin-left: auto; margin-right: auto; border: solid 1px black; padding: 15px;">
+    		View New York City Subway Service Advisories, mapped and drawn graphically for easy reading.  To begin, select a route above, or view the entire map below.
 
-					</tr>
-					<tr>
-						<td><a href="<?=URL::base()?>?id=<?= $line; ?>&direction=uptown"><img src="<?=URL::base()?>a/i/up-arrow.png" class="mini"/></a></td>
-						<td style="font-size: 14pt;">
-							<img src="<?=URL::base()?>a/bullet/<?= $routeDesignation; ?>.png" style="padding-bottom: 5px; vertical-align: middle;" class="mini"/>
-							Uptown</td>
-					</tr>
-					<tr>
-						<td><a href="<?=URL::base()?>?id=<?= $line; ?>&direction=downtown"><img src="<?=URL::base()?>a/i/down-arrow.png" class="mini"/></a></td>
-						<td style="font-size: 14pt;">
-							<img src="<?=URL::base()?>a/bullet/<?= $routeDesignation; ?>.png" style="padding-bottom: 5px; vertical-align: middle;" class="mini"/>
-							Downtown</td>
-					</tr>
-					<tr>
-						<td style="font-size: 14pt; overflow: hidden;" colspan="2">
-							Advisory: 
-                            <br/>
-                            <img src="<?=URL::base()?>a/bullet/<?= $routeDesignation; ?>.png" style="padding-bottom: 5px; vertical-align: middle;" class="mini"/>
-                            <?=$advisory?>
-                            <div id="map-canvas" style="color: #000000; width:420px; height:420px;"></div>
-						</td>
-					</tr>
-
-                    <tr>
-                        <td style="font-size: 14pt; overflow: hidden;" colspan="2">
-
-                        </td>
-                    </tr>
-
-				</table>
-			</div>
-    	</div>
+            <div style="margin-top: 15px;">
+            <div style="float:left; width: 350px; padding: 50px; border: 1px solid white;">
+                View Full Map w/ Current Service<br />
+                <a href="map/full/?direction=uptown">Uptown</a> | <a href="map/full/?direction=downtown">Downtown</a>
+            </div>
+            <div style="float:left; width: 350px; padding: 50px; border: 1px solid white;">
+                View Full Map w/ Normal Service<br />
+                Uptown | Downtown
+            </div>
+    	    </div>
+        </div>
     </body>
 </html>

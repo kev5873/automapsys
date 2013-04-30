@@ -1459,13 +1459,85 @@ class Model_line extends Model
 		
 	}
 
-	public function grabStationsRaw($line,$direction)
+	public function grabStationsRaw($line,$direction,$location)
 	{
+		// $advisories = DB::select()
+		// 		->from('line_info')
+		// 		->where('filename', '=', $location) 	 	
+		// 		->where()
+		// 		->execute()->as_array();
+
+		$direction = strtolower($direction); 
+
+		if( $direction == "downtown"){
+		$advisories_query = DB::query( Database::SELECT , "select * from line_info where filename = :filename and line_id = :line_id
+			and ( bound_station_id > 1 or bound_station_id is NULL ); " ); }
+		else {
+			$advisories_query = DB::query( Database::SELECT , "select * from line_info where filename = :filename and line_id = :line_id
+			and ( bound_station_id <= 1 or bound_station_id is NULL ); " ); }
+
+		$advisories_query->param( ":filename" , $location); 
+		$advisories_query->param( ":line_id" , $line); 
+
+		$advisories = $advisories_query->execute()->as_array(); 
+
+
+		// SERVICE_REPLACE_ID CODE:
+		// No trains running : 2 (Done)
+		// No trains between A & B : 3 
+		// Trains run express from A to B : 0
+		// Trains run local from A to B: 1
+		// Trains skip {stations} : 4 (Cant do)
+
+		$trainsNotRunning = array();
+
+		foreach($advisories as $arr)
+		{
+			// print_r($arr);
+			if($arr['service_replace_id'] == 2)
+				array_push($trainsNotRunning, $arr['line_id']);
+		}
+
+		// print_r($trainsNotRunning);
+
+		if(in_array($line, $trainsNotRunning))
+		{
+			return array();
+		}
+
+		$runsExpress = false;
+		$runLocal = false;
+		$notrainsbetween = false; 
+
+		if(count($advisories) >0){
+			$theReplaceID = $advisories[0]['service_replace_id'];
+			if($theReplaceID == 0)
+			{
+				$runsExpress = true;
+			}
+			else if($theReplaceID == 1)
+			{
+				$runLocal = true;
+			}
+			else if($theReplaceID == 3)	// No Trains Between Case
+			{
+				// start_station_id = order_number, end_station_id = order_number
+				// echo "Has No Train Between Case for ". $advisories[0]['start_station_id'] . ": " . $advisories[0]['end_station_id'] . "on $line"; 
+				$notrainsbetween = true; 
+				$notrainsbetweenpairarray = array($advisories[0]['start_station_id'] , $advisories[0]['end_station_id'] ); 
+			}
+		}
+
+
+		
+
+		// No Trains Between 3:
+
+		// print_r($advisories); 
 		$theLine = DB::select()
 				->from('line_train')
 				->where('line_id', '=', $line)
 				->execute()->as_array();
-		//echo $theLine[0]['line_bullet'] . ' - ' . $theLine[0]['line_name'] . '<br />';
 
 		
 		if($direction =="downtown"||$direction =="DOWNTOWN")
@@ -1487,11 +1559,17 @@ class Model_line extends Model
 				->as_array();
 		}
 
-
+// SERVICE_REPLACE_ID CODE:
+// No trains running : 2
+// No trains between A & B : 3
+// Trains run express from A to B : 0
+// Trains run local from A to B: 1
+// Trains skip {stations} : 4
 
 		
-		$returnArray = array();
+		$returnString ='';
 		$numOfStation = sizeof($stations)-1;
+		$returnArray = array();
 
 		//echo $numOfStation."<br/>";
 
@@ -1503,159 +1581,1328 @@ class Model_line extends Model
 			
 			$currentStationOrderID = $stations[$i]['order_number'];
 
+			if( $notrainsbetween )
+			{
+				$start_station_order = $notrainsbetweenpairarray[0]; 
+				$end_station_order = $notrainsbetween[1];
+				if( ( ($start_station_order <= $currentStationOrderID) && ($currentStationOrderID <= $end_station_order) ) || 
+				  	( ( $start_station_order >= $currentStationOrderID ) && ($currentStationOrderID >= $end_station_order ) ) 
+				  )
+				{
+					$singleStation->where('station_id', '=', '-1'); 
+				}
+			}
+
 			$color='black';
 			switch($line)
-			{
+			{	
 				case 1:
-					$color = 'ff3333';
+					$color = 'red';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+					}
+					else if($runLocal)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else if($currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$runLocal = false;
+							}
+							
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else if($currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$runLocal = false;
+							}
+						}
+
+					}
+					else if($notrainsbetween)
+					{
+
+					}
+					else{
+
 					if($currentStationOrderID == 36)
 						$singleStation = $singleStation->where('express', '=', 'true');
+					}
 					break;
 
 				case 2:
-					$color = 'ff3333';
-					if($currentStationOrderID > 24 && $currentStationOrderID <41)
+					$color = 'red';
+					if($runsExpress)
 					{
-						$singleStation = $singleStation->where('express', '=', 'true');
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+
+						
+					}
+					else if($runLocal)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+							}
+							else
+							{
+								
+							}
+						}
+
+					}
+					else {
+						if($currentStationOrderID > 24 && $currentStationOrderID <41)
+						{
+							$singleStation = $singleStation->where('express', '=', 'true');
+						}
 					}
 					break;
 
 				case 3:
-					$color = 'ff3333';
-					if($currentStationOrderID > 6 && $currentStationOrderID < 23)
+					$color = 'red';
+					if($runsExpress)
 					{
-						$singleStation = $singleStation->where('express', '=', 'true');
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
 					}
-					break;
+					else if($runLocal)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+
+					}
+					else{
+
+
+						if($currentStationOrderID > 6 && $currentStationOrderID < 23)
+						{
+							$singleStation = $singleStation->where('express', '=', 'true');
+						}
+					}
+						break;
 				
 				case 4:
-					$color = '009933';
-					if(($currentStationOrderID == 13) || ($currentStationOrderID > 14 && $currentStationOrderID < 34) || ($currentStationOrderID > 39 && $currentStationOrderID<= 54) )
+					$color = 'green';
+					if($runsExpress)
 					{
-						$singleStation = $singleStation->where('express', '=', 'true');
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+					}
+					else if($runLocal)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+
+					}
+					else
+					{
+						if(($currentStationOrderID == 13) || ($currentStationOrderID > 14 && $currentStationOrderID < 34) || ($currentStationOrderID > 39 && $currentStationOrderID<= 54) )
+						{
+							$singleStation = $singleStation->where('express', '=', 'true');
+						}
 					}
 
 					break;
 
 				case 5:
-					$color = '009933';
-					
-
-					if($currentStationOrderID > 15 &&  $currentStationOrderID< 34 )
+					$color = 'green';
+					if($runsExpress)
 					{
-						$singleStation = $singleStation->where('express', '=', 'true');
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
 					}
-					
+					else if($runLocal)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+
+					}
+					else{
+						if($currentStationOrderID > 15 &&  $currentStationOrderID < 34 )
+						{
+							$singleStation = $singleStation->where('express', '=', 'true');
+						}
+					}
 					break;
 
 				case 6:
-					$color = '009933';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+					}
+					else if($runLocal)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+
+					}
+					$color = 'green';
 					break;
 
 				case 7:
-					$color = 'cc3399';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+					}
+					else if($runLocal)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+
+					}
+					$color = 'purple';
 					break;
 
 				case 8:
-					$color = '009933';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+					}
+					else if($runLocal)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+
+					}
+					$color = 'green';
 					break;
 
 				case 9: 
-					$color = 'cc3399';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+					}
+					else if($runLocal)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+
+					}
+					$color = 'purple';
 					break;
 
 				case 10:
-					$color = '2850ad';
-					if(($currentStationOrderID > 5 && $currentStationOrderID <27) || ($currentStationOrderID > 31 && $currentStationOrderID <44))
+					$color = 'blue';
+					if($runsExpress)
 					{
-						$singleStation = $singleStation->where('express', '=', 'true');
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+					}
+					else if($runLocal)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+
+					}
+					else{
+						if(($currentStationOrderID > 5 && $currentStationOrderID <27) || ($currentStationOrderID > 31 && $currentStationOrderID <44))
+						{
+							$singleStation = $singleStation->where('express', '=', 'true');
+						}
 					}
 					break;
 
 				case 11:
-					$color = '2850ad';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+					}
+					else if($runLocal)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+
+					}
+					$color = 'blue';
 					break;
 
 				case 12:
-					$color = '2850ad';
-					if(($currentStationOrderID > 3 && $currentStationOrderID <20) )
+					$color = 'blue';
+					if($runsExpress)
 					{
-						$singleStation = $singleStation->where('express', '=', 'true');
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+					}
+					else if($runLocal)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+
+					}else{
+						if(($currentStationOrderID > 3 && $currentStationOrderID <20) )
+						{
+							$singleStation = $singleStation->where('express', '=', 'true');
+						}
 					}
 					break;					
 				
 				case 13:
-					$color = 'ff6319';
+					$color = 'orange';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+					}
+					else if($runLocal)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+
+					}
 					break;
 
 				case 14:
-					$color = 'ff6319';
-					if(($currentStationOrderID == 24) )
+					$color = 'orange';
+					if($runsExpress)
 					{
-						$singleStation = $singleStation->where('express', '=', 'false');
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
 					}
-					if(($currentStationOrderID > 25 && $currentStationOrderID <30) )
+					else if($runLocal)
 					{
-						$singleStation = $singleStation->where('express', '=', 'true');
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+
+					}
+					else
+					{
+						if(($currentStationOrderID == 24) )
+						{
+							$singleStation = $singleStation->where('express', '=', 'false');
+						}
+						if(($currentStationOrderID > 25 && $currentStationOrderID <30) )
+						{
+							$singleStation = $singleStation->where('express', '=', 'true');
+						}
 					}
 					break;
 
 				case 15: 
-					$color = 'ff6319';
+					$color = 'orange';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+					}
+					else if($runLocal)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+
+					}
 					break;
 
 				case 16:
-					$color = 'ff6319';
+					$color = 'orange';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+					}
+					else if($runLocal)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+
+					}
 					break;
 
 				case 17:
-					$color = 'FCF141';
+					$color = '#FCF141';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+					}
+					else if($runLocal)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+
+					}
 					break;
 
 				case 18:
-					$color = 'FCF141';
-					if(($currentStationOrderID >19 &&$currentStationOrderID< 25) )
+					$color = '#FCF141';
+					if($runsExpress)
 					{
-						$singleStation = $singleStation->where('express', '=', 'false');
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
 					}
-					if(($currentStationOrderID == 25 ||$currentStationOrderID == 26) )
+					else if($runLocal)
 					{
-						$singleStation = $singleStation->where('express', '=', 'false');
-					}
-					if(($currentStationOrderID >27 && $currentStationOrderID <35) )
-					{
-						$singleStation = $singleStation->where('express', '=', 'true');
-					}
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
 
+					}
+					else{
+						if(($currentStationOrderID >19 &&$currentStationOrderID< 25) )
+						{
+							$singleStation = $singleStation->where('express', '=', 'false');
+						}
+						if(($currentStationOrderID == 25 ||$currentStationOrderID == 26) )
+						{
+							$singleStation = $singleStation->where('express', '=', 'false');
+						}
+						if(($currentStationOrderID >27 && $currentStationOrderID <35) )
+						{
+							$singleStation = $singleStation->where('express', '=', 'true');
+						}
+
+					}
 					break;
 
 				case 19:
-					$color = 'FCF141';
+					$color = '#FCF141';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+					}
+					else if($runLocal)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+
+					}
+
 					break;
 
 				case 20:
-					$color = '6cbe45';
+					$color = 'lime';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+					}
+					else if($runLocal)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+
+					}
 					break;
 
 				case 21:
-					$color = 'a7a9ac';
+					$color = '#a7a9ac';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+					}
+					else if($runLocal)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+
+					}
 					break;
 
 				case 22:
-					$color = '996633';
+					$color = 'brown';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+					}
+					else if($runLocal)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+
+					}
 					break;
 
 				case 23:
-					$color = '996633';
+					$color = 'brown';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+					}
+					else if($runLocal)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation;
+								
+							}
+							else
+							{
+								
+							}
+						}
+
+					}
 					break;
 
 				case 24:
-					$color = 'a7a9ac';
+					$color = '#a7a9ac';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+						}
+					}
 					break;
 
 				case 25:
-					$color = 'a7a9ac';
+					$color = '#a7a9ac';
+					if($runsExpress)
+					{
+						if($direction == 'uptown')
+						{
+							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+							else
+							{
+								
+							}
+						}
+						else
+						{
+							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
+							{
+								$singleStation = $singleStation->where('express', '=', 'true');
+								
+							}
+							else
+							{
+								
+							}
+						}
+					}
 					break;
+
+
+
 			}
 			$singleStation = $singleStation->execute()->as_array();
 
