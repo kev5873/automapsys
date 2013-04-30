@@ -128,8 +128,9 @@ class Model_line extends Model
 			if( $notrainsbetween )
 			{
 				$start_station_order = $notrainsbetweenpairarray[0]; 
-				$end_station_order = $notrainsbetween[1];
-				if( ( ($start_station_order <= $currentStationOrderID) && ($currentStationOrderID <= $end_station_order) ) || 
+				$end_station_order = $notrainsbetweenpairarray[1];
+
+ 				if( ( ($start_station_order <= $currentStationOrderID) && ($currentStationOrderID <= $end_station_order) ) || 
 				  	( ( $start_station_order >= $currentStationOrderID ) && ($currentStationOrderID >= $end_station_order ) ) 
 				  )
 				{

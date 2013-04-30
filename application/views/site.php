@@ -234,12 +234,46 @@ var marker = new google.maps.Marker({
                 <img src="<?=URL::base()?>a/bullet/submit.png"/></span>
                 </p>
                 
+                <div style='position:relative; left:40%;'>
+                <?php 
+                $filenames = DB::query( Database::SELECT, "select distinct filename from line_info order by filename desc" )->execute()->as_array(); 
+                echo "<form action = '' method = 'get' >"; 
+                echo "<label > Select The Service You Wish To View: </label>"; 
+                echo "<select name = 'filename'>"; 
+                foreach($filenames as $filename)
+                {
+        
+                    $file = $filename["filename"]; 
+                    $file = substr($file, 4); 
+                    $file = substr( $file , stripos( $file , '-' ) + 1  );
+                    $file = substr( $file, 0, stripos( $file, '.' ) );  
+                    $date =  date( "m/d/y", $file) . " at " . date("H:i:s", $file ); 
+                    if( $filename['filename'] == $filestart )
+                    {
+                        echo "<option selected value = '".$filename["filename"]."' > $date  </option> ";        
+                    }
+                    else
+                        echo "<option value = '".$filename["filename"]."' > $date  </option> "; 
+                }
+        
+                echo "</select> "; 
+        
+                echo "<input type = 'hidden' name = 'id' value = '$id' >"; 
+        
+                echo "</select> <input type = 'submit' value = 'Submit'> </form>"; 
+                ?>
+                </div>
+
+                
+                
                 <p style= 'position:relative; left:40%;'>
                 <font size="2"><br/><br/>
 
 
+
+
                                             All trademarks and copyrights held by respective owners. 
-                                        Automated Mapping System ® is a Registered Trademarks of AMS TEAM. 
+                                Automated Mapping System ® is a Registered Trademarks of AMS Development Group. 
                                                 © Automated Mapping System all rights reserved
 
                 </font></p>
