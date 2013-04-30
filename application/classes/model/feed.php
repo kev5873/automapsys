@@ -6,11 +6,10 @@ class Model_feed extends Model
 	public function downloadFeed()
 	{
 		$result =  shell_exec( getcwd(). "/a/s/ams12" ); 
-		if( !isset( $result ) ) 
+		if( isset( $result ) ) 
 		{
-			shell_exec( getcwd(). "/a/s/ams downloader.exe" );
+			return; 
 		}
-		return; 
 
 		$url         = 'http://www.mta.info/status/serviceStatus.txt';
 		$currentTime = time();
