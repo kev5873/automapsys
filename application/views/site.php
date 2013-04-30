@@ -17,9 +17,11 @@
         	height: 24px;
         }
         </style>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqCjOtUb9nrWCFPKpQ6AFkwOSH766zvc8&sensor=true"></script>
         <script type="text/javascript" src="/a/i/jquery-1.9.1.min.js"></script>
         <script type="text/javascript">
-        function sendEmail()
+
+       function sendEmail()
         {
             console.log( $('#email').val() );
             $.ajax({
@@ -38,6 +40,119 @@
                 }
             });
         }
+
+        var map;
+        var markersArray = [];
+        var lineArray    = [];
+        var windowsArray = [];
+
+        function initialize() {
+            var mapOptions = {
+                center: new google.maps.LatLng(40.712472, -73.940105),
+                zoom: 11,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
+
+            $.ajax({
+              url: '/map/grab',
+              data:{id: '<?=$line?>', direction:'<?=$direction?>'},
+              dataType: 'json',
+              success:function(data){
+                var color = data[0].color;
+                for(i=0;i<data.length;i++) {
+                    var myLatLng = new google.maps.LatLng(data[i].coordinatex, data[i].coorrdinatey);
+                    addMarker(myLatLng, data[i].station_name);
+                    //alert(myLatLng);
+                }
+
+                  var lineSymbol = {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 3,
+                    strokeColor: '#FFFFFF'
+                  };
+
+                  var flightPath2 = new google.maps.Polyline({
+                    path: lineArray,
+                    strokeColor: '#000000',
+                    strokeOpacity: 1.0,
+                    strokeWeight: 7
+                  });
+
+                  var flightPath = new google.maps.Polyline({
+                    path: lineArray,
+                    strokeColor: color,
+                    strokeOpacity: 1.0,
+                    strokeWeight: 5,
+                    icons: [{
+                      icon: lineSymbol,
+                      offset: '100%'
+                    }],
+                  });
+
+                  flightPath2.setMap(map);
+                  flightPath.setMap(map);
+
+                var count = 0;
+                window.setInterval(function() {
+                  count = (count + 1) % 200;
+
+                  var icons = flightPath.get('icons');
+                  icons[0].offset = (count / 2) + '%';
+                  flightPath.set('icons', icons);
+                }, 50);
+
+
+
+             }
+             });
+
+          }
+
+        function addMarker(location, station_name) {
+    /*    var image = new google.maps.MarkerImage('/a/i/stationstop12px.png',
+        // This marker is 20 pixels wide by 32 pixels tall.
+        null,
+        // The origin for this image is 0,0.
+        null,//new google.maps.Point(0,0),
+        // The anchor for this image is the base of the flagpole at 0,32.
+        new google.maps.Point(4,-4), 
+        // Resize the image 8x8 pixel
+        new google.maps.Size(8, 8)
+    );
+
+var marker = new google.maps.Marker({
+        position: location,
+        map: map,
+        icon: image,
+    });*/
+
+        //==============================================
+            var image = '/a/i/stationstop12px.png';
+
+            //var image = new google.maps.MarkerImage('/a/i/stationstop12px.png', null, new google.maps.Point(0,0);
+            var infowindow = new google.maps.InfoWindow({
+                content: station_name,
+                color:'#FFFFFF'
+            });
+            
+            var marker = new google.maps.Marker({
+                position: location,
+                map: map,
+                icon: image,
+            });
+
+            google.maps.event.addListener(marker, 'click', function() {
+                infowindow.open(map,marker);
+            });
+
+            markersArray.push(marker);
+            windowsArray.push(infowindow);
+            lineArray.push(location);
+
+        }
+
+          google.maps.event.addDomListener(window, 'load', initialize);
         </script>
     </head>
     <body>
@@ -106,13 +221,13 @@
     		</table>
     	</div>
     	<div style="text-align:center; width: 920px; margin-left: auto; margin-right: auto; border: solid 1px black;">
-    		<div style="width: 600px; float:left; margin-left: 0; margin-top: -5px;">
+    		<div style="width: 500px; float:left; margin-left: 0; margin-top: -5px;">
 		        <table border="0" cellspacing="0">
 		        	<?= $lineData; ?>
 		        </table><br/><br/><br/><br/><br/>
                 Sign up for email alerts : <input type="text" id="email"/><span onclick="sendEmail()">TEST</span>
 			</div>
-			<div style="float:left; position: relative; width: 320px">
+			<div style="float:left; position: relative; width: 420px">
 				<table>
 					<tr>
 						<td style="font-size: 14pt; overflow: hidden;" colspan="2">
@@ -134,6 +249,8 @@
 					<tr>
 						<td style="font-size: 14pt; overflow: hidden;" colspan="2">
 							Advisory goes here: <?=$advisory?>
+                            <br /><br />
+                            <div id="map-canvas" style="color: #000000; width:420px; height:420px;"></div>
 						</td>
 					</tr>
 

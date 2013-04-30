@@ -166,31 +166,31 @@ class Controller_ams extends Controller_Template {
 			$i++;
 		}
 
-		$this->template->status1= "<img src='a/i/checkmark.png' class='miniC'/>";
-		$this->template->status2= "<img src='a/i/checkmark.png' class='miniC'/>";
-		$this->template->status3= "<img src='a/i/checkmark.png' class='miniC'/>";
-		$this->template->status4= "<img src='a/i/checkmark.png' class='miniC'/>";
-		$this->template->status5= "<img src='a/i/checkmark.png' class='miniC'/>";
-		$this->template->status6= "<img src='a/i/checkmark.png' class='miniC'/>";
-		$this->template->status7= "<img src='a/i/checkmark.png' class='miniC'/>";
-		$this->template->status8= "<img src='a/i/checkmark.png' class='miniC'/>";
-		$this->template->status9= "<img src='a/i/checkmark.png' class='miniC'/>";
-		$this->template->status10= "<img src='a/i/checkmark.png' class='miniC'/>";
-		$this->template->status11= "<img src='a/i/checkmark.png' class='miniC'/>";
-		$this->template->status12= "<img src='a/i/checkmark.png' class='miniC'/>";
-		$this->template->status13= "<img src='a/i/checkmark.png' class='miniC'/>";
-		$this->template->status14= "<img src='a/i/checkmark.png' class='miniC'/>";
-		$this->template->status15= "<img src='a/i/checkmark.png' class='miniC'/>";
-		$this->template->status16= "<img src='a/i/checkmark.png' class='miniC'/>";
-		$this->template->status17= "<img src='a/i/checkmark.png' class='miniC'/>";
-		$this->template->status18= "<img src='a/i/checkmark.png' class='miniC'/>";
-		$this->template->status19= "<img src='a/i/checkmark.png' class='miniC'/>";
-		$this->template->status20= "<img src='a/i/checkmark.png' class='miniC'/>";
-		$this->template->status21= "<img src='a/i/checkmark.png' class='miniC'/>";
-		$this->template->status22= "<img src='a/i/checkmark.png' class='miniC'/>";
-		$this->template->status23= "<img src='a/i/checkmark.png' class='miniC'/>";
-		$this->template->status24= "<img src='a/i/checkmark.png' class='miniC'/>";
-		$this->template->status25= "<img src='a/i/checkmark.png' class='miniC'/>";
+		$this->template->status1= "<img src='../a/i/checkmark.png' class='miniC'/>";
+		$this->template->status2= "<img src='../a/i/checkmark.png' class='miniC'/>";
+		$this->template->status3= "<img src='../a/i/checkmark.png' class='miniC'/>";
+		$this->template->status4= "<img src='../a/i/checkmark.png' class='miniC'/>";
+		$this->template->status5= "<img src='../a/i/checkmark.png' class='miniC'/>";
+		$this->template->status6= "<img src='../a/i/checkmark.png' class='miniC'/>";
+		$this->template->status7= "<img src='../a/i/checkmark.png' class='miniC'/>";
+		$this->template->status8= "<img src='../a/i/checkmark.png' class='miniC'/>";
+		$this->template->status9= "<img src='../a/i/checkmark.png' class='miniC'/>";
+		$this->template->status10= "<img src='../a/i/checkmark.png' class='miniC'/>";
+		$this->template->status11= "<img src='../a/i/checkmark.png' class='miniC'/>";
+		$this->template->status12= "<img src='../a/i/checkmark.png' class='miniC'/>";
+		$this->template->status13= "<img src='../a/i/checkmark.png' class='miniC'/>";
+		$this->template->status14= "<img src='../a/i/checkmark.png' class='miniC'/>";
+		$this->template->status15= "<img src='../a/i/checkmark.png' class='miniC'/>";
+		$this->template->status16= "<img src='../a/i/checkmark.png' class='miniC'/>";
+		$this->template->status17= "<img src='../a/i/checkmark.png' class='miniC'/>";
+		$this->template->status18= "<img src='../a/i/checkmark.png' class='miniC'/>";
+		$this->template->status19= "<img src='../a/i/checkmark.png' class='miniC'/>";
+		$this->template->status20= "<img src='../a/i/checkmark.png' class='miniC'/>";
+		$this->template->status21= "<img src='../a/i/checkmark.png' class='miniC'/>";
+		$this->template->status22= "<img src='../a/i/checkmark.png' class='miniC'/>";
+		$this->template->status23= "<img src='../a/i/checkmark.png' class='miniC'/>";
+		$this->template->status24= "<img src='../a/i/checkmark.png' class='miniC'/>";
+		$this->template->status25= "<img src='../a/i/checkmark.png' class='miniC'/>";
 
 		for($k=0;$k< $sizeofLine;$k++)
 		{
@@ -201,31 +201,31 @@ class Controller_ams extends Controller_Template {
 
 			switch($otherlineIdLetter)
 			{
-				case '1':$this->template->status1= "<img src='a/i/caution.png' class='miniC'/>";break;
-				case '2':$this->template->status2= "<img src='a/i/caution.png' class='miniC'/>";break;
-				case '3':$this->template->status3= "<img src='a/i/caution.png' class='miniC'/>";break;
-				case '4':$this->template->status4= "<img src='a/i/caution.png' class='miniC'/>";break;
-				case '5':$this->template->status5= "<img src='a/i/caution.png' class='miniC'/>";break;
-				case '6':$this->template->status6= "<img src='a/i/caution.png' class='miniC'/>";break;
-				case '7':$this->template->status7= "<img src='a/i/caution.png' class='miniC'/>";break;
-				case '6D':$this->template->status8= "<img src='a/i/caution.png' class='miniC'/>";break;
-				case '7D':$this->template->status9= "<img src='a/i/caution.png' class='miniC'/>";break;
-				case 'A':$this->template->status10= "<img src='a/i/caution.png' class='miniC'/>";break;
-				case 'C':$this->template->status11= "<img src='a/i/caution.png' class='miniC'/>";break;
-				case 'E':$this->template->status12= "<img src='a/i/caution.png' class='miniC'/>";break;
-				case 'B':$this->template->status13= "<img src='a/i/caution.png' class='miniC'/>";break;
-				case 'D':$this->template->status14= "<img src='a/i/caution.png' class='miniC'/>";break;
-				case 'F':$this->template->status15= "<img src='a/i/caution.png' class='miniC'/>";break;
-				case 'M':$this->template->status16= "<img src='a/i/caution.png' class='miniC'/>";break;
-				case 'Q':$this->template->status17= "<img src='a/i/caution.png' class='miniC'/>";break;
-				case 'N':$this->template->status18= "<img src='a/i/caution.png' class='miniC'/>";break;
-				case 'R':$this->template->status19= "<img src='a/i/caution.png' class='miniC'/>";break;
-				case 'G':$this->template->status20= "<img src='a/i/caution.png' class='miniC'/>";break;
-				case 'L':$this->template->status21= "<img src='a/i/caution.png' class='miniC'/>";break;
-				case 'J':$this->template->status22= "<img src='a/i/caution.png' class='miniC'/>";break;
-				case 'Z':$this->template->status23= "<img src='a/i/caution.png' class='miniC'/>";break;
-				case 'S':$this->template->status24= "<img src='a/i/caution.png' class='miniC'/>";break;
-				case 'S':$this->template->status25= "<img src='a/i/caution.png' class='miniC'/>"; break;
+				case '1':$this->template->status1= "<img src='../a/i/caution.png' class='miniC'/>";break;
+				case '2':$this->template->status2= "<img src='../a/i/caution.png' class='miniC'/>";break;
+				case '3':$this->template->status3= "<img src='../a/i/caution.png' class='miniC'/>";break;
+				case '4':$this->template->status4= "<img src='../a/i/caution.png' class='miniC'/>";break;
+				case '5':$this->template->status5= "<img src='../a/i/caution.png' class='miniC'/>";break;
+				case '6':$this->template->status6= "<img src='../a/i/caution.png' class='miniC'/>";break;
+				case '7':$this->template->status7= "<img src='../a/i/caution.png' class='miniC'/>";break;
+				case '6D':$this->template->status8= "<img src='../a/i/caution.png' class='miniC'/>";break;
+				case '7D':$this->template->status9= "<img src='../a/i/caution.png' class='miniC'/>";break;
+				case 'A':$this->template->status10= "<img src='../a/i/caution.png' class='miniC'/>";break;
+				case 'C':$this->template->status11= "<img src='../a/i/caution.png' class='miniC'/>";break;
+				case 'E':$this->template->status12= "<img src='../a/i/caution.png' class='miniC'/>";break;
+				case 'B':$this->template->status13= "<img src='../a/i/caution.png' class='miniC'/>";break;
+				case 'D':$this->template->status14= "<img src='../a/i/caution.png' class='miniC'/>";break;
+				case 'F':$this->template->status15= "<img src='../a/i/caution.png' class='miniC'/>";break;
+				case 'M':$this->template->status16= "<img src='../a/i/caution.png' class='miniC'/>";break;
+				case 'Q':$this->template->status17= "<img src='../a/i/caution.png' class='miniC'/>";break;
+				case 'N':$this->template->status18= "<img src='../a/i/caution.png' class='miniC'/>";break;
+				case 'R':$this->template->status19= "<img src='../a/i/caution.png' class='miniC'/>";break;
+				case 'G':$this->template->status20= "<img src='../a/i/caution.png' class='miniC'/>";break;
+				case 'L':$this->template->status21= "<img src='../a/i/caution.png' class='miniC'/>";break;
+				case 'J':$this->template->status22= "<img src='../a/i/caution.png' class='miniC'/>";break;
+				case 'Z':$this->template->status23= "<img src='../a/i/caution.png' class='miniC'/>";break;
+				case 'S':$this->template->status24= "<img src='../a/i/caution.png' class='miniC'/>";break;
+				case 'S':$this->template->status25= "<img src='../a/i/caution.png' class='miniC'/>"; break;
 
 
 			}

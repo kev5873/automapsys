@@ -215,7 +215,7 @@ class Model_feed extends Model
 		{
 			$trainLineId = $this->getStationWithOrder('['.$trainLine.']');
 			$this->insertToLineInfo($trainLineId['line_id'], NULL, NULL, NULL, NULL, NULL, 2, $filename);
-			return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 2);
+			return array('trainLine' => $trainLine, 'boundStation' => NULL, 'startStation' => NULL, 'endStation' => NULL, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 2);
 		}
 		//no train between case
 		else if(strpos($change, 'No trains between') > 0) //
