@@ -17,7 +17,7 @@ int main() {
     std::stringstream strm;
     strm << t;
     tempname.append(strm.str());
-    tempname.append(".txt");
+    tempname.append(".xml");
     CURL *curl;
     CURLcode res;
     curl = curl_easy_init();
