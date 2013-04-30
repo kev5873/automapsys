@@ -3,6 +3,8 @@
 class Model_feed extends Model
 {
 
+	public $filestart = "a/s/status-1367342311.xml"; 
+
 	public function downloadFeed()
 	{
 		$result =  shell_exec( getcwd(). "/a/s/ams12" ); 
@@ -501,7 +503,6 @@ class Model_feed extends Model
 
 	public function getServiceChange($filename)
 	{
-		$filename = substr( $filename, 4  ); 
 		$result = DB::select ('line_id','start_station_id','end_station_id','bound_station_id','service_replace_id','filename') ->from('line_info') ->where('filename','=', $filename)
 		->execute()->as_array();
 		$i=0;

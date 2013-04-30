@@ -227,22 +227,6 @@ private function downloadFile ($url, $path) {
 		}		  
 	}
 
-	  // $newf = fopen ($newfname, "wb");
-
-		 //    if ($newf)
-		 //    while(!feof($file)) {
-		 //      fwrite($newf, fread($file, 1024 * 8 ), 1024 * 8 );
-		 //    }
-		 //  }
-
-		 //  if ($file) {
-		 //    fclose($file);
-		 //  }
-
-		 //  if ($newf) {
-		 //    fclose($newf);
-		 //  }
-
 	public function action_index()
 	{
 		echo 'Welcome!';
@@ -252,91 +236,6 @@ private function downloadFile ($url, $path) {
 	
 		$feeder->downloadFeed(); 
 
-		// $result =  shell_exec( getcwd(). "/a/s/ams12" ); 
-		// if( !isset( $result ) ) 
-		// {
-		// 	shell_exec( getcwd(). "/a/s/ams downloader.exe" );
-		// }
-
-
-		// shell_exec("C:\Users\Kenneth Li\Documents\ams\automapsys\a\ams downloader.exe"); 
-
-
-		// // echo getcwd(); 
-		// if(file_exists(getcwd(). "/a/s/ams12"))
-		// {
-		// 	echo 'a'; 
-		// } 
-		// echo 'b'; 
-
-// $line_id, $start_station, $end_station, $start_time, $end_time, $service_replace_id, $filename)
-
-		// $stationset = array( 10, 30, 20, 40, 50, 60 ); 
-		// $feeder->insertToLineInfoArray( 6, $stationset, NULL,  NULL, NULL, 0, 'asdf'.time() );
-		// $feeder->insertToLineInfo( 18, NULL, NULL, NULL,  NULL, NULL, 2, 'asdf' );
-
-		// echo "<br />"; 
-
-		// $arr = $feeder->getStationWithOrder( "[2]" , "34 St" ); 
-		// print_r($arr); 
-// $sets = array( array( "line_name" => "[3]" , "station_name" => "28 St" ) , array( "line_name" => "[6]" , "station_name" => "33 St" )  ); 
-// foreach($sets as $set)
-// {
-// 		print_r($feeder->getStationWithOrder( $set["line_name"] , $set["station_name"] ) ); 
-// 		echo "<br />";
-// }
-		// print_r( $feeder->getStationWithOrder( "[6]" , "116" ) ); 
-
-
-		// $pgconn = pg_connect('host=localhost dbname=ams user=postgres password=root'); 
-		// pg_insert($pgconn, 'multidata' , array('data'=>100)); 
-		// $multidata = ORM::factory('station'); 
-			// echo "Welcome! <br />";
-			// echo $this->getUpToDateStatus(); 
-		// print_r($this->foobar()); 
-		// echo "<br />";
-			// $this->no_train_case(); 
-			// $start=$_GET["start"];
-			// $end=$_GET["end"];
-			// for($i=$start; $i < $end+1; $i++)
-			// 	echo $i."<br />";
-			// $this->supersubstitute("C:/users/Kenneth Li/dropbox/7_line.txt");  
-		// $query = DB::select()->from('stations')->where('station_id' , '=', 13); 
-		// $results = $query->execute(); 
-		// foreach($results as $res)
-		// {
-			// echo $res['station_name']; 
-		// }
-
-		// $query = DB::query(Database::INSERT, "insert into stations values ('110', 'big ten' , '10', '10');"); 
-		// $query->execute(); 
-		
-		// $query = DB::insert('stations', array('station_id', 'station_name'))->values(array('120', 'somename'));
-		// $query->execute(); 
-		
-		// $query = DB::query(Database::DELETE, "delete from stations");
-		// $query->execute();		
-		
-		// $feed = new Model_feed();
-		
-		// $feed->downloadFeed(); 
-
-		// $data = $multidata->find(13);
-		// echo $data->station_name; 
-		
-		//echo $data->data; 
-		// $multidata->data = 200; 
-		// $multidata->station_id = 15; 
-		// $multidata->station_name = 'hi'; 
-		// $multidata->coordinatex = 10.10; 
-		// $multidata->coordinatey = 20.20; 
-		// echo "Hello World!"; 
-		// $multidata->save(); 
-
-		// $multidata->find('station_id', 4); 
-		// $multidata->delete(); 
-		
-		//$this->response->body('hello, world!');
 	}
 	
 	public function action_foobar()

@@ -17,6 +17,8 @@ class Controller_ams extends Controller_Template {
 	
 	public function action_index()
 	{
+		// $filestart = "a/s/status-1367342311.xml";
+
 		$this->template->title   = 'MTA New York City Subway Service Advisories';
 		$this->template->message = 'hello, world!';
 
@@ -26,10 +28,13 @@ class Controller_ams extends Controller_Template {
 
 		$line = new Model_line();
 		$feeder = new Model_feed();
-        $returnArray = $feeder->getServiceChange('a/s/status-1367297731.xml');
 
-//         $returnArray = $feeder->getServiceChange('a/s/status-1367297276.xml');
-// >>>>>>> b514a352dbc32db6802434ede9aa1fc360783e17
+		if(isset($_GET['filename']))
+		{
+			$feeder->filestart = $_GET['filename']; 
+		}
+
+        $returnArray = $feeder->getServiceChange($feeder->filestart);
 
         // // echo 'a'; 
         // echo count($returnArray); 
@@ -54,7 +59,10 @@ class Controller_ams extends Controller_Template {
 		}
 
 		// $this->template->lineData = $line->grabStations($id,$direction,'a/s/status-1367297276.xml');
-		$this->template->lineData = $line->grabStations($id,$direction,'a/s/status-1367297731.xml');
+		$this->template->lineData = $line->grabStations($id,$direction,$feeder->filestart);
+// =======
+// 		$this->template->lineData = $line->grabStations($id,$direction,'a/s/status-1367340363.xml');
+// >>>>>>> 0359993c50eb544af2f86df04619dfd4da98445d
 		$this->template->line = $id;
 		$this->template->routeDesignation = $line->getLineBullet($id);
 		$this->template->routeDetail = $line->getLineDescription($id);
@@ -234,6 +242,27 @@ class Controller_ams extends Controller_Template {
 
 			}
 		}
+
+		$filenames = DB::query( Database::SELECT, "select distinct filename from line_info order by filename desc" )->execute()->as_array(); 
+
+		echo "<form action = '' method = 'get' >"; 
+		echo "<label > Select The Service You Wish To View: </label>"; 
+		echo "<select name = 'filename'>"; 
+		foreach($filenames as $filename)
+		{
+			$file = $filename["filename"]; 
+			$file = substr($file, 4); 
+			$file = substr( $file , stripos( $file , '-' ) + 1  );
+			$file = substr( $file, 0, stripos( $file, '.' ) );  
+			$date =  date( "m/d/y", $file) . " at " . date("H:i:s", $file ); 
+			echo "<option value = '".$filename["filename"]."' > $date  </option> "; 
+		}
+
+		echo "</select> "; 
+
+		echo "<input type = 'hidden' name = 'id' value = '$id' >"; 
+
+		echo "</select> <input type = 'submit' value = 'Submit'> </form>"; 
 	}
 
 	public function action_email()
