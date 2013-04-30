@@ -15,7 +15,7 @@ class Controller_ams extends Controller_Template {
 
 		$line = new Model_line();
 		$feeder = new Model_feed();
-        $returnArray = $feeder->getServiceChange('a/s/status-1367088029.xml');
+        $returnArray = $feeder->getServiceChange('a/s/status-1366515360.xml');
 
         // // echo 'a'; 
         // echo count($returnArray); 
@@ -36,10 +36,10 @@ class Controller_ams extends Controller_Template {
 		}
 		else
 		{
-			$direction = "Downtown";
+			$direction = "downtown";
 		}
 
-		$this->template->lineData = $line->grabStations($id,$direction,'a/s/status-1367088029.xml');
+		$this->template->lineData = $line->grabStations($id,$direction,'a/s/status-1366515360.xml');
 		$this->template->line = $id;
 		$this->template->routeDesignation = $line->getLineBullet($id);
 		$this->template->routeDetail = $line->getLineDescription($id);
@@ -93,7 +93,7 @@ class Controller_ams extends Controller_Template {
 				{
 					if((($returnArray[$i]['start_station_id'])=="" )&& (($returnArray[$i]['end_station_id'])=="")){
 
-						$this->template->advisory ="<br/>No train running";
+						$this->template->advisory =" has no train running";
 						break;
 					}
 					else{ 
@@ -112,28 +112,29 @@ class Controller_ams extends Controller_Template {
 
 						if($direction  ==  $thedirect){
 							$directionStation= $feeder->getStationNameforStationOrder($otherlineId,$returnArray[$i]['bound_station_id']);
-						 	$commanCase='<br/> Line: '.$lineID.'<br/> Direction:'.$directionStation[0]['station_name'].' Bound <br/> Start: '
-							 .$startStation[0]['station_name'].'<br/> End: '.$endStation[0]['station_name'].'<br/> Service Chg: ';
+						 	$commanCase=' train';
+						 	//.$directionStation[0]['station_name'].' <br/> from '.$startStation[0]['station_name'].'<br/> to '.$endStation[0]['station_name'].'<br/> Service Chg: '
 
 						}
 						else{
-								$this->template->advisory  = "<br/>Good Service";
+								$this->template->advisory  = " train is Good Service for $direction Direction";
 								break;
 						}
 					}
 					else{
 						
-						 $commanCase='<br/> Line: '.$lineID.'<br/>'.'Start: '
-						 .$startStation[0]['station_name'].'<br/> End: '.$endStation[0]['station_name'].'<br/> Service Chg: ';
+						 $commanCase=' train';
+						 // $commanCase='Line: '.$lineID.'<br/>'.'Start: '
+						 // .$startStation[0]['station_name'].'<br/> End: '.$endStation[0]['station_name'].'<br/> Service Chg: ';
 					}
 
 
 					
 
-					 if($returnArray[$i]['service_replace_id']==1){$this->template->advisory = $commanCase." Trains run local from ".$startStation[0]['station_name']." to ".$endStation[0]['station_name'];}
+					 if($returnArray[$i]['service_replace_id']==1){$this->template->advisory = $commanCase."  runs local from ".$startStation[0]['station_name']." to ".$endStation[0]['station_name'];}
 					 	else if($returnArray[$i]['service_replace_id']==3){$this->template->advisory = $commanCase." there is no train from ".$startStation[0]['station_name']." to ".$endStation[0]['station_name']; }
-					 	else if($returnArray[$i]['service_replace_id']==4){ $this->template->advisory = $commanCase." Trains skip from ".$startStation[0]['station_name']." to ".$endStation[0]['station_name'];}
-					 	else if($returnArray[$i]['service_replace_id']==0){ $this->template->advisory = $commanCase." Trains run express from ".$startStation[0]['station_name']." to ".$endStation[0]['station_name'];}
+					 	else if($returnArray[$i]['service_replace_id']==4){ $this->template->advisory = $commanCase."  skips from ".$startStation[0]['station_name']." to ".$endStation[0]['station_name'];}
+					 	else if($returnArray[$i]['service_replace_id']==0){ $this->template->advisory = $commanCase."  runs express from ".$startStation[0]['station_name']." to ".$endStation[0]['station_name'];}
 
 					 //$this->template->advisory =
 					//$this->template->advisory = $returnArray[$i]['line_id'];

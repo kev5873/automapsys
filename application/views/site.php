@@ -102,7 +102,7 @@
 				<table>
 					<tr>
 						<td style="font-size: 14pt; overflow: hidden;" colspan="2">
-							Currently Displaying : <?= $direction; ?>
+							Dircetion : <?= $direction; ?>
 
 					</tr>
 					<tr>
@@ -119,7 +119,10 @@
 					</tr>
 					<tr>
 						<td style="font-size: 14pt; overflow: hidden;" colspan="2">
-							Advisory goes here: <?=$advisory?>
+							Advisory: 
+                            <br/>
+                            <img src="<?=URL::base()?>a/bullet/<?= $routeDesignation; ?>.png" style="padding-bottom: 5px; vertical-align: middle;" class="mini"/>
+                            <?=$advisory?>
 						</td>
 					</tr>
 
