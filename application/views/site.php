@@ -228,19 +228,19 @@ var marker = new google.maps.Marker({
 
                 
                 
-                <p style="text-align: right;">
+                <p style='position:relative; left:40%;'>
                 Sign up for email alerts : <input type="text" id="email"/><span onclick="sendEmail()"> 
                 <br/><br/>
-                <img style = 'position:relative; right:19%;'src="<?=URL::base()?>a/bullet/submit.png"/></span>
+                <img src="<?=URL::base()?>a/bullet/submit.png"/></span>
                 </p>
                 
-                <p style= 'position:relative; left:25%;'>
+                <p style= 'position:relative; left:40%;'>
                 <font size="2"><br/><br/>
 
 
-                                    All trademarks and copyrights held by respective owners. 
-                                Automated Mapping System ® is a Registered Trademarks of AMS TEAM. 
-                                        © Automated Mapping System all rights reserved
+                                            All trademarks and copyrights held by respective owners. 
+                                        Automated Mapping System ® is a Registered Trademarks of AMS TEAM. 
+                                                © Automated Mapping System all rights reserved
 
                 </font></p>
     
