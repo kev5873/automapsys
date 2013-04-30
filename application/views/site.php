@@ -21,7 +21,7 @@
         <script type="text/javascript" src="/a/i/jquery-1.9.1.min.js"></script>
         <script type="text/javascript">
 
-       function sendEmail()
+        function sendEmail()
         {
             console.log( $('#email').val() );
             $.ajax({
@@ -225,7 +225,60 @@ var marker = new google.maps.Marker({
 		        <table border="0" cellspacing="0">
 		        	<?= $lineData; ?>
 		        </table><br/><br/><br/><br/><br/>
-                Sign up for email alerts : <input type="text" id="email"/><span onclick="sendEmail()">TEST</span>
+
+                
+                
+                <p style='position:relative; left:0%;'>
+                Sign up for email alerts : <input type="text" id="email"/><span onclick="sendEmail()"> 
+                <br/><br/>
+                <img src="<?=URL::base()?>a/bullet/submit.png"/></span>
+                </p>
+                
+                <div style='position:relative; left:0%;'>
+                <br/><br/>
+                <?php 
+                $filenames = DB::query( Database::SELECT, "select distinct filename from line_info order by filename desc" )->execute()->as_array(); 
+                echo "<form action = '' method = 'get' >"; 
+                echo "<label > Select The Service You Wish To View: </label>"; 
+                echo "<select name = 'filename'>"; 
+                foreach($filenames as $filename)
+                {
+        
+                    $file = $filename["filename"]; 
+                    $file = substr($file, 4); 
+                    $file = substr( $file , stripos( $file , '-' ) + 1  );
+                    $file = substr( $file, 0, stripos( $file, '.' ) );  
+                    $date =  date( "m/d/y", $file) . " at " . date("H:i:s", $file ); 
+                    if( $filename['filename'] == $filestart )
+                    {
+                        echo "<option selected value = '".$filename["filename"]."' > $date  </option> ";        
+                    }
+                    else
+                        echo "<option value = '".$filename["filename"]."' > $date  </option> "; 
+                }
+        
+                echo "</select> "; 
+        
+                echo "<input type = 'hidden' name = 'id' value = '$id' >"; 
+        
+                echo "</select> <input type = 'submit' value = 'Submit'> </form>"; 
+                ?>
+                </div>
+
+
+                
+                <p style= 'position:relative; left:0%; width: 600px;'>
+                <font size="1.8"><br/><br/>
+
+
+
+
+                                            All trademarks and copyrights held by respective owners. <br/>
+                                Automated Mapping System ® is a Registered Trademarks of AMS Development Group. <br/>
+                                                © Automated Mapping System all rights reserved <br/>
+
+                </font></p>
+    
 			</div>
 			<div style="float:left; position: relative; width: 420px">
 				<table>
@@ -255,15 +308,7 @@ var marker = new google.maps.Marker({
                             <div id="map-canvas" style="color: #000000; width:420px; height:420px;"></div>
 						</td>
 					</tr>
-
-                    <tr>
-                        <td style="font-size: 14pt; overflow: hidden;" colspan="2">
-
-                        </td>
-                    </tr>
-
 				</table>
 			</div>
     	</div>
     </body>
-</html>

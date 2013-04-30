@@ -18,7 +18,6 @@ class Controller_ams extends Controller_Template {
 	public function action_index()
 	{
 		$this->template->title   = 'MTA New York City Subway Service Advisories';
-		$this->template->message = 'hello, world!';
 
 		// This is feeder code, DO NOT DELETE YET!
 		//$feeder = new Model_feed();
@@ -26,6 +25,9 @@ class Controller_ams extends Controller_Template {
 
 		$line = new Model_line();
 		$feeder = new Model_feed();
+		$this->template->filestart = $feeder->filestart;
+		$feeder->processFeed($feeder->filestart);
+
 
 		if( isset($_COOKIE['filename']) )
 		{
@@ -52,6 +54,8 @@ class Controller_ams extends Controller_Template {
 		{
 			$id = 12;
 		}
+		$this->template->id = $id;
+
 		if(isset($_GET['direction']))
 		{
 			$direction = $_GET['direction'];
@@ -244,47 +248,7 @@ class Controller_ams extends Controller_Template {
 			}
 		}
 
-		$filenames = DB::query( Database::SELECT, "select distinct filename from line_info order by filename desc" )->execute()->as_array(); 
 
-		echo "<form action = '' method = 'get' >"; 
-		echo "<label > Select The Service You Wish To View: </label>"; 
-		echo "<select name = 'filename'>"; 
-		$dateset = array(); 
-
-		foreach($filenames as $filename)
-		{
-			$file = $filename["filename"]; 
-			$file = substr($file, 4); 
-			$file = substr( $file , stripos( $file , '-' ) + 1  );
-			$file = substr( $file, 0, stripos( $file, '.' ) );  
-			$date =  date( "m/d/y", $file) . " at " . date("H:i:s", $file ); 
-			
-			echo "$date";
-			print_r($dateset); 
-			echo "<br />";
-			if( in_array( trim($date) , $dateset ) )
-			{
-				continue; 
-			}
-			else{
-
-			$dateset [] = $date; 
-			if( $filename['filename'] == $feeder->filestart )
-			{
-				echo "<option selected value = '".$filename["filename"]."' > $date  </option> ";		
-			}
-			else{
-			echo "<option value = '".$filename["filename"]."' > $date  </option> "; 
-				}
-			}
-
-		}
-
-		echo "</select> "; 
-
-		echo "<input type = 'hidden' name = 'id' value = '$id' >"; 
-
-		echo "</select> <input type = 'submit' value = 'Submit'> </form>"; 
 	}
 
 	public function action_email()

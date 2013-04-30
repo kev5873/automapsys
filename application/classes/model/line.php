@@ -128,8 +128,9 @@ class Model_line extends Model
 			if( $notrainsbetween )
 			{
 				$start_station_order = $notrainsbetweenpairarray[0]; 
-				$end_station_order = $notrainsbetween[1];
-				if( ( ($start_station_order <= $currentStationOrderID) && ($currentStationOrderID <= $end_station_order) ) || 
+				$end_station_order = $notrainsbetweenpairarray[1];
+
+ 				if( ( ($start_station_order <= $currentStationOrderID) && ($currentStationOrderID <= $end_station_order) ) || 
 				  	( ( $start_station_order >= $currentStationOrderID ) && ($currentStationOrderID >= $end_station_order ) ) 
 				  )
 				{
@@ -1459,7 +1460,7 @@ class Model_line extends Model
 		
 	}
 
-	public function grabStationsRaw($line,$direction,$location)
+	public function grabStationsRaw($line,$direction,$location,$nochange = false)
 	{
 		// $advisories = DB::select()
 		// 		->from('line_info')
@@ -1572,6 +1573,13 @@ class Model_line extends Model
 		$returnArray = array();
 
 		//echo $numOfStation."<br/>";
+
+		if($nochange)
+		{
+			$runsExpress 	 = false;
+			$runLocal 		 = false;
+			$notrainsbetween = false; 
+		}
 
 		for($i=$numOfStation;$i>=0;$i--)
 		{

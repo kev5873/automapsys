@@ -222,14 +222,14 @@ var marker = new google.maps.Marker({
     		View New York City Subway Service Advisories, mapped and drawn graphically for easy reading.  To begin, select a route above, or view the entire map below.
 
             <div style="margin-top: 15px;">
-            <div style="float:left; width: 350px; padding: 50px; border: 1px solid white;">
-                View Full Map w/ Current Service<br />
-                <a href="map/full/?direction=uptown">Uptown</a> | <a href="map/full/?direction=downtown">Downtown</a>
-            </div>
-            <div style="float:left; width: 350px; padding: 50px; border: 1px solid white;">
-                View Full Map w/ Normal Service<br />
-                Uptown | Downtown
-            </div>
+                <div style="float:left; width: 350px; padding: 50px; border: 1px solid white;">
+                    View Full Map w/ Current Service<br />
+                    <a href="map/full/?direction=uptown">Uptown</a> | <a href="map/full/?direction=downtown">Downtown</a>
+                </div>
+                <div style="float:left; width: 350px; padding: 50px; border: 1px solid white;">
+                    View Full Map w/ Normal Service<br />
+                    <a href="map/full/?direction=uptown&nochange=true">Uptown</a> | <a href="map/full/?direction=downtown&nochange=true">Downtown</a>
+                </div>
     	    </div>
         </div>
     </body>

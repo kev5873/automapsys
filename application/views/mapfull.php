@@ -16,7 +16,7 @@
         	width: 24px;
         	height: 24px;
         }
-        #map-canvas { height: 75% }
+        #map-canvas { height: 100% }
         </style>
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqCjOtUb9nrWCFPKpQ6AFkwOSH766zvc8&sensor=true"></script>
         <script type="text/javascript" src="/a/i/jquery-1.9.1.min.js"></script>
@@ -142,8 +142,9 @@ var marker = new google.maps.Marker({
     </head>
     <body>
     	<div style="text-align:center; width: 920px; margin-left: auto; margin-right: auto; border: solid 1px black;">
-    		<div style="padding: 10px; font-size: 16pt; text-decoration: underline;">New York City Subway Service Status</div>
-    		<table border="0" cellspacing="0">
+    		<div style="padding: 10px; font-size: 16pt; text-decoration: underline;"><? if($nochange) { ?>New York City Subway Full System Map <? } else { ?>New York City Subway Service Changes<? } ?></div>
+            <? if(!$nochange) { ?>
+            <table border="0" cellspacing="0">
     			<tr>
                     <td style="text-align:center;"><?=$status1; ?></td>
                     <td style="text-align:center;"><?=$status2; ?></td>
@@ -198,13 +199,10 @@ var marker = new google.maps.Marker({
     				<td><a href="?id=19"?><img src="<?=URL::base()?>a/bullet/R.png" class="mini"/></a></td>
     				<td><a href="?id=25"?><img src="<?=URL::base()?>a/bullet/S.png" class="mini"/></a></td>
     			</tr>
-    			<tr>
-    				<td colspan="25" style="text-align:center;">
-    					<img src="<?= URL::base(); ?>a/bullet/<?= $routeDesignation; ?>.png" style="padding-bottom: 20px; vertical-align: middle;"/><span style="font-size: 18pt;"><?= $routeDetail; ?></span>
-    				</td>
-    			</tr>
     		</table>
+            <? } ?>
     	</div>
+        <br />
     	<div style="text-align:center; width: 920px; margin-left: auto; margin-right: auto; border: solid 1px black;">
             <div id="map-canvas" style="color: #000000;"/>
     	</div>
