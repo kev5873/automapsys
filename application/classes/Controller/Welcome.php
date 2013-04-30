@@ -249,7 +249,18 @@ private function downloadFile ($url, $path) {
 
 		$feeder = new Model_feed(); 
 
-		shell_exec("C:\Users\Kenneth Li\Documents\ams\automapsys\a\ams downloader.exe"); 
+		shell_exec( getcwd(). "/a/s/ams12" ); 
+		
+
+		// shell_exec("C:\Users\Kenneth Li\Documents\ams\automapsys\a\ams downloader.exe"); 
+
+
+		// // echo getcwd(); 
+		// if(file_exists(getcwd(). "/a/s/ams12"))
+		// {
+		// 	echo 'a'; 
+		// } 
+		// echo 'b'; 
 
 // $line_id, $start_station, $end_station, $start_time, $end_time, $service_replace_id, $filename)
 
