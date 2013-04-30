@@ -1502,9 +1502,7 @@ class Model_line extends Model
 
 		if(in_array($line, $trainsNotRunning))
 		{
-			return '<tr>
-			<td style="font-size: 24pt;">Trains are not running.</td>
-			</tr>';
+			return array();
 		}
 
 		$runsExpress = false;
