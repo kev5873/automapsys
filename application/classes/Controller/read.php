@@ -17,7 +17,7 @@ class Controller_read extends Controller_Template {
 		//$feeder->downloadFeed();
 	// 'a/s/status-1366255687.xml'
 
-	$fedArr = $feeder->processFeed('a/s/status-1367340363.xml');
+	$fedArr = $feeder->processFeed('a/s/status-1366515360.xml');// "a/s/status-1366515360.xml"
 
 	}
 

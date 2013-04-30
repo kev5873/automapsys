@@ -27,7 +27,7 @@ class Controller_ams extends Controller_Template {
 		$line = new Model_line();
 		$feeder = new Model_feed();
 
-        $returnArray = $feeder->getServiceChange('a/s/status-1367340363.xml');
+        $returnArray = $feeder->getServiceChange('a/s/status-1366515360.xml');
 
 
         // // echo 'a'; 
@@ -53,7 +53,7 @@ class Controller_ams extends Controller_Template {
 		}
 
 
-		$this->template->lineData = $line->grabStations($id,$direction,'a/s/status-1367340363.xml');
+		$this->template->lineData = $line->grabStations($id,$direction,'a/s/status-1366515360.xml');
 
 		$this->template->line = $id;
 		$this->template->routeDesignation = $line->getLineBullet($id);
@@ -132,7 +132,7 @@ class Controller_ams extends Controller_Template {
 
 						}
 						else{
-								$this->template->advisory  = " train is Good Service for $direction Direction";
+								$this->template->advisory  = "<br/> Good Service ";
 								break;
 						}
 					}
