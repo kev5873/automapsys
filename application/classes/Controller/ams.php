@@ -18,7 +18,6 @@ class Controller_ams extends Controller_Template {
 	public function action_index()
 	{
 		$this->template->title   = 'MTA New York City Subway Service Advisories';
-		$this->template->message = 'hello, world!';
 
 		// This is feeder code, DO NOT DELETE YET!
 		//$feeder = new Model_feed();
@@ -27,7 +26,7 @@ class Controller_ams extends Controller_Template {
 		$line = new Model_line();
 		$feeder = new Model_feed();
 		$this->template->filestart = $feeder->filestart;
-
+		$feeder->processFeed($feeder->filestart);
 
 
 		if( isset($_COOKIE['filename']) )
