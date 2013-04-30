@@ -52,7 +52,7 @@ class Model_line extends Model
 
 		$runsExpress = false;
 		$runLocal = false;
-		
+		$notrainsbetween = false; 
 
 		if(count($advisories) >0){
 			$theReplaceID = $advisories[0]['service_replace_id'];
@@ -64,6 +64,13 @@ class Model_line extends Model
 			{
 				$runLocal = true;
 			}
+			else if($theReplaceID == 3)	// No Trains Between Case
+			{
+				// start_station_id = order_number, end_station_id = order_number
+				// echo "Has No Train Between Case for ". $advisories[0]['start_station_id'] . ": " . $advisories[0]['end_station_id'] . "on $line"; 
+				$notrainsbetween = true; 
+				$notrainsbetweenpairarray = array($advisories[0]['start_station_id'] , $advisories[0]['end_station_id'] ); 
+			}
 		}
 
 
@@ -71,7 +78,7 @@ class Model_line extends Model
 
 		// No Trains Between 3:
 
-		print_r($advisories); 
+		// print_r($advisories); 
 		$theLine = DB::select()
 				->from('line_train')
 				->where('line_id', '=', $line)
@@ -97,12 +104,6 @@ class Model_line extends Model
 				->as_array();
 		}
 
-		// foreach($stations as $station)
-		// {
-
-		// }
-
-
 // SERVICE_REPLACE_ID CODE:
 // No trains running : 2
 // No trains between A & B : 3
@@ -124,9 +125,21 @@ class Model_line extends Model
 			
 			$currentStationOrderID = $stations[$i]['order_number'];
 
+			if( $notrainsbetween )
+			{
+				$start_station_order = $notrainsbetweenpairarray[0]; 
+				$end_station_order = $notrainsbetween[1];
+				if( ( ($start_station_order <= $currentStationOrderID) && ($currentStationOrderID <= $end_station_order) ) || 
+				  	( ( $start_station_order >= $currentStationOrderID ) && ($currentStationOrderID >= $end_station_order ) ) 
+				  )
+				{
+					$singleStation->where('station_id', '=', '-1'); 
+				}
+			}
+
 			$color='black';
 			switch($line)
-			{
+			{	
 				case 1:
 					$color = 'red';
 					if($runsExpress)
@@ -175,6 +188,10 @@ class Model_line extends Model
 								$runLocal = false;
 							}
 						}
+
+					}
+					else if($notrainsbetween)
+					{
 
 					}
 					else{
