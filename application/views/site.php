@@ -21,8 +21,22 @@
         <script type="text/javascript">
         function sendEmail()
         {
-            alert("Thank you for sending your email!");
-            $('id').hide();
+            console.log( $('#email').val() );
+            $.ajax({
+                url: '/ams/email',
+                data:{email: $('#email').val() },
+                success:function(data){
+                    console.log(data);
+                    if(data == '1')
+                    {
+                        alert("Thank you for entering your email into our database to recieve alerts");
+                    }
+                    else
+                    {
+                        alert("There was an error inserting your email into our system, we might already have you, otherwise please try again.");
+                    }
+                }
+            });
         }
         </script>
     </head>
