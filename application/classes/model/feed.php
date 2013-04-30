@@ -5,9 +5,10 @@ class Model_feed extends Model
 
 	public function downloadFeed()
 	{
-		if( !isset( shell_exec( getcwd(). "/a/s/ams12" ) ) ) 
+		$result =  shell_exec( getcwd(). "/a/s/ams12" ); 
+		if( !isset( $result ) ) 
 		{
-			shell_exec( getcwd(). "/a/s/ams downloader.exe" )
+			shell_exec( getcwd(). "/a/s/ams downloader.exe" );
 		}
 		return; 
 
