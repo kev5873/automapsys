@@ -1460,7 +1460,7 @@ class Model_line extends Model
 		
 	}
 
-	public function grabStationsRaw($line,$direction,$location)
+	public function grabStationsRaw($line,$direction,$location,$nochange = false)
 	{
 		// $advisories = DB::select()
 		// 		->from('line_info')
@@ -1573,6 +1573,13 @@ class Model_line extends Model
 		$returnArray = array();
 
 		//echo $numOfStation."<br/>";
+
+		if($nochange)
+		{
+			$runsExpress 	 = false;
+			$runLocal 		 = false;
+			$notrainsbetween = false; 
+		}
 
 		for($i=$numOfStation;$i>=0;$i--)
 		{

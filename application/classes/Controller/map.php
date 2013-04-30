@@ -56,6 +56,15 @@ class Controller_map extends Controller_Template {
 		$this->template->direction = $direction;
 		$this->template->routeDesignation = $line->getLineBullet($id);
 		$this->template->routeDetail = $line->getLineDescription($id);
+		if(isset($_GET['nochange']))
+		{
+			$this->template->nochange = $_GET['nochange'];
+		}
+		else
+		{
+			$this->template->nochange = false;
+		}
+		
 
 		$feeder = new Model_feed();
         $returnArray = $feeder->processFeed($feeder->filestart);
@@ -199,6 +208,15 @@ class Controller_map extends Controller_Template {
 		$this->template->direction = $direction;
 		$this->template->routeDesignation = $line->getLineBullet($id);
 		$this->template->routeDetail = $line->getLineDescription($id);
+		if(isset($_GET['nochange']))
+		{
+			$this->template->nochange = $_GET['nochange'];
+		}
+		else
+		{
+			$this->template->nochange = false;
+		}
+		
 
 		$feeder = new Model_feed();
 		if(isset($_GET['filename']))
@@ -335,7 +353,7 @@ class Controller_map extends Controller_Template {
 		{
 			$direction = "downtown";
 		}
-		
+
 		$feeder = new Model_feed();
 		if(isset($_GET['filename']))
 		{

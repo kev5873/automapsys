@@ -138,7 +138,7 @@ var marker = new google.maps.Marker({
     <body>
     	<div style="text-align:center; width: 920px; margin-left: auto; margin-right: auto; border: solid 1px black;">
     		<div style="padding: 10px; font-size: 16pt; text-decoration: underline;">New York City Subway Service Status</div>
-    		<table border="0" cellspacing="0">
+            <table border="0" cellspacing="0">
     			<tr>
                     <td style="text-align:center;"><?=$status1; ?></td>
                     <td style="text-align:center;"><?=$status2; ?></td>
