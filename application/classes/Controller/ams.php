@@ -28,6 +28,9 @@ class Controller_ams extends Controller_Template {
 		$feeder = new Model_feed();
         $returnArray = $feeder->getServiceChange('a/s/status-1367297731.xml');
 
+//         $returnArray = $feeder->getServiceChange('a/s/status-1367297276.xml');
+// >>>>>>> b514a352dbc32db6802434ede9aa1fc360783e17
+
         // // echo 'a'; 
         // echo count($returnArray); 
         // print_r($returnArray); 
@@ -50,7 +53,8 @@ class Controller_ams extends Controller_Template {
 			$direction = "Downtown";
 		}
 
-		$this->template->lineData = $line->grabStations($id,$direction,'a/s/status-1367088029.xml');
+		// $this->template->lineData = $line->grabStations($id,$direction,'a/s/status-1367297276.xml');
+		$this->template->lineData = $line->grabStations($id,$direction,'a/s/status-1367297731.xml');
 		$this->template->line = $id;
 		$this->template->routeDesignation = $line->getLineBullet($id);
 		$this->template->routeDetail = $line->getLineDescription($id);

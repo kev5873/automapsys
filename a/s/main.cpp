@@ -12,7 +12,7 @@ size_t write_data(void *ptr, size_t size, size_t nmemb, FILE *stream) {
 
 int main() {
     std::string tempname;
-    tempname.append("status-");
+    tempname.append("a/s/status-");
     std::time_t t = std::time(0);
     std::stringstream strm;
     strm << t;

@@ -501,9 +501,11 @@ class Model_feed extends Model
 
 	public function getServiceChange($filename)
 	{
+		$filename = substr( $filename, 4  ); 
 		$result = DB::select ('line_id','start_station_id','end_station_id','bound_station_id','service_replace_id','filename') ->from('line_info') ->where('filename','=', $filename)
 		->execute()->as_array();
 		$i=0;
+		// print_r($result); 
 		foreach ($result as $res) {
 			$line_id = $res['line_id'];
 			$start_station = $res['start_station_id'];
