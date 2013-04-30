@@ -52,6 +52,8 @@ class Controller_ams extends Controller_Template {
 
 		//var_dump($returnArray);
 		$size = sizeof($returnArray);
+
+		echo "<br/>";
 		//echo "<br/>";
 		//echo $size;
 		$lineID = $line->getLineBullet($id);
@@ -59,9 +61,9 @@ class Controller_ams extends Controller_Template {
 		$i=0;
 		$otherlineId = 'E';
 
-		$j = 1;$z=0;
+		$j = 0;$z=0;
 		$otherlineId1[0]='';
-		while($j<=$size ){
+		while($j<$size ){
 
 			if(isset($returnArray[$j]['line_id'])) {
 				$otherlineId1[$z] = $returnArray[$j]['line_id'];
@@ -101,11 +103,23 @@ class Controller_ams extends Controller_Template {
 						
 					if($returnArray[$i]['bound_station_id']!="")						
 					{
-						$directionStation= $feeder->getStationNameforStationOrder($otherlineId,$returnArray[$i]['bound_station_id']);
-					 	$commanCase='<br/> Line: '.$lineID.'<br/> Direction:'.$directionStation[0]['station_name'].' Bound <br/> Start: '
-						 .$startStation[0]['station_name'].'<br/> End: '.$endStation[0]['station_name'].'<br/> Service Chg: ';
+						if($returnArray[$i]['bound_station_id']<=1)
+						{
+							$thedirect = "uptown";
+						}
+						else{$thedirect = "downtown";
+						}
 
+						if($direction  ==  $thedirect){
+							$directionStation= $feeder->getStationNameforStationOrder($otherlineId,$returnArray[$i]['bound_station_id']);
+						 	$commanCase='<br/> Line: '.$lineID.'<br/> Direction:'.$directionStation[0]['station_name'].' Bound <br/> Start: '
+							 .$startStation[0]['station_name'].'<br/> End: '.$endStation[0]['station_name'].'<br/> Service Chg: ';
 
+						}
+						else{
+								$this->template->advisory  = "<br/>Good Service";
+								break;
+						}
 					}
 					else{
 						
@@ -129,6 +143,7 @@ class Controller_ams extends Controller_Template {
 // Trains run express from A to B : 0
 // Trains run local from A to B: 1
 // Trains skip {stations} : 4
+
 					break;
 				}
 				else{
