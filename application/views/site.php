@@ -231,7 +231,7 @@ var marker = new google.maps.Marker({
 				<table>
 					<tr>
 						<td style="font-size: 14pt; overflow: hidden;" colspan="2">
-							Currently Displaying : <?= $direction; ?>
+							Dircetion : <?= $direction; ?>
 
 					</tr>
 					<tr>
@@ -248,8 +248,10 @@ var marker = new google.maps.Marker({
 					</tr>
 					<tr>
 						<td style="font-size: 14pt; overflow: hidden;" colspan="2">
-							Advisory goes here: <?=$advisory?>
-                            <br /><br />
+							Advisory: 
+                            <br/>
+                            <img src="<?=URL::base()?>a/bullet/<?= $routeDesignation; ?>.png" style="padding-bottom: 5px; vertical-align: middle;" class="mini"/>
+                            <?=$advisory?>
                             <div id="map-canvas" style="color: #000000; width:420px; height:420px;"></div>
 						</td>
 					</tr>
