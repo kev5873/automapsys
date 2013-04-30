@@ -17,8 +17,6 @@ class Controller_ams extends Controller_Template {
 	
 	public function action_index()
 	{
-		// $filestart = "a/s/status-1367342311.xml";
-
 		$this->template->title   = 'MTA New York City Subway Service Advisories';
 		$this->template->message = 'hello, world!';
 
@@ -29,10 +27,17 @@ class Controller_ams extends Controller_Template {
 		$line = new Model_line();
 		$feeder = new Model_feed();
 
+		if( isset($_COOKIE['filename']) )
+		{
+			$feeder->filestart = $_COOKIE['filename']; 
+		}
+
 		if(isset($_GET['filename']))
 		{
 			$feeder->filestart = $_GET['filename']; 
+			setcookie('filename', $feeder->filestart);  
 		}
+
 
         $returnArray = $feeder->getServiceChange($feeder->filestart);
         // // echo 'a'; 
@@ -246,11 +251,16 @@ class Controller_ams extends Controller_Template {
 		echo "<select name = 'filename'>"; 
 		foreach($filenames as $filename)
 		{
+
 			$file = $filename["filename"]; 
 			$file = substr($file, 4); 
 			$file = substr( $file , stripos( $file , '-' ) + 1  );
 			$file = substr( $file, 0, stripos( $file, '.' ) );  
 			$date =  date( "m/d/y", $file) . " at " . date("H:i:s", $file ); 
+			if( $filename['filename'] == $feeder->filestart )
+			{
+				echo "<option selected value = '".$filename["filename"]."' > $date  </option> ";		
+			}
 			echo "<option value = '".$filename["filename"]."' > $date  </option> "; 
 		}
 
