@@ -249,19 +249,35 @@ class Controller_ams extends Controller_Template {
 		echo "<form action = '' method = 'get' >"; 
 		echo "<label > Select The Service You Wish To View: </label>"; 
 		echo "<select name = 'filename'>"; 
+		$dateset = array(); 
+
 		foreach($filenames as $filename)
 		{
-
 			$file = $filename["filename"]; 
 			$file = substr($file, 4); 
 			$file = substr( $file , stripos( $file , '-' ) + 1  );
 			$file = substr( $file, 0, stripos( $file, '.' ) );  
 			$date =  date( "m/d/y", $file) . " at " . date("H:i:s", $file ); 
+			
+			echo "$date";
+			print_r($dateset); 
+			echo "<br />";
+			if( in_array( trim($date) , $dateset ) )
+			{
+				continue; 
+			}
+			else{
+
+			$dateset [] = $date; 
 			if( $filename['filename'] == $feeder->filestart )
 			{
 				echo "<option selected value = '".$filename["filename"]."' > $date  </option> ";		
 			}
+			else{
 			echo "<option value = '".$filename["filename"]."' > $date  </option> "; 
+				}
+			}
+
 		}
 
 		echo "</select> "; 
