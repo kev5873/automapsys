@@ -19,6 +19,7 @@
         </style>
         <script type="text/javascript" src="/a/i/jquery-1.9.1.min.js"></script>
         <script type="text/javascript">
+
         function sendEmail()
         {
             console.log( $('#email').val() );
@@ -38,6 +39,7 @@
                 }
             });
         }
+
         </script>
     </head>
     <body>
@@ -110,7 +112,25 @@
 		        <table border="0" cellspacing="0">
 		        	<?= $lineData; ?>
 		        </table><br/><br/><br/><br/><br/>
-                Sign up for email alerts : <input type="text" id="email"/><span onclick="sendEmail()">TEST</span>
+
+                
+                
+                <p style="text-align: right;">
+                Sign up for email alerts : <input type="text" id="email"/><span onclick="sendEmail()"> 
+                <br/><br/>
+                <img style = 'position:relative; right:19%;'src="<?=URL::base()?>a/bullet/submit.png"/></span>
+                </p>
+                
+                <p style= 'position:relative; left:25%;'>
+                <font size="2"><br/><br/>
+
+
+                                    All trademarks and copyrights held by respective owners. 
+                                Automated Mapping System ® is a Registered Trademarks of AMS TEAM. 
+                                        © Automated Mapping System all rights reserved
+
+                </font></p>
+    
 			</div>
 			<div style="float:left; position: relative; width: 320px">
 				<table>
@@ -147,4 +167,3 @@
 			</div>
     	</div>
     </body>
-</html>
