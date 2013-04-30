@@ -157,11 +157,19 @@ class Controller_ams extends Controller_Template {
 
 
 					
+					try{
 
 					 if($returnArray[$i]['service_replace_id']==1){$this->template->advisory = $commanCase."  runs local from ".$startStation[0]['station_name']." to ".$endStation[0]['station_name'];}
 					 	else if($returnArray[$i]['service_replace_id']==3){$this->template->advisory = $commanCase." there is no train from ".$startStation[0]['station_name']." to ".$endStation[0]['station_name']; }
 					 	else if($returnArray[$i]['service_replace_id']==4){ $this->template->advisory = $commanCase."  skips from ".$startStation[0]['station_name']." to ".$endStation[0]['station_name'];}
 					 	else if($returnArray[$i]['service_replace_id']==0){ $this->template->advisory = $commanCase."  runs express from ".$startStation[0]['station_name']." to ".$endStation[0]['station_name'];}
+					 
+					 }
+					 catch(Exception $e){
+					 	echo $feeder->filestart; 
+					 	echo "<br />";
+					 	echo $e;
+					 }
 
 					 //$this->template->advisory =
 					//$this->template->advisory = $returnArray[$i]['line_id'];

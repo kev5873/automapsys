@@ -15,7 +15,7 @@ class Controller_Welcome extends Controller_Template {
 
 		$line = new Model_line();
 		$feeder = new Model_feed();
-        $returnArray = $feeder->getServiceChange('a/s/status-1367340363.xml');
+        $returnArray = $feeder->getServiceChange($feeder->filestart);
 
         // // echo 'a'; 
         // echo count($returnArray); 
@@ -39,7 +39,7 @@ class Controller_Welcome extends Controller_Template {
 			$direction = "Downtown";
 		}
 
-		$this->template->lineData = $line->grabStations($id,$direction,'a/s/status-1367340363.xml');
+		$this->template->lineData = $line->grabStations($id,$direction,$feeder->filestart);
 		$this->template->line = $id;
 		$this->template->routeDesignation = $line->getLineBullet($id);
 		$this->template->routeDetail = $line->getLineDescription($id);

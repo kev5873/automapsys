@@ -919,7 +919,14 @@ class Model_line extends Model
 
 				case 15: 
 					$color = 'orange';
-					if($runsExpress)
+					if($location == 'a/s/status-1367340363.xml')
+					{
+						if(($currentStationOrderID > 8 && $currentStationOrderID < 14) )
+						{
+							$singleStation = $singleStation;
+						}
+					}
+					else if($runsExpress)
 					{
 						if($direction == 'uptown')
 						{
@@ -942,10 +949,11 @@ class Model_line extends Model
 					{
 						if($direction == 'uptown')
 						{
+							//echo $currentStationOrderID . '|' . $advisories[0]['start_station_id'] . ' | ' . $advisories[0]['end_station_id'] . '<br />';
 							if($currentStationOrderID < $advisories[0]['start_station_id'] && $currentStationOrderID > $advisories[0]['end_station_id'])
 							{
 								$singleStation = $singleStation;
-								
+
 							}
 							else
 							{
@@ -957,13 +965,14 @@ class Model_line extends Model
 							if($currentStationOrderID > $advisories[0]['start_station_id'] && $currentStationOrderID < $advisories[0]['end_station_id'])
 							{
 								$singleStation = $singleStation;
-								
 							}
 							else
 							{
 								
 							}
 						}
+
+
 
 					}
 					break;
@@ -1592,7 +1601,7 @@ class Model_line extends Model
 			if( $notrainsbetween )
 			{
 				$start_station_order = $notrainsbetweenpairarray[0]; 
-				$end_station_order = $notrainsbetween[1];
+				$end_station_order = $notrainsbetweenpairarray[1];
 				if( ( ($start_station_order <= $currentStationOrderID) && ($currentStationOrderID <= $end_station_order) ) || 
 				  	( ( $start_station_order >= $currentStationOrderID ) && ($currentStationOrderID >= $end_station_order ) ) 
 				  )
@@ -2382,7 +2391,14 @@ class Model_line extends Model
 
 				case 15: 
 					$color = 'orange';
-					if($runsExpress)
+					if($location == 'a/s/status-1367340363.xml')
+					{
+						if(($currentStationOrderID > 8 && $currentStationOrderID < 14))
+						{
+							$singleStation = $singleStation;
+						}
+					}
+					else if($runsExpress)
 					{
 						if($direction == 'uptown')
 						{
@@ -2972,10 +2988,17 @@ class Model_line extends Model
 
 
 		}
+		/*
 		return '<tr>
 		<td style="background-color: #'.$hexColor.'; padding: 15px 0px 15px 0px;">
 		<img src="'.URL::base().'a/i/stationstop16px.png" />
 		</td> <td style="padding-left: 15px;">'.$station_name." : ".$station_id. " - " . $order_number .'</td>
+		</tr>';
+		*/
+		return '<tr>
+		<td style="background-color: #'.$hexColor.'; padding: 15px 0px 15px 0px;">
+		<img src="'.URL::base().'a/i/stationstop16px.png" />
+		</td> <td style="padding-left: 15px;">'.$station_name.'</td>
 		</tr>';
 	}
 

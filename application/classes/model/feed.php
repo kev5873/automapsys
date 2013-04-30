@@ -3,7 +3,7 @@
 class Model_feed extends Model
 {
 
-	public $filestart = "a/s/status-1367340363.xml"; 
+	public $filestart = "a/s/status-1367364046.xml"; 
 
 	public function downloadFeed()
 	{
@@ -226,7 +226,7 @@ class Model_feed extends Model
 
 			if(strstr($stations[0], "-")) 
 			{
-				$startStation = trim(str_replace("-", " - ", $stations[0])); //make it to be same style of name for station
+				$startStation = trim(str_replace("-", "-", $stations[0])); //make it to be same style of name for station
 			} 
 			else 
 			{
@@ -238,7 +238,7 @@ class Model_feed extends Model
 			} 
 			else if(strstr($stations[1], "-")) 
 			{
-				$endStation = trim(str_replace("-", " - ", $stations[1]));
+				$endStation = trim(str_replace("-", "-", $stations[1]));
 			} 
 			else 
 			{
@@ -285,14 +285,14 @@ class Model_feed extends Model
 
 			// get the station name
 			if(strstr($stations[0], "-")) {
-				$startStation = trim(str_replace("-", " - ", $stations[0])); //make it to be same style of name for station
+				$startStation = trim(str_replace("-", "-", $stations[0])); //make it to be same style of name for station
 			} else {
 				$startStation = trim($stations[0]);
 			}
 			if(strpos($stations[1], "[") > 0) {
 				$endStation = trim(substr($stations[1], 0, strpos($stations[1], "["))); // This should overpower the loop
 			} else if(strstr($stations[1], "-")) {
-				$endStation = trim(str_replace("-", " - ", $stations[1]));
+				$endStation = trim(str_replace("-", "-", $stations[1]));
 			} else {
 				$endStation = trim($stations[1]);
 			}
@@ -411,8 +411,8 @@ class Model_feed extends Model
 			}
 			else if( count($result) != 0 && $station_name != "36 St")
 			{
-				echo "Multiple Result Error (rowcount = ".count($result).") <br />";
-				print_r($result); echo "<br />"; 
+				//echo "Multiple Result Error (rowcount = ".count($result).") <br />";
+				//print_r($result); echo "<br />"; 
 			}
 			else if( $station_name == "36 St" && count($result) == 2 )
 			{
@@ -426,7 +426,7 @@ class Model_feed extends Model
 			}
 			else
 			{
-				echo "Missing Stuff for Station: '$station_name' on Line_ID: '$line_id' for Line_Name: $line_name. ";   
+				//echo "Missing Stuff for Station: '$station_name' on Line_ID: '$line_id' for Line_Name: $line_name. ";   
 			}
 		}
 		return array( "line_id" => $line_id, "station_id" => $station_id , "station_order" => $station_order ); 
@@ -516,6 +516,13 @@ class Model_feed extends Model
 			$theFile= $res['filename'];
 		$array1[$i]= array('line_id' => $line_id, 'start_station_id' => $start_station, 'end_station_id' => $end_station, 'bound_station_id' => $bound, 'service_replace_id' => $service, 'filename' => $theFile);
 		$i++;
+		}
+		if(!isset($array1))
+		{
+			$query = DB::insert('line_info', array( "line_id" , "start_station_id", "end_station_id" , "start_time" , "end_time", "service_replace_id", 
+				"filename", "bound_station_id" )
+			)->values( array( 500, NULL, NULL, NULL, NULL, 0, $filename, NULL ) )->execute();
+			return $this->getServiceChange($filename);
 		}
 		return $array1;
 	}
