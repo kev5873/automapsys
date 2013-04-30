@@ -235,6 +235,7 @@ var marker = new google.maps.Marker({
                 </p>
                 
                 <div style='position:relative; left:40%;'>
+                <br/><br/>
                 <?php 
                 $filenames = DB::query( Database::SELECT, "select distinct filename from line_info order by filename desc" )->execute()->as_array(); 
                 echo "<form action = '' method = 'get' >"; 
@@ -264,17 +265,17 @@ var marker = new google.maps.Marker({
                 ?>
                 </div>
 
+
                 
-                
-                <p style= 'position:relative; left:40%;'>
-                <font size="2"><br/><br/>
+                <p style= 'position:relative; left:30%; width: 600px;'>
+                <font size="1.8"><br/><br/>
 
 
 
 
-                                            All trademarks and copyrights held by respective owners. 
-                                Automated Mapping System ® is a Registered Trademarks of AMS Development Group. 
-                                                © Automated Mapping System all rights reserved
+                                            All trademarks and copyrights held by respective owners. <br/>
+                                Automated Mapping System ® is a Registered Trademarks of AMS Development Group. <br/>
+                                                © Automated Mapping System all rights reserved <br/>
 
                 </font></p>
     

@@ -3,7 +3,7 @@
 class Model_feed extends Model
 {
 
-	public $filestart = "a/s/status-1367340363.xml"; 
+	public $filestart = "a/s/status-1367356750.xml"; 
 
 	public function downloadFeed()
 	{
