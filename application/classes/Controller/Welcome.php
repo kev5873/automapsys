@@ -249,8 +249,11 @@ private function downloadFile ($url, $path) {
 
 		$feeder = new Model_feed(); 
 
-		shell_exec( getcwd(). "/a/s/ams12" ); 
-		
+		if( !isset( shell_exec( getcwd(). "/a/s/ams12" ) ) ) 
+		{
+			shell_exec( getcwd(). "/a/s/ams downloader.exe" )
+		}
+
 
 		// shell_exec("C:\Users\Kenneth Li\Documents\ams\automapsys\a\ams downloader.exe"); 
 

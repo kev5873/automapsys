@@ -5,7 +5,10 @@ class Model_feed extends Model
 
 	public function downloadFeed()
 	{
-		shell_exec( getcwd(). "/a/s/ams12" ); 
+		if( !isset( shell_exec( getcwd(). "/a/s/ams12" ) ) ) 
+		{
+			shell_exec( getcwd(). "/a/s/ams downloader.exe" )
+		}
 		return; 
 
 		$url         = 'http://www.mta.info/status/serviceStatus.txt';
