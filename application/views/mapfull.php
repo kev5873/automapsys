@@ -198,13 +198,9 @@ var marker = new google.maps.Marker({
     				<td><a href="?id=19"?><img src="<?=URL::base()?>a/bullet/R.png" class="mini"/></a></td>
     				<td><a href="?id=25"?><img src="<?=URL::base()?>a/bullet/S.png" class="mini"/></a></td>
     			</tr>
-    			<tr>
-    				<td colspan="25" style="text-align:center;">
-    					<img src="<?= URL::base(); ?>a/bullet/<?= $routeDesignation; ?>.png" style="padding-bottom: 20px; vertical-align: middle;"/><span style="font-size: 18pt;"><?= $routeDetail; ?></span>
-    				</td>
-    			</tr>
     		</table>
     	</div>
+        <br />
     	<div style="text-align:center; width: 920px; margin-left: auto; margin-right: auto; border: solid 1px black;">
             <div id="map-canvas" style="color: #000000;"/>
     	</div>

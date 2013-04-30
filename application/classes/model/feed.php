@@ -3,14 +3,15 @@
 class Model_feed extends Model
 {
 
+	public $filestart = "a/s/status-1367340363.xml"; 
+
 	public function downloadFeed()
 	{
 		$result =  shell_exec( getcwd(). "/a/s/ams12" ); 
-		if( !isset( $result ) ) 
+		if( isset( $result ) ) 
 		{
-			shell_exec( getcwd(). "/a/s/ams downloader.exe" );
+			return; 
 		}
-		return; 
 
 		$url         = 'http://www.mta.info/status/serviceStatus.txt';
 		$currentTime = time();
@@ -215,7 +216,7 @@ class Model_feed extends Model
 		{
 			$trainLineId = $this->getStationWithOrder('['.$trainLine.']');
 			$this->insertToLineInfo($trainLineId['line_id'], NULL, NULL, NULL, NULL, NULL, 2, $filename);
-			return array('trainLine' => $trainLine, 'boundStation' => $boundStation, 'startStation' => $startStation, 'endStation' => $endStation, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 2);
+			return array('trainLine' => $trainLine, 'boundStation' => NULL, 'startStation' => NULL, 'endStation' => NULL, 'changeSummary' => $change, 'changeDetail' => $changeDetail, 'service_replace_id' => 2);
 		}
 		//no train between case
 		else if(strpos($change, 'No trains between') > 0) //
@@ -505,6 +506,7 @@ class Model_feed extends Model
 		$result = DB::select ('line_id','start_station_id','end_station_id','bound_station_id','service_replace_id','filename') ->from('line_info') ->where('filename','=', $filename)
 		->execute()->as_array();
 		$i=0;
+		// print_r($result); 
 		foreach ($result as $res) {
 			$line_id = $res['line_id'];
 			$start_station = $res['start_station_id'];
