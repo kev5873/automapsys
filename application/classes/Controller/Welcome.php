@@ -249,7 +249,7 @@ private function downloadFile ($url, $path) {
 
 		$feeder = new Model_feed(); 
 
-		var_dump(shell_exec("C:\Users\Kenneth Li\Documents\ams\automapsys\a\ams downloader.exe")); 
+		shell_exec("C:\Users\Kenneth Li\Documents\ams\automapsys\a\ams downloader.exe"); 
 
 // $line_id, $start_station, $end_station, $start_time, $end_time, $service_replace_id, $filename)
 

@@ -53,18 +53,7 @@ class Model_line extends Model
 		{
 			$runsExpress = true;
 		}
-
-		// No Trains Between 3:
-
-		// print_r($advisories); 
-		// print_r($line); 
-		// foreach($advisories as $advisory)
-		// {
-		// 	if(  )
-		// }
-
-		if(  )
-
+		
 		$theLine = DB::select()
 				->from('line_train')
 				->where('line_id', '=', $line)
@@ -89,6 +78,11 @@ class Model_line extends Model
 				->execute()
 				->as_array();
 		}
+
+		// foreach($stations as $station)
+		// {
+
+		// }
 
 
 // SERVICE_REPLACE_ID CODE:
