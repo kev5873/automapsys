@@ -3,6 +3,17 @@
 class Controller_ams extends Controller_Template {
 
 	public $template = 'site';
+
+    public function before()
+    {
+        // You can add actions to this array that will then use a different template
+        if (in_array($this->request->action(), array('email')))
+        {
+            $this->template = 'blank';
+        }
+
+        parent::before();
+    }
 	
 	public function action_index()
 	{
@@ -219,7 +230,13 @@ class Controller_ams extends Controller_Template {
 
 			}
 		}
-	}	
+	}
+
+	public function action_email()
+	{
+		$mailer = new Model_mailer();
+		echo $mailer->insertEmail($_GET['email']);
+	}
 
 }
 		
