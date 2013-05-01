@@ -919,14 +919,22 @@ class Model_line extends Model
 
 				case 15: 
 					$color = 'orange';
-					if($location == 'a/s/status-1367340363.xml')
+					if($location == 'a/s/status-1366515360.xml' && $direction == 'uptown')
 					{
-						if(($currentStationOrderID > 8 && $currentStationOrderID < 14) )
+						if(($currentStationOrderID > 14 && $currentStationOrderID < 20) )
 						{
-							$singleStation = $singleStation;
+							$singleStation = $singleStation->where('express', '=', 'true');
 						}
 					}
-					else if($runsExpress)
+					else
+					{
+						if(($currentStationOrderID > 8 && $currentStationOrderID < 20) )
+						{
+							$singleStation = $singleStation->where('express', '=', 'true');
+						}
+					}
+					
+					if($runsExpress)
 					{
 						if($direction == 'uptown')
 						{
@@ -971,9 +979,6 @@ class Model_line extends Model
 								
 							}
 						}
-
-
-
 					}
 					break;
 
@@ -2391,14 +2396,22 @@ class Model_line extends Model
 
 				case 15: 
 					$color = 'orange';
-					if($location == 'a/s/status-1367340363.xml')
+					if($location == 'a/s/status-1366515360.xml' && $direction == 'uptown')
 					{
-						if(($currentStationOrderID > 8 && $currentStationOrderID < 14))
+						if(($currentStationOrderID > 14 && $currentStationOrderID < 20) )
 						{
-							$singleStation = $singleStation;
+							$singleStation = $singleStation->where('express', '=', 'true');
 						}
 					}
-					else if($runsExpress)
+					else
+					{
+						if(($currentStationOrderID > 8 && $currentStationOrderID < 20) )
+						{
+							$singleStation = $singleStation->where('express', '=', 'true');
+						}
+					}
+					
+					if($runsExpress)
 					{
 						if($direction == 'uptown')
 						{
@@ -2443,7 +2456,6 @@ class Model_line extends Model
 								
 							}
 						}
-
 					}
 					break;
 

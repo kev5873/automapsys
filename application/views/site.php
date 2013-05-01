@@ -26,7 +26,7 @@
             console.log( $('#email').val() );
             $.ajax({
                 url: '/ams/email',
-                data:{email: $('#email').val() },
+                data:{email: $('#email').val()},
                 success:function(data){
                     console.log(data);
                     if(data == '1')
@@ -56,7 +56,7 @@
 
             $.ajax({
               url: '/map/grab',
-              data:{id: '<?=$line?>', direction:'<?=$direction?>'},
+              data:{id: '<?=$line?>', direction:'<?=$direction?>', filename: '<?=$filestart?>'},
               dataType: 'json',
               success:function(data){
                 var color = data[0].color;
@@ -157,7 +157,8 @@ var marker = new google.maps.Marker({
     </head>
     <body>
     	<div style="text-align:center; width: 920px; margin-left: auto; margin-right: auto; border: solid 1px black;">
-    		<div style="padding: 10px; font-size: 16pt; text-decoration: underline;">New York City Subway Service Status</div>
+    		<img src="../a/i/920x90.gif" />
+            <div style="padding: 10px; font-size: 16pt; text-decoration: underline;">New York City Subway Service Status</div>
     		<table border="0" cellspacing="0">
     			<tr>
     				<td style="text-align:center;"><?=$status1; ?></td>
@@ -288,13 +289,13 @@ var marker = new google.maps.Marker({
 
 					</tr>
 					<tr>
-						<td><a href="<?=URL::base()?>?id=<?= $line; ?>&direction=uptown"><img src="<?=URL::base()?>a/i/up-arrow.png" class="mini"/></a></td>
+						<td><a href="?id=<?= $line; ?>&direction=uptown"><img src="<?=URL::base()?>a/i/up-arrow.png" class="mini"/></a></td>
 						<td style="font-size: 14pt;">
 							<img src="<?=URL::base()?>a/bullet/<?= $routeDesignation; ?>.png" style="padding-bottom: 5px; vertical-align: middle;" class="mini"/>
 							Uptown</td>
 					</tr>
 					<tr>
-						<td><a href="<?=URL::base()?>?id=<?= $line; ?>&direction=downtown"><img src="<?=URL::base()?>a/i/down-arrow.png" class="mini"/></a></td>
+						<td><a href="?id=<?= $line; ?>&direction=downtown"><img src="<?=URL::base()?>a/i/down-arrow.png" class="mini"/></a></td>
 						<td style="font-size: 14pt;">
 							<img src="<?=URL::base()?>a/bullet/<?= $routeDesignation; ?>.png" style="padding-bottom: 5px; vertical-align: middle;" class="mini"/>
 							Downtown</td>

@@ -25,7 +25,6 @@ class Controller_ams extends Controller_Template {
 
 		$line = new Model_line();
 		$feeder = new Model_feed();
-		$this->template->filestart = $feeder->filestart;
 		$feeder->processFeed($feeder->filestart);
 
 
@@ -40,7 +39,7 @@ class Controller_ams extends Controller_Template {
 			setcookie('filename', $feeder->filestart);  
 		}
 
-
+		$this->template->filestart = $feeder->filestart;
         $returnArray = $feeder->getServiceChange($feeder->filestart);
         // // echo 'a'; 
         // echo count($returnArray); 
