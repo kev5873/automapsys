@@ -364,7 +364,7 @@ class Controller_map extends Controller_Template {
 			$feeder->filestart = $_GET['filename']; 
 			setcookie('filename', $feeder->filestart);  
 		}
-		echo json_encode($line->grabStationsRaw($id, $direction, $_GET['filename']));
+		echo json_encode($line->grabStationsRaw($id, $direction,$feeder->filestart));
 	}
 
 }
